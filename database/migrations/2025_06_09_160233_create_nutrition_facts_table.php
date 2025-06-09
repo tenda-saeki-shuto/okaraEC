@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('nutrition_facts', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('recie_id');
-            $table->foreign('recie_id')->references('id')->on('recies');
+            $table->foreign('recie_id')->references('id')->on('recipes');
             $table->integer('energy');
             $table->integer('protain');
             $table->integer('fat');

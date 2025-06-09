@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('recipe_ingredients', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('recie_id');
-            $table->foreign('recie_id')->references('id')->on('recies');
+            $table->unsignedBigInteger('recipe_id');
+            $table->foreign('recipe_id')->references('id')->on('recipes');
             $table->string('name', 20);
-            $table->int('amount', 20);
+            $table->string('amount', 20);
         });
     }
     /**

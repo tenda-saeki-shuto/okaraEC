@@ -17,8 +17,9 @@ return new class extends Migration
             $table->string('contet',300);
             $table->string('img');
             $table->string('time',20);
-            $table->string('category_id');
-            $table->forein('category_id')->references('id')->on('category');      
+            $table->string('amount',20);
+            $table->unsignedBigInteger('category_id');
+            $table->foreign('category_id')->references('id')->on('categories');
         });
     }
 
