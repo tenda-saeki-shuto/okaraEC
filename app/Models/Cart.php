@@ -6,5 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cart extends Model
 {
-    //
+    // 
+    public function items()
+    {
+        return $this->belongsTo(Item::class, 'item_id');
+    }
 }
