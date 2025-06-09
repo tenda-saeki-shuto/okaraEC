@@ -11,19 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('recipe_ingredients', function (Blueprint $table) {
+        Schema::create('quizes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('recie_id');
-            $table->foreign('recie_id')->references('id')->on('recies');
-            $table->string('name', 20);
-            $table->int('amount', 20);
+            $table->string('title', 30);
+            $table->string('content',300);
+            $table->string('img');
+            $table->datetime('start');
+            $table->datetime('end');
         });
     }
+
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('recipe_ingredients');
+        Schema::dropIfExists('quizes');
     }
 };
