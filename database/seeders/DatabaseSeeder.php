@@ -21,9 +21,16 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::create([
+            'id' => 100,
             'name' => 'a',
             'email' => 'a@a',
             'password' => 'aaaaaaaa',
         ]);
+
+        $this->call(ItemSeeder::class);
+        $this->call(AllergiesSeeder::class);
+        $this->call(QuizSeeder::class);
+        $this->call(CouponSeeder::class);
+        // $this->call(UserSeeder::class);
     }
 }
