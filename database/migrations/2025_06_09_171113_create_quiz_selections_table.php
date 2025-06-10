@@ -16,8 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('quiz_id');
             $table->foreign('quiz_id')->references('id')->on('quizzes');
             $table->string('content', 300);
-            $table->int('selection_num');
-            $table->booean('is_answer');
+            $table->integer('selection_num');
+            $table->boolean('is_answer');
         });
     }
 
