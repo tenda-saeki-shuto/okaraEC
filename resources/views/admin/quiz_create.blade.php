@@ -73,11 +73,11 @@
         <br><br>
         <label for="choices">選択肢:</label>
         <br>
-        <input type="text" name="choicesA" required>
+        <input type="text" name="choices[]" required>
         <br>
-        <input type="text" name="choicesB" required>
+        <input type="text" name="choices[]" required>
         <br>
-        <input type="text" name="choicesC" required>
+        <input type="text" name="choices[]" required>
         <br><br>
         <label for="answer">正解:</label>
         <br>
