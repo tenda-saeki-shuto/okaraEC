@@ -11,9 +11,7 @@ body{
 }
 
 button{
-    width: 100px;
     height: 2rem;
-    margin-left: 100%;
     background-color: #dd803dce;
     border-radius: 10px;
     font-size: 20px;

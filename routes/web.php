@@ -25,5 +25,9 @@ Route::get('enter_card_info', function(){
     return view('enter_card_info');
 })->name('enter_card_info');
 
+Route::get('cart', function(){
+    return view('cart');
+})->name('cart');
+
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin.php';
