@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Item extends Model
 {
     //カテゴリとのリレーション
-    public function items()
+    public function categories()
     {
         return $this->belongsTo(Category::class, 'category_id');
     }
@@ -22,19 +22,19 @@ class Item extends Model
     }
     public function nutritionFacts()
     {
-        return $this->hasOne(NutritionFact::class);
+        return $this->hasOne(ItemNutritionFact::class);
     }
     //ユーザー・注文関連とのリレーション
-    public function userLikes()
-    {
-        return $this->hasMany(UserLike::class);
-    }
-    public function carts()
-    {
-        return $this->hasMany(Cart::class);
-    }
-    public function regularOrders()
-    {
-        return $this->hasMany(RegularOrder::class);
-    }
+    // public function userLikes()
+    // {
+    //     return $this->hasMany(UserLike::class);
+    // }
+    // public function carts()
+    // {
+    //     return $this->hasMany(Cart::class);
+    // }
+    // public function regularOrders()
+    // {
+    //     return $this->hasMany(RegularOrder::class);
+    // }
 }

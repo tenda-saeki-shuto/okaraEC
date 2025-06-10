@@ -6,5 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserCoupon extends Model
 {
-    //
+    //ユーザーとのリレーション
+    public function users()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+    
+    //都道府県とのリレーション
+    public function coupons()
+    {
+        return $this->belongsTo(Coupon::class, 'coupon_id');
+    }
 }
