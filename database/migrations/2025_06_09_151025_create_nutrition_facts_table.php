@@ -11,17 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('nutrition_facts', function (Blueprint $table) {
+        Schema::create('item_nutrition_facts', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('item_id');
             $table->foreign('item_id')->references('id')->on('items');
 
             $table->integer('energy')->unsigned()->nullable();
-            $table->integer('protaint')->unsigned()->nullable();
-            $table->integer('fat')->unsigned()->nullable();
-            $table->integer('carb')->unsigned()->nullable();
-            $table->integer('fiber')->unsigned()->nullable();
-            $table->integer('salt_eqv')->unsigned()->nullable();
+            $table->float('protein')->unsigned()->nullable();
+            $table->float('fat')->unsigned()->nullable();
+            $table->float('carb')->unsigned()->nullable();
+            $table->float('fiber')->unsigned()->nullable();
+            $table->float('salt_eqv')->unsigned()->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('nutrition_facts');
+        Schema::dropIfExists('item_nutrition_facts');
     }
 };

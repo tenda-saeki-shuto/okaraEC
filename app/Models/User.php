@@ -45,4 +45,26 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    //とのリレーション
+    public function userLikes()
+    {
+        return $this->hasMany(UserLike::class, 'user_id');
+    }
+    public function carts()
+    {
+        return $this->hasMany(Cart::class, 'user_id');
+    }
+    public function regularOrders()
+    {
+        return $this->hasMany(RegularOrder::class, 'user_id');
+    }
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'user_id');
+    }
+    public function userCoupons()
+    {
+        return $this->hasMany(UserCoupon::class, 'user_id');
+    }
 }
