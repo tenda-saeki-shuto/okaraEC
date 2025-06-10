@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign('item_id')->references('id')->on('items');
 
             $table->integer('energy')->unsigned()->nullable();
-            $table->integer('protaint')->unsigned()->nullable();
+            $table->integer('protein')->unsigned()->nullable();
             $table->integer('fat')->unsigned()->nullable();
             $table->integer('carb')->unsigned()->nullable();
             $table->integer('fiber')->unsigned()->nullable();
