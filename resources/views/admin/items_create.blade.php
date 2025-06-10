@@ -22,14 +22,6 @@
             width: fit-content;
             border-bottom: 1px solid black;
         }
-        .two_column{
-            display: flex;
-            align-items: top;
-            /* background-color: beige; */
-        }
-        .allergy_item{
-            margin-left: 50px;
-        }
         button{
             display: block;
             margin: 0 auto;
@@ -88,84 +80,56 @@
                 <input type="text" class="price" name="price">円
             </div>
         
-            <div class="two_column">
-                <!-- 栄養情報 -->
-                <div class="section">
-                    <label>栄養情報：</label>
-                    <div class="nutrition">
-                        <label for="calorie">カロリー：　</label>
-                        <input type="text" id="calorie" name="calorie">kcal
-                    </div>
-        
-                    <div class="nutrition">
-                        <label for="protein">タンパク質：</label>
-                        <input type="text" id="protein" name="protein">g
-                    </div>
-        
-                    <div class="nutrition">
-                        <label for="fat">脂質：　　　</label>
-                        <input type="text" id="fat" name="fat">g
-                    </div>
-                    
-                    <div class="nutrition">
-                        <label for="carbohydrates">炭水化物：　</label>
-                        <input type="text" id="carbohydrates" name="carbohydrates">g
-                    </div>
-        
-                    <div class="nutrition">
-                        <label for="fiber">食物繊維：　</label>
-                        <input type="text" id="fiber" name="fiber">g
-                    </div>
-        
-                    <div class="nutrition">
-                        <label for="salt">食塩相当量：</label>
-                        <input type="text" id="salt" name="salt">g
-                    </div>
+            
+            <!-- 栄養情報 -->
+            <div class="section">
+                <label>栄養情報：</label>
+                <div class="nutrition">
+                    <label for="calorie">カロリー：　</label>
+                    <input type="text" id="calorie" name="calorie">kcal
                 </div>
-        
-                <!-- アレルギー -->
-                <div class="section">
-                    <label class="allergy_item">アレルギー：</label>
-                    <div class="allergy_item">
-                        <input type="checkbox" id="egg" name="allergy[]" value="egg">
-                        <label for="egg">卵</label>
-                    </div>
-        
-                    <div class="allergy_item">
-                        <input type="checkbox" id="milk" name="allergy[]" value="milk">
-                        <label for="milk">牛乳</label>
-                    </div>
-        
-                    <div class="allergy_item">
-                        <input type="checkbox" id="wheat" name="allergy[]" value="wheat">
-                        <label for="wheat">小麦</label>
-                    </div>
-        
-                    <div class="allergy_item">
-                        <input type="checkbox" id="shrimp" name="allergy[]" value="shrimp">
-                        <label for="shrimp">えび</label>
-                    </div>
-        
-                    <div class="allergy_item">
-                        <input type="checkbox" id="crab" name="allergy[]" value="crab">
-                        <label for="crab">かに</label>
-                    </div>
-        
-                    <div class="allergy_item">
-                        <input type="checkbox" id="walnut" name="allergy[]" value="walnut">
-                        <label for="walnut">くるみ</label>
-                    </div>
-        
-                    <div class="allergy_item">
-                        <input type="checkbox" id="soba" name="allergy[]" value="soba">
-                        <label for="soba">そば</label>
-                    </div>
-        
-                    <div class="allergy_item">
-                        <input type="checkbox" id="peanuts" name="allergy[]" value="peanuts">
-                        <label for="peanuts">ピーナッツ</label>
-                    </div>
+    
+                <div class="nutrition">
+                    <label for="protein">タンパク質：</label>
+                    <input type="text" id="protein" name="protein">g
                 </div>
+    
+                <div class="nutrition">
+                    <label for="fat">脂質：　　　</label>
+                    <input type="text" id="fat" name="fat">g
+                </div>
+                
+                <div class="nutrition">
+                    <label for="carbohydrates">炭水化物：　</label>
+                    <input type="text" id="carbohydrates" name="carbohydrates">g
+                </div>
+    
+                <div class="nutrition">
+                    <label for="fiber">食物繊維：　</label>
+                    <input type="text" id="fiber" name="fiber">g
+                </div>
+    
+                <div class="nutrition">
+                    <label for="salt">食塩相当量：</label>
+                    <input type="text" id="salt" name="salt">g
+                </div>
+            </div>
+    
+
+            <!-- アレルギー -->
+            <div class="section">
+                <label for="">アレルギー：
+                <div>
+                    <select name="allergy" data-toggle="select">
+                        <option value="えび">えび</option>
+
+                        <!-- コントローラーでallergiesテーブルの全データを取得して$allergy_listとして送ってください -->
+                        @foreach ($allergy_list as $allergy_item)
+                            <option value="{{ $allergy_item->name }}">{{ $allergy_item->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                </label>
             </div>
             <button type="submit">登録</button>
         </form>
