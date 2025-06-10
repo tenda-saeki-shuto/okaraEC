@@ -17,8 +17,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/admin/quiz_create', function () {
-    return view('admin.quiz_create');
-})->name('quiz.create');
+// Route::get('/admin/quiz_create', function () {
+//     return view('admin.quiz_create');
+// })->name('quiz.create');
 
 require __DIR__ . '/auth.php';
+require __DIR__ . '/admin.php';

@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('quiz_id');
             $table->foreign('quiz_id')->references('id')->on('quizzes');
-            $table->string('content', 300);
-            $table->integer('selection_num');
-            $table->boolean('is_answer');
+            $table->string('content', 20);
+            $table->boolean('is_answer')->default(false);
+            $table->timestamps();
         });
     }
 
