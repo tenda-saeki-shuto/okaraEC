@@ -15,16 +15,6 @@ class ItemSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('categories')->insert([
-            [
-                'id' => 1,
-                'name' => 'おやつ',
-            ],
-            [
-                'id' => 2,
-                'name' => '惣菜',
-            ],
-        ]);
         DB::table('items')->insert([
             [
                 'id' => 1,
@@ -89,6 +79,64 @@ class ItemSeeder extends Seeder
                 'carb' => 12.8,
                 'fiber' => 3.5,
                 'salt_eqv' => 1.1,
+            ],
+        ]);
+        DB::table('item_allergies')->insert([
+            [
+                'item_id' => 1,
+                'allergy_id' => 4,
+            ],
+            [
+                'item_id' => 1,
+                'allergy_id' => 6,
+            ],
+            [
+                'item_id' => 1,
+                'allergy_id' => 7,
+            ],
+            [
+                'item_id' => 1,
+                'allergy_id' => 20,
+            ],
+            [
+                'item_id' => 2,
+                'allergy_id' => 4,
+            ],
+            [
+                'item_id' => 2,
+                'allergy_id' => 6,
+            ],
+            [
+                'item_id' => 2,
+                'allergy_id' => 7,
+            ],
+            [
+                'item_id' => 2,
+                'allergy_id' => 20,
+            ],
+            [
+                'item_id' => 3,
+                'allergy_id' => 4,
+            ],
+            [
+                'item_id' => 3,
+                'allergy_id' => 6,
+            ],
+            [
+                'item_id' => 3,
+                'allergy_id' => 7,
+            ],
+            [
+                'item_id' => 3,
+                'allergy_id' => 16,
+            ],
+            [
+                'item_id' => 3,
+                'allergy_id' => 20,
+            ],
+            [
+                'item_id' => 3,
+                'allergy_id' => 23,
             ],
         ]);
     }

@@ -27,10 +27,10 @@ class DatabaseSeeder extends Seeder
             'password' => 'aaaaaaaa',
         ]);
 
+        $this->call(ReferenceSeeder::class);
         $this->call(ItemSeeder::class);
-        $this->call(AllergiesSeeder::class);
         $this->call(QuizSeeder::class);
-        $this->call(CouponSeeder::class);
-        // $this->call(UserSeeder::class);
+        $this->call(RecipeSeeder::class);
+        $this->call(UserOptSeeder::class);
     }
 }

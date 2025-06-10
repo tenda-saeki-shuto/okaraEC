@@ -12,16 +12,6 @@ class RecipeSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('categories')->insert([
-            [
-                'id' => 1,
-                'name' => 'おやつ',
-            ],
-            [
-                'id' => 2,
-                'name' => '惣菜',
-            ],
-        ]);
          DB::table(table:'recipes')->insert(values:[
             [
                 'id'=> 1,
