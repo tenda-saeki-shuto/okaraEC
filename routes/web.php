@@ -21,4 +21,8 @@ Route::get('/admin/quiz_create', function () {
     return view('admin.quiz_create');
 })->name('quiz.create');
 
+Route::get('enter_card_info', function(){
+    return view('enter_card_info');
+})->name('enter_card_info');
+
 require __DIR__ . '/auth.php';
