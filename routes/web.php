@@ -17,17 +17,20 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+//商品一覧表示
 Route::get('/items', function () {
     return view('user.items');
 });
+// 商品詳細表示
 Route::get('/itemdetail', function () {
-    return view('item_detail');
+    return view('user.item_detail');
 })->name('item_detail');
+
 Route::get('/admin/quiz_create', function () {
     return view('admin.quiz_create');
 })->name('quiz.create');
 
-Route::get('enter_card_info', function(){
+Route::get('enter_card_info', function () {
     return view('enter_card_info');
 })->name('enter_card_info');
 

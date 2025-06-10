@@ -9,14 +9,14 @@
 </head>
 <body>
     <header>
-
+        @include('user.user_header')
     </header>
     <h1 class="text-center text-3xl">商品一覧</h1>
     {{-- カテゴリ --}}
-    <div class="text-right">
+    <div class="text-right mr-3 mt-4 mb-4">
     <form action="" method="GET" class="mb-4">
         <label for="category" class="mb-4">カテゴリ</label>
-        <select name="category" id="category" class="form-select">
+        <select name="category" id="category" class="form-select border rounded px-2 py-1">
             <option value="">全て</option>
             <option value="1">スイーツ</option>
             <option value="2">ドリンク</option>
