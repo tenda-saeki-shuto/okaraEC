@@ -11,21 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('quiz_status', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('quiz_id');
+            $table->foreign('quiz_id')->references('id')->on('quizzes');
+
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             
-            $table->string('order_code', 8);
-            $table->dateTime('dateTime');
-            $table->string('status',20);
-            $table->boolean('is_regular')->default(false);
-            $table->string('payment',10);
-            $table->string('postal_code',7);
-            $table->string('prefecture',10);
-            $table->string('address',30);
-            $table->string('email',30);
-            $table->string('tel',11);
+            $table->boolean('is_clear')->default(false);
             $table->timestamps();
         });
     }
@@ -35,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('quiz_status');
     }
 };

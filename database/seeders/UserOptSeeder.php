@@ -15,6 +15,14 @@ class UserOptSeeder extends Seeder
      */
     public function run(): void
     {
+        DB::table('addresses')->insert([
+            [
+                'user_id' => 100,
+                'postal_code' => '1234567',
+                'prefecture_id' => 22,
+                'address' => '〇〇〇〇市〇〇〇１－３－４',
+            ],
+        ]);
         DB::table('user_likes')->insert([
             [
                 'user_id' => 100,
@@ -37,7 +45,7 @@ class UserOptSeeder extends Seeder
             [
                 'user_id' => 100,
                 'item_id' => 2,
-                'payments' => 'クレジット',
+                'payment' => 'クレジット',
             ],
         ]);
         DB::table('orders')->insert([
@@ -47,7 +55,7 @@ class UserOptSeeder extends Seeder
                 'order_code' => 'XXXXXXXX',
                 'dateTime' => '2025-06-01 12:34',
                 'status' => '発送済み',
-                // 'is_regular' => false,
+                'is_regular' => false,
                 'payment' => 'クレジット',
                 'postal_code' => '1234567',
                 'prefecture' => '東京都',
@@ -98,14 +106,14 @@ class UserOptSeeder extends Seeder
         ]);
         DB::table('quiz_status')->insert([
             [
+                'quiz_id' => 1,
                 'user_id' => 100,
-                'quiz_id' => 2,
+                'is_clear' => true,
             ],
-        ]);
-        DB::table('user_likes')->insert([
             [
+                'quiz_id' => 2,
                 'user_id' => 100,
-                'item_id' => 2,
+                'is_clear' => true,
             ],
         ]);
     }

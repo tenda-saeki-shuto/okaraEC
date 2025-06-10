@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Quizzes extends Model
 {
-    public function QuizStatus()
-    {
-        return $this->belongsTo(QuizStatus::class);
-    }
+    // public function QuizStatus()
+    // {
+    //     return $this->hasMany(QuizStatus::class);
+    // }
 
     public function QuizSelections()
     {
