@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('nutrition_facts', function (Blueprint $table) {
+        Schema::create('recipe_nutrition_facts', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('recie_id');
             $table->foreign('recie_id')->references('id')->on('recipes');
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('nutrition_facts');
+        Schema::dropIfExists('recipe_nutrition_facts');
     }
 };
