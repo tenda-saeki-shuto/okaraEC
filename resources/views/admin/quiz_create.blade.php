@@ -68,10 +68,10 @@
         <br>
         <textarea id="description" name="content" rows="4" cols="100" required>{{ old('content') }}</textarea>
         <br><br>
-        <label for="image">メイン画像:※複数選択可</label>
+        <label for="image">メイン画像:※１枚</label>
         <div id="drop-area">
             <p>ここに画像をドラッグ＆ドロップ</p>
-            <input type="file" id="image" name="img" accept="image/*" multiple hidden value="{{ old('img') }}">
+            <input type="file" id="image" name="img" accept="image/*" hidden value="{{ old('img') }}">
             <button type="button" onclick="document.getElementById('image').click()">ファイルを選択</button>
         </div>
         <div id="preview"></div>
