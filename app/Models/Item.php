@@ -6,6 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Item extends Model
 {
+    protected $fillable = [
+        'name',
+        'price',
+        'content',
+        'img',
+        'category_id'
+    ];
     //カテゴリとのリレーション
     public function categories()
     {

@@ -31,28 +31,28 @@
 <body>
     <h1>商品登録</h1>
     <div class="container">
-        <form action="{{ route('test') }}" method="POST">
+        <form action="" method="POST">
             @csrf
             <!-- 商品名 -->
             <div class="section">
-                <label for="item_name">商品名：</label><br>
-                <input type="text" id="item_name" name="item_name">
+                <label for="name">商品名：</label><br>
+                <input type="text" id="name" name="name">
             </div>
         
             <!-- カテゴリ -->
             <div class="section">
                 <label for="category">カテゴリ：</label><br>
-                <select name="category" id="category">
-                    <option value="cookie">クッキー</option>
-                    <option value="donuts">ドーナツ</option>
-                    <option value="meat">ハンバーグ</option>
+                <select name="category_id" id="category_id">
+                    <option value="1">クッキー</option>
+                    <option value="2">ドーナツ</option>
+                    <option value="3">ハンバーグ</option>
                 </select>
             </div>
         
             <!-- メイン画像 -->
             <div class="section">
                 <label for="main_img">メイン画像(１つだけ)：</label><br>
-                <input type="file" name="main_img" accept="image/*"> 
+                <input type="file" name="img" accept="image/*"> 
             </div>
         
             <!-- サブ画像 -->
@@ -64,14 +64,14 @@
             <!-- 商品説明 -->
             <div class="section">
                 <label for="item_discription">商品説明：</label><br>
-                <textarea name="item_discription" id="item_discription" rows="10" cols="50"></textarea>
+                <textarea name="content" id="item_discription" rows="10" cols="50"></textarea>
             </div>
         
             <!-- 配送オプション -->
             <div class="section">
                 <label>配送オプション：</label><br>
-                <input type="radio" name="delivery" value="refrigerated">冷蔵
-                <input type="radio" name="delivery" value="frozen">冷凍
+                <input type="radio" name="is_cold" value="refrigerated" checked>冷蔵
+                <input type="radio" name="is_cold" value="frozen">冷凍
             </div>
         
             <!-- 価格 -->
@@ -86,7 +86,7 @@
                 <label>栄養情報：</label>
                 <div class="nutrition">
                     <label for="calorie">カロリー：　</label>
-                    <input type="text" id="calorie" name="calorie">kcal
+                    <input type="text" id="calorie" name="energy">kcal
                 </div>
     
                 <div class="nutrition">
@@ -101,7 +101,7 @@
                 
                 <div class="nutrition">
                     <label for="carbohydrates">炭水化物：　</label>
-                    <input type="text" id="carbohydrates" name="carbohydrates">g
+                    <input type="text" id="carbohydrates" name="carb">g
                 </div>
     
                 <div class="nutrition">
@@ -111,26 +111,23 @@
     
                 <div class="nutrition">
                     <label for="salt">食塩相当量：</label>
-                    <input type="text" id="salt" name="salt">g
+                    <input type="text" id="salt" name="salt_eqv">g
                 </div>
             </div>
     
-
             <!-- アレルギー -->
             <div class="section">
-                <label for="">アレルギー：
+                <label for="">アレルギー：</label>
                 <div>
-                    <select name="allergy" data-toggle="select">
-                        <option value="えび">えび</option>
-
-                        <!-- コントローラーでallergiesテーブルの全データを取得して$allergy_listとして送ってください -->
+                    <select name="allergies[]" multiple>
                         @foreach ($allergy_list as $allergy_item)
-                            <option value="{{ $allergy_item->name }}">{{ $allergy_item->name }}</option>
+                            <option value="{{ $allergy_item->id }}">{{ $allergy_item->name }}</option>
                         @endforeach
                     </select>
                 </div>
-                </label>
             </div>
+
+           
             <button type="submit">登録</button>
         </form>
     </div>

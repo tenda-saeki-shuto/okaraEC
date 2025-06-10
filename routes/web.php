@@ -1,5 +1,7 @@
 <?php
 
+
+use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,8 +19,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/admin/quiz_create', function () {
-    return view('admin.quiz_create');
-})->name('quiz.create');
+Route::get('/admin/item', [ItemController::class, 'create'])->name('admin.item.create');
+Route::post('/admin/item', [ItemController::class, 'store'])->name('admin.item.store'); // 保存処理
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';
