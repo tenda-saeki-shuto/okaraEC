@@ -16,4 +16,12 @@ class Address extends Model
     {
         return $this->belongsTo(Prefecture::class, 'prefecture_id');
     }
+
+    //代入の許可
+    protected $fillable = [
+        'user_id',
+        'postal_code',
+        'prefecture_id',
+        'address',
+    ];
 }
