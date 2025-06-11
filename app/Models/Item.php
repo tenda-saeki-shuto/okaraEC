@@ -12,7 +12,7 @@ class Item extends Model
         'content',
         'img',
         'category_id',
-        'stock,'
+        'stock',
     ];
     //カテゴリとのリレーション
     public function categories()
