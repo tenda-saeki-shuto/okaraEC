@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
-use App\Models\prefectures;
+use App\Models\Prefecture;
 use App\Models\Address;
 
 class RegisteredUserController extends Controller
@@ -21,8 +21,8 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        $prefectures = prefectures::orderBy('id')->get();
-        return view('auth.register', compact('prefectures'));
+        $prefecture = Prefecture::orderBy('id')->get();
+        return view('auth.register', compact('prefecture'));
     }
 
     /**
