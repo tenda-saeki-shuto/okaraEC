@@ -6,30 +6,16 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 
-
-//レシピ登録画面に遷移する
-Route::get('/admin/recipes_create', function(){
-    return view('admin.recipes_create');
-});
-
-//ヘッダー画面のみ表示
-Route::get('/user/user_header', function(){
-    return view('user.user_header');
-});
-
-//マイページ画面の表示
-Route::get('/user/mypage', function(){
-    return view('user.mypage');
-});
-
-//管理者側テストヘッダー
-Route::get('/admin/test', function(){
-    return view('admin.test');
-});
-
+//初期で表示されている画面
 Route::get('/', function () {
     return view('dashboard');
 });
+
+//ヘッダーからマイページに画面遷移←ログインしていない場合はログイン画面にリダイレクト
+Route::middleware(['auth'])->group(function () {
+    Route::get('/user', [ProfileController::class, 'show'])->name('view.mypage');
+});
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -52,21 +38,24 @@ Route::get('/admin/user/{user}/edit', [ProfileController::class, 'edit'])->name(
 
 
 //商品一覧表示
-Route::get('/items', function () {
-    return view('user.items');
-});
-// 商品詳細表示下
-Route::get('/item_detail', function () {
-    return view('user.item_detail');
-})->name('item_detail');
-// Route::get('/item/{id}', [ItemController::class, 'show'])->name('item_detail');
+// 商品一覧
+Route::get('/items', [ItemController::class, 'index'])->name('items');
+// 商品一覧のフィルター
+Route::get('/items/filter', [ItemController::class, 'filter'])->name('items.filter');
+
+
+
+// 商品詳細
+Route::get('/item/{id}', [ItemController::class, 'show'])->name('item_detail');
+
+
 
 
 Route::get('enter_card_info', function () {
     return view('enter_card_info');
 })->name('enter_card_info');
 
-Route::get('enter_card_info', function(){
+Route::get('enter_card_info', function () {
     return view('enter_card_info');
 })->name('enter_card_info');
 
@@ -77,10 +66,29 @@ Route::post('cart_item_delete/{id}', [CartController::class, 'delete'])->name('c
 // カートのajax
 Route::post('/change_cart_count/{id}/{count}', [CartController::class, 'update']);
 
-Route::get('confirm_payment', function(){
+Route::get('confirm_payment', function () {
     return 'Hello';
 })->name('confirm_payment');
 
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin.php';
+
+
+
+// //レシピ登録画面に遷移する
+// Route::get('/admin/recipes_create', function(){
+//     return view('admin.recipes_create');
+// });
+
+
+
+// //マイページ画面の表示
+// Route::get('/user/mypage', function(){
+//     return view('user.mypage');
+// });
+
+// //管理者側テストヘッダー
+// Route::get('/admin/test', function(){
+//     return view('admin.test');
+// });

@@ -13,34 +13,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+  
+        User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'tel' => '090123456678', //電話番号の追加
+        ]);
 
-        // User::factory()->create([
-        //     'name' => 'Test',
-        //     'email' => 'test@example.com',
-        // ]);
-
-        // User::create(
-        //     [
-        //         'id' => 2,
-        //         'name' => 'aaa',
-        //         'email' => 'aaa@aaa',
-        //         'password' => 'aaaaaaaa',
-        //     ]);
-            // User::create(
-            // [
-            //     'id' => 3,
-            //     'name' => 'bbb',
-            //     'email' => 'bbb@bbb',
-            //     'password' => 'bbbbbbbbb',
-            // ]);       
-            // User::create(    
-            // [
-            //     'id' => 4,
-            //     'name' => 'ccc',
-            //     'email' => 'ccc@ccc',
-            //     'password' => 'ccccccccc',
-            // ]);
+        User::create([
+            'id' => 100,
+            'name' => 'a',
+            'email' => 'a@a',
+            'password' => 'aaaaaaaa',
+            'tel' => '090123456678', //電話番号の追加
+        ]);
 
         //      DB::table('addresses')->insert([
         //         [

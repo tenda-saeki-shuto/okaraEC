@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Models\Address;
 use App\Models\Prefecture;
 
+
 class ProfileController extends Controller
 {
     /**
@@ -73,6 +74,15 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function show(){
+        $user=Auth::user()->load([
+            'address.prefecture' //ネストされたリレーションの一括読み込み
+        ]);
+
+        //パスワードを除いて表示する
+        return view('user.mypage', compact('user'));
     }
 }
 

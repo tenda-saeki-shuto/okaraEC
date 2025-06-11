@@ -54,14 +54,14 @@
       // 手順の追加
       $(function(){
         //手順のカウント（手順1,手順2…）
-        let stepCount = 1;
+        let stepCount = <?php echo count($steps) ?>;
 
         $('button#add-procedure').click(function(){
           stepCount++;
 
           const block = `
             <div class="procedure-block">
-              <label>手順${stepCount}</label><br>
+              <label>手順${stepCount}：</label><br>
               <input type="text" name="procedure[]"><br>
               <input type="file" name="sub_img[]"><br><br>
             </div>
@@ -76,17 +76,18 @@
   </header>
   <body>
     <div class="max-w-7xl max-auto px-6">
-      <h1>レシピ登録</h1>
+      <h1>レシピ更新</h1>
     @if (session('message'))
         <div class="text-red-600 font-bold">
             {{ session('message') }}
         </div>
     @endif
-        <form method="post" action="{{ route('recipe.store') }}">
+        <form method="post" action="{{ route('recipe.update', $recipe) }}">
+            @method('PATCH')
             @csrf
             @include('admin.recipe_form')
             <br>
-            <button type="submit">登録</button>
+            <button type="submit">更新</button>
         </form>
     </div>
   </body>

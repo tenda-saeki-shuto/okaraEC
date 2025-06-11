@@ -46,17 +46,18 @@
     <header>
         {{ view('admin.admin_header') }}
     </header>
-    <h1>クイズ作成画面</h1>
+    <h1>クイズ更新</h1>
     @if (session('message'))
         <div class="text-red-600 font-bold">
             {{ session('message') }}
         </div>
     @endif
-    <form action="{{ route('quiz.store') }}" method="POST">
+    <form action="{{ route('quiz.update', $quiz) }}" method="POST">
+        @method('PATCH')
         @csrf
-        @include('admin.quiz_form');
+        @include('admin.quiz_form')
         <br><br>
-        <button type="submit">登録</button>
+        <button type="submit">更新</button>
     </form>
 </body>
 
