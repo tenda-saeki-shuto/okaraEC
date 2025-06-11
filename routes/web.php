@@ -21,10 +21,12 @@ Route::middleware('auth')->group(function () {
 Route::get('/items', function () {
     return view('user.items');
 });
-// 商品詳細表示
-Route::get('/itemdetail', function () {
+// 商品詳細表示下
+Route::get('/item_detail', function () {
     return view('user.item_detail');
 })->name('item_detail');
+// Route::get('/item/{id}', [ItemController::class, 'show'])->name('item_detail');
+
 
 Route::get('/admin/quiz_create', function () {
     return view('admin.quiz_create');
