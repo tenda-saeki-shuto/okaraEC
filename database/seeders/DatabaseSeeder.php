@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+            'tel' => '090123456678', //電話番号の追加
         ]);
 
         User::create([
@@ -25,6 +26,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'a',
             'email' => 'a@a',
             'password' => 'aaaaaaaa',
+            'tel' => '090123456678', //電話番号の追加
         ]);
 
         $this->call(ReferenceSeeder::class);
