@@ -63,7 +63,7 @@ class QuizController extends Controller
     public function edit(Quizzes $quiz)
     {
         $selections = $quiz->quizSelections;
-        return view('admin.quiz_create', compact('quiz', 'selections'));
+        return view('admin.quiz_edit', compact('quiz', 'selections'));
     }
     public function update(Request $request, Quizzes $quiz)
     {
