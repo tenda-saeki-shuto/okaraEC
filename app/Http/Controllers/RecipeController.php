@@ -16,7 +16,8 @@ class RecipeController extends Controller
      */
     public function index()
     {
-        return view('admin.recipes_create'); // あとで変える
+        $recipes = Recipes::orderBy("id","desc")->paginate(20);
+        return view('admin.recipe_index', compact('recipes')); // あとで変える
     }
 
     /**
@@ -24,7 +25,7 @@ class RecipeController extends Controller
      */
     public function create()
     {
-        return view('admin.recipes_create');
+        return view('admin.recipe_create');
     }
 
     /**

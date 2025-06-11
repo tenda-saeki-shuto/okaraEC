@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>レシピ登録</title>
+    {{ view('admin.admin_header') }}
+
     <style>
       .link-button {
         all: unset; /*デフォルトの見た目をリセット*/
@@ -75,7 +77,6 @@
   <body>
     <div class="max-w-7xl max-auto px-6">
       <h1>レシピ登録</h1>
-      
     @if (session('message'))
         <div class="text-red-600 font-bold">
             {{ session('message') }}

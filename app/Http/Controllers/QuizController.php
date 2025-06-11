@@ -12,7 +12,7 @@ class QuizController extends Controller
     //
     public function index()
     {
-        $quizzes = Quizzes::orderBy("end","desc")->paginate(10);
+        $quizzes = Quizzes::orderBy("end","desc")->paginate(20);
         return view("admin.quiz_index", compact('quizzes'));
     }
 
@@ -57,7 +57,7 @@ class QuizController extends Controller
     }
     public function edit($quiz)
     {
-        
+
     }
     public function update(Request $request, $id)
     {
