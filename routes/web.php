@@ -7,30 +7,16 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\UserLikeController;
 use Illuminate\Support\Facades\Route;
 
-
-//レシピ登録画面に遷移する
-Route::get('/admin/recipes_create', function () {
-    return view('admin.recipes_create');
-});
-
-//ヘッダー画面のみ表示
-Route::get('/user/user_header', function () {
-    return view('user.user_header');
-});
-
-//マイページ画面の表示
-Route::get('/user/mypage', function () {
-    return view('user.mypage');
-});
-
-//管理者側テストヘッダー
-Route::get('/admin/test', function () {
-    return view('admin.test');
-});
-
+//初期で表示されている画面
 Route::get('/', function () {
     return view('dashboard');
 });
+
+//ヘッダーからマイページに画面遷移←ログインしていない場合はログイン画面にリダイレクト
+Route::middleware(['auth'])->group(function () {
+    Route::get('/user', [ProfileController::class, 'show'])->name('view.mypage');
+});
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -43,7 +29,14 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/admin/item', [ItemController::class, 'create'])->name('admin.item.create');
-Route::post('/admin/item', [ItemController::class, 'store'])->name('admin.item.store'); // 保存処理
+Route::post('/admin/item', [ItemController::class, 'store'])->name('admin.item.store'); 
+
+Route::get('/admin/item_list', [ItemController::class, 'index'])->name('admin.item.index');
+Route::get('/admin/item/{item}/edit', [ItemController::class, 'edit'])->name('admin.item.edit');
+
+Route::get('/admin/user', [ProfileController::class, 'index'])->name('admin.user.index');
+Route::get('/admin/user/{user}/edit', [ProfileController::class, 'edit'])->name('admin.user.edit');
+
 
 //商品一覧表示
 // 商品一覧
@@ -88,3 +81,22 @@ Route::post('/favorite/toggle', [UserLikeController::class, 'toggle'])->middlewa
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin.php';
+
+
+
+// //レシピ登録画面に遷移する
+// Route::get('/admin/recipes_create', function(){
+//     return view('admin.recipes_create');
+// });
+
+
+
+// //マイページ画面の表示
+// Route::get('/user/mypage', function(){
+//     return view('user.mypage');
+// });
+
+// //管理者側テストヘッダー
+// Route::get('/admin/test', function(){
+//     return view('admin.test');
+// });

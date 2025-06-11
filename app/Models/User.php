@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'tel', 
     ];
 
     /**
@@ -47,6 +48,11 @@ class User extends Authenticatable
     }
 
     //とのリレーション
+    //アドレス（住所）
+    public function address()
+    {
+        return $this->hasOne(Address::class);
+    }
     public function userLikes()
     {
         return $this->hasMany(UserLike::class, 'user_id');
@@ -66,5 +72,9 @@ class User extends Authenticatable
     public function userCoupons()
     {
         return $this->hasMany(UserCoupon::class, 'user_id');
+    }
+    public function creditCard()
+    {
+        return $this->hasOne(CreditCard::class);
     }
 }
