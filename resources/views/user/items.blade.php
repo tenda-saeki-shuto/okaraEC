@@ -122,8 +122,9 @@
                 icon.removeClass('text-danger').addClass('text-secondary');
             }
         },
+        //エラー処理、ログインしていなかったらログイン画面にリダイレクト
         error: function () {
-            alert('お気に入りの切り替えに失敗しました。ログインしていますか？');
+            window.location.href = '/login';
         }
     });
     });

@@ -12,7 +12,6 @@ class UserLikeController extends Controller
 {
     public function toggle(Request $request)
     {
-        Log::info('toggleメソッド開始');
 
         $user = Auth::user();
 
