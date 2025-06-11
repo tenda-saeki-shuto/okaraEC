@@ -4,6 +4,7 @@
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\UserLikeController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -76,6 +77,13 @@ Route::post('/change_cart_count/{id}/{count}', [CartController::class, 'update']
 Route::get('confirm_payment', function () {
     return 'Hello';
 })->name('confirm_payment');
+
+// お気に入りのトグル
+Route::post('/favorite/toggle', [UserLikeController::class, 'toggle'])->middleware('auth');
+
+
+
+
 
 
 require __DIR__ . '/auth.php';

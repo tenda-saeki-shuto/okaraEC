@@ -9,8 +9,8 @@ use App\Models\Category;
 use App\Models\ItemNutritionFact;
 use App\Models\ItemAllergy;
 use App\Models\ItemPicture;
-
-
+use App\Models\UserLike;
+use Illuminate\Support\Facades\Auth;
 
 class ItemController extends Controller
 {
@@ -24,11 +24,48 @@ class ItemController extends Controller
     // 商品一覧表示
     public function index()
     {
-        $item_list = Item::all();
+        $user = Auth::user();
+        $items = Item::all();
+
+        $item_list = $items->map(function ($item) use ($user) {
+            $item->is_favorite = $user ? $item->likedByUsers()->where('user_id', $user->id)->exists() : false;
+            return $item;
+        });
+
         $category = Category::all();
-        // dd($item_list);
+
         return view('user.items', compact('item_list', 'category'));
     }
+
+    // 商品一覧のフィルター
+
+    public function filter(Request $request)
+    {
+        $user = Auth::user();
+
+        $items = Item::query();
+
+        if ($request->filled('category')) {
+            $items->where('category_id', $request->category);
+        }
+
+        $items = $items->get();
+
+        // 各商品に is_favorited を追加
+        $items->map(function ($item) use ($user) {
+            $item->is_favorited = $user
+                ? UserLike::where('user_id', $user->id)->where('item_id', $item->id)->exists()
+                : false;
+            return $item;
+        });
+
+        return response()->json([
+            'items' => $items->values()
+        ]);
+    }
+
+
+
 
     // 商品詳細表示
     public function show($id)
@@ -41,20 +78,6 @@ class ItemController extends Controller
         ])->findOrFail($id);
 
         return view('user.item_detail', compact('item'));
-    }
-
-    // 商品一覧のフィルター
-    public function filter(Request $request)
-    {
-        $items = Item::all();
-
-        if ($request->filled('category')) {
-            $items = $items->where('category_id', $request->category);
-        }
-
-        return response()->json([
-            'items' => $items->values()
-        ]);
     }
 
 

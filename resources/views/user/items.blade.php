@@ -2,9 +2,24 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+        .favorite-btn i {
+            font-size: 24px;
+            transition: color 0.3s ease;
+        }
+        .text-danger {
+            color: red;
+        }
+        .text-secondary {
+            color: gray;
+        }
+    </style>
+
     <title>商品一覧</title>
 </head>
 <body>
@@ -55,6 +70,9 @@
                                 <h2 class="text-xl font-bold mt-2">${item.name}</h2>
                                 ${item.is_frozen === 1 ? '<div class="bg-pink-300 text-center w-1/4 text-base rounded-full">冷凍商品</div>' : ''}
                                 <p class="text-gray-600">¥${Number(item.price).toLocaleString()}</p>
+                                <button class="favorite-btn" data-item-id="${item.id}">
+                                    <i class="fa fa-heart ${item.is_favorited ? 'text-danger' : 'text-secondary'}"></i>
+                                </button>
                             </div>
                         </a>
                     `;
@@ -77,13 +95,38 @@
         const categoryId = $(this).val();
         fetchItems(categoryId);
     });
-});
+    });
+
+
+
+
+    //お気に入り処理
+    $(document).on('click', '.favorite-btn', function (e) {
+    e.preventDefault();
+    const button = $(this);
+    const itemId = button.data('item-id');
+    const icon = button.find('i');
+
+    $.ajax({
+        url: '/favorite/toggle',
+        type: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        contentType: 'application/json',
+        data: JSON.stringify({ item_id: itemId }),
+        success: function (response) {
+            if (response.liked) {
+                icon.removeClass('text-secondary').addClass('text-danger');
+            } else {
+                icon.removeClass('text-danger').addClass('text-secondary');
+            }
+        },
+        error: function () {
+            alert('お気に入りの切り替えに失敗しました。ログインしていますか？');
+        }
+    });
+    });
 
 </script>
-
-
-
-
-
-{{-- お気に入り処理は後でやります --}}
 </html>
