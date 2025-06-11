@@ -13,15 +13,16 @@ return new class extends Migration
     {
         Schema::create('recipe_nutrition_facts', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('recie_id');
-            $table->foreign('recie_id')->references('id')->on('recipes');
-            $table->integer('energy');
-            $table->integer('protain');
-            $table->integer('fat');
-            $table->integer('carb');
-            $table->integer('fiber');
-            $table->integer('salt_eqv');
-
+            $table->unsignedBigInteger('recipe_id');
+            $table->foreign('recipe_id')->references('id')->on('recipes');
+            
+            $table->integer('energy')->unsigned()->nullable();
+            $table->float('protein')->unsigned()->nullable();
+            $table->float('fat')->unsigned()->nullable();
+            $table->float('carb')->unsigned()->nullable();
+            $table->float('fiber')->unsigned()->nullable();
+            $table->float('salt_eqv')->unsigned()->nullable();
+            $table->timestamps();
         });
     }
 

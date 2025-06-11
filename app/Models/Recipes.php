@@ -6,6 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Recipes extends Model
 {
+    protected $fillable = [
+        'title',
+        'content',
+        'img',
+        'time',
+        'amount',
+        'category_id',
+    ];
     //
     public function category()
     {
@@ -14,12 +22,12 @@ class Recipes extends Model
 
     public function recipeIngredients()
     {
-        return $this->hasMany(RecipeIngredient::class);
+        return $this->hasMany(RecipeIngredients::class);
     }
 
     public function recipeSteps()
     {
-        return $this->hasMany(RecipeStep::class);
+        return $this->hasMany(RecipeSteps::class);
     }
 
     public function RecipeNutritionFact()

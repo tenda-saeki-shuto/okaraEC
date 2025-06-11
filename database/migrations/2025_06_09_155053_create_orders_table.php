@@ -20,7 +20,7 @@ return new class extends Migration
             $table->dateTime('dateTime');
             $table->string('status',20);
             $table->boolean('is_regular')->default(false);
-            $table->string('paymant',10);
+            $table->string('payment',10);
             $table->string('postal_code',7);
             $table->string('prefecture',10);
             $table->string('address',30);

@@ -6,10 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Quizzes extends Model
 {
-    public function QuizStatus()
-    {
-        return $this->belongsTo(QuizStatus::class);
-    }
+    protected $fillable = [
+        'title',
+        'content',
+        'img',
+        'start',
+        'end',
+    ];
+
+    // public function QuizStatus()
+    // {
+    //     return $this->hasMany(QuizStatus::class);
+    // }
 
     public function QuizSelections()
     {

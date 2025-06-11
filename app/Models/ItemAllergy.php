@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class ItemAllergy extends Model
 {
+    protected $fillable = [
+        'item_id',
+        'allergy_id',
+    ];
     //商品とのリレーション
     public function items()
     {

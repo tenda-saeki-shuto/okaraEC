@@ -14,12 +14,13 @@ return new class extends Migration
         Schema::create('recipes', function (Blueprint $table) {
             $table->id();
             $table->string('title',30);
-            $table->string('contet',300);
+            $table->string('content',300);
             $table->string('img');
             $table->string('time',20);
             $table->string('amount',20);
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('categories');
+            $table->timestamps();
         });
     }
 

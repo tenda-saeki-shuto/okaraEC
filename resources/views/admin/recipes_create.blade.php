@@ -40,8 +40,8 @@
         
             var tr_form = '' +
             '<tr>' +
-              '<td><input type="text" name="text_1[]"></td>' +
-              '<td><input type="text" name="text_2[]"></td>' +
+              '<td><input type="text" name="material[]"></td>' +
+              '<td><input type="text" name="quantity[]"></td>' +
             '</tr>';
           
             $(tr_form).appendTo($('table > tbody'));
@@ -75,8 +75,14 @@
   <body>
     <div class="max-w-7xl max-auto px-6">
       <h1>レシピ登録</h1>
-        <form method="post" action="#">
-            @csrf 
+      
+    @if (session('message'))
+        <div class="text-red-600 font-bold">
+            {{ session('message') }}
+        </div>
+    @endif
+        <form method="post" action="{{ route('recipe.store') }}">
+            @csrf
             <div class = "w-full flex flex-col">
                 <br>
                 <!-- レシピ名 -->
@@ -100,6 +106,7 @@
                 <!-- 説明 -->
                 <lavel>説明：</lavel><br>
                 <input type = "textarea" name = "content" class = "w-auto py-2 border border-gray-300 rounded-md" id = "content"><br><br>
+
                
                 <!-- かかる時間 -->
                 <lavel>かかる時間：</lavel><br>
@@ -108,6 +115,10 @@
                 <!-- 量 -->
                 <lavel>量：</lavel><br>
                 <input type = "text" name = "amount" class = "w-auto py-2 border border-gray-300 rounded-md" id = "amount"><br><br>
+               
+                <!-- kategori -->
+                <lavel>カテゴリ：</lavel><br>
+                <input type = "text" name = "category_id" class = "w-auto py-2 border border-gray-300 rounded-md" id = "amount"><br><br>
                
                 <!-- 材料テーブル -->
                 <lavel>材料：</lavel><br>
