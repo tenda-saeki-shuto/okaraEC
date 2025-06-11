@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,6 +23,7 @@ Route::middleware('auth')->group(function () {
 //     return view('admin.quiz_create');
 // })->name('quiz.create');
 
+// カード情報入力
 Route::get('enter_card_info', function(){
     return view('enter_card_info');
 })->name('enter_card_info');
@@ -40,11 +42,13 @@ Route::get('confirm_payment', function(){
 })->name('confirm_payment');
 
 // 決済情報入力画面を表示するためのルート
-Route::get('insert_payment_info', function(){
-    return view('payment_info');
-});
+Route::get('insert_payment_info', [PaymentController::class, 'index'])->name('insert_payment');
 
+// 決済情報入力から確認画面へ遷移するボタンが押された際のルート
+Route::post('payment_confirm', [PaymentController::class, 'confirm'])->name('payment_confirm');
 
+// 決済情報入力で変更ボタンが押された際のルート
+Route::post('/change_address/{id}', [PaymentController::class, 'update']);
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin.php';

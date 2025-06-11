@@ -74,25 +74,25 @@
             item_count.forEach((itemElement)=>{ 
                 const $item = $(itemElement);
                 $item.on('change', function() {
-                        const changedItem = this; 
-                        const id = changedItem.id;  //カートID
-                        const count = changedItem.value;  //変更後の数量
-                        $.ajax({
-                            headers: {
-                            // POSTのときはトークンの記述がないと"419 (unknown status)"になるので注意
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            },
-                            type:'POST',
-                            // ルーティングで設定したURL
-                            url:'/change_cart_count/' + id + '/' + count, 
-                            // dataType: 'json',
-                        }).done(function (results){
-                            // 成功したときのコールバック
-                            console.log('OK');
-                        }).fail(function(jqXHR, textStatus, errorThrown){
-                            // 失敗したときのコールバック
-                            console.log('fail');
-                        });
+                    const changedItem = this; 
+                    const id = changedItem.id;  //カートID
+                    const count = changedItem.value;  //変更後の数量
+                    $.ajax({
+                        headers: {
+                        // POSTのときはトークンの記述がないと"419 (unknown status)"になるので注意
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        type:'POST',
+                        // ルーティングで設定したURL
+                        url:'/change_cart_count/' + id + '/' + count, 
+                        // dataType: 'json',
+                    }).done(function (results){
+                        // 成功したときのコールバック
+                        console.log('OK');
+                    }).fail(function(jqXHR, textStatus, errorThrown){
+                        // 失敗したときのコールバック
+                        console.log('fail');
+                    });
                 });
             });
         });
