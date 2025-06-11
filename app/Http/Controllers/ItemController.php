@@ -9,6 +9,8 @@ use App\Models\Category;
 use App\Models\ItemNutritionFact;
 use App\Models\ItemAllergy;
 use App\Models\ItemPicture;
+use App\Models\UserLike;
+use Illuminate\Support\Facades\Auth;
 
 
 class ItemController extends Controller
@@ -21,13 +23,60 @@ class ItemController extends Controller
 
 
 
+    // 商品一覧表示
+    public function user_index()
+    {
+        $user = Auth::user();
+        $items = Item::all();
+
+        $item_list = $items->map(function ($item) use ($user) {
+            $item->is_favorite = $user ? $item->likedByUsers()->where('user_id', $user->id)->exists() : false;
+            return $item;
+        });
+
+        $category = Category::all();
+
+        return view('user.items', compact('item_list', 'category'));
+    }
+
+
     public function index()
     { // 商品名、種類名、最終更新日、在庫
         $item_list = Item::orderBy("id","desc")->paginate(10);
         return view('admin.item_index', compact('item_list'));
     }
 
-    // 商品詳細表示
+    // 商品一覧のフィルター
+
+    public function filter(Request $request)
+    {
+        $user = Auth::user();
+
+        $items = Item::query();
+
+        if ($request->filled('category')) {
+            $items->where('category_id', $request->category);
+        }
+
+        $items = $items->get();
+
+        // 各商品に is_favorited を追加
+        $items->map(function ($item) use ($user) {
+            $item->is_favorited = $user
+                ? UserLike::where('user_id', $user->id)->where('item_id', $item->id)->exists()
+                : false;
+            return $item;
+        });
+
+        return response()->json([
+            'items' => $items->values()
+        ]);
+    }
+
+
+
+
+
     public function show($id)
     {
         $item = Item::with([
@@ -37,22 +86,17 @@ class ItemController extends Controller
             'nutritionFacts'
         ])->findOrFail($id);
 
+        $user = Auth::user();
+
+        // お気に入り状態を追加
+        $item->is_favorited = false;
+        if (Auth::check()) {
+            $item->is_favorited = UserLike::where('user_id', $user->id)->where('item_id', $item->id)->exists();
+        }
+
         return view('user.item_detail', compact('item'));
     }
 
-    // 商品一覧のフィルター
-    public function filter(Request $request)
-    {
-        $items = Item::all();
-
-        if ($request->filled('category')) {
-            $items = $items->where('category_id', $request->category);
-        }
-
-        return response()->json([
-            'items' => $items->values()
-        ]);
-    }
 
 
 

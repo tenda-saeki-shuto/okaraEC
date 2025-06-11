@@ -4,6 +4,7 @@
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\UserLikeController;
 use Illuminate\Support\Facades\Route;
 
 //初期で表示されている画面
@@ -39,7 +40,7 @@ Route::get('/admin/user/{user}/edit', [ProfileController::class, 'edit'])->name(
 
 //商品一覧表示
 // 商品一覧
-Route::get('/items', [ItemController::class, 'index'])->name('items');
+Route::get('/items', [ItemController::class, 'user_index'])->name('items');
 // 商品一覧のフィルター
 Route::get('/items/filter', [ItemController::class, 'filter'])->name('items.filter');
 
@@ -69,6 +70,13 @@ Route::post('/change_cart_count/{id}/{count}', [CartController::class, 'update']
 Route::get('confirm_payment', function () {
     return 'Hello';
 })->name('confirm_payment');
+
+// お気に入りのトグル
+Route::post('/favorite/toggle', [UserLikeController::class, 'toggle'])->middleware('auth');
+
+
+
+
 
 
 require __DIR__ . '/auth.php';

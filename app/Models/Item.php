@@ -34,6 +34,14 @@ class Item extends Model
     {
         return $this->hasOne(ItemNutritionFact::class);
     }
+
+
+    public function likedByUsers()
+    {
+        return $this->belongsToMany(User::class, 'user_likes', 'item_id', 'user_id');
+    }
+
+
     //ユーザー・注文関連とのリレーション
     // public function userLikes()
     // {

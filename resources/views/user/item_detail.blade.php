@@ -4,8 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>商品詳細</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <style>
+        .favorite-btn i {
+            font-size: 24px;
+            transition: color 0.3s ease;
+        }
+        .text-danger {
+            color: red;
+        }
+        .text-secondary {
+            color: gray;
+        }
+    </style>
+
+    <title>商品詳細</title>
+
 </head>
 <body>
     <header>
@@ -17,6 +35,9 @@
             <h2 class="text-2xl font-semibold mb-2">
                 {{$item->name}}
             </h2>
+            <button class="favorite-btn" data-item-id="{{$item->id}}">
+                <i class="fa fa-heart {{ $item->is_favorited ? 'text-danger' : 'text-secondary' }}"></i>
+            </button>
             <p class="text-gray-700 mb-4">
                 {{$item->content}}
             </p>
@@ -81,4 +102,38 @@
         </div>
     </div>
 </body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<script>
+    //お気に入り処理
+    $(document).on('click', '.favorite-btn', function (e) {
+    e.preventDefault();
+    const button = $(this);
+    const itemId = button.data('item-id');
+    const icon = button.find('i');
+
+    $.ajax({
+        url: '/favorite/toggle',
+        type: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        contentType: 'application/json',
+        data: JSON.stringify({ item_id: itemId }),
+        success: function (response) {
+            if (response.liked) {
+                icon.removeClass('text-secondary').addClass('text-danger');
+            } else {
+                icon.removeClass('text-danger').addClass('text-secondary');
+            }
+        },
+        //エラー処理、ログインしていなかったらログイン画面にリダイレクト
+        error: function () {
+            window.location.href = '/login?redirect=' + encodeURIComponent(window.location.pathname);
+
+        }
+    });
+    });
+</script>
 </html>
