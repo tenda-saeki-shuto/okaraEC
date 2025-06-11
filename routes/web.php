@@ -26,8 +26,10 @@ Route::get('enter_card_info', function(){
     return view('enter_card_info');
 })->name('enter_card_info');
 
+// カート画面を表示するためのルート
 Route::get('cart', [CartController::class, 'index'])->name('cart');
 
+// カート画面で削除が押された際のルート
 Route::post('cart_item_delete/{id}', [CartController::class, 'delete'])->name('cart_item_delete');
 
 // カートのajax
@@ -36,6 +38,12 @@ Route::post('/change_cart_count/{id}/{count}', [CartController::class, 'update']
 Route::get('confirm_payment', function(){
     return 'Hello';
 })->name('confirm_payment');
+
+// 決済情報入力画面を表示するためのルート
+Route::get('insert_payment_info', function(){
+    return view('payment_info');
+});
+
 
 
 require __DIR__ . '/auth.php';
