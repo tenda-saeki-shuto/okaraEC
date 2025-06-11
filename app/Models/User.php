@@ -20,6 +20,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'tel',
         'password',
     ];
 
@@ -47,6 +48,11 @@ class User extends Authenticatable
     }
 
     //とのリレーション
+    //アドレス（住所）
+    public function address()
+    {
+        return $this->hasOne(Address::class);
+    }
     public function userLikes()
     {
         return $this->hasMany(UserLike::class, 'user_id');

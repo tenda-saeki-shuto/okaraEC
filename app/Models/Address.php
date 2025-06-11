@@ -24,4 +24,17 @@ class Address extends Model
         'prefecture_id',
         'address',
     ];
+
+    //userとのリレーション
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    //orefectureとのリレーション
+    public function prefecture()
+    {
+        return $this->belongsTo(Prefecture::class);
+    }
+
 }

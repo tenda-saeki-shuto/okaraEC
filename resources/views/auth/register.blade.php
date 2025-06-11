@@ -24,7 +24,7 @@
         <label for="prefecture_id">prefecture</label><br>
         <select name="prefecture_id" id="prefecture_id" required>
             <option value="">選択してください</option>
-            @foreach($prefectures as $pref)
+            @foreach($prefecture as $pref)
             <option value="{{ $pref->id }}"
                 {{ old('prefecture_id') == $pref->id ? 'selected' : '' }}>
                 {{ $pref->name }}
