@@ -31,21 +31,24 @@ Route::get('/admin/item', [ItemController::class, 'create'])->name('admin.item.c
 Route::post('/admin/item', [ItemController::class, 'store'])->name('admin.item.store'); // 保存処理
 
 //商品一覧表示
-Route::get('/items', function () {
-    return view('user.items');
-});
-// 商品詳細表示下
-Route::get('/item_detail', function () {
-    return view('user.item_detail');
-})->name('item_detail');
-// Route::get('/item/{id}', [ItemController::class, 'show'])->name('item_detail');
+// 商品一覧
+Route::get('/items', [ItemController::class, 'index'])->name('items');
+// 商品一覧のフィルター
+Route::get('/items/filter', [ItemController::class, 'filter'])->name('items.filter');
+
+
+
+// 商品詳細
+Route::get('/item/{id}', [ItemController::class, 'show'])->name('item_detail');
+
+
 
 
 Route::get('enter_card_info', function () {
     return view('enter_card_info');
 })->name('enter_card_info');
 
-Route::get('enter_card_info', function(){
+Route::get('enter_card_info', function () {
     return view('enter_card_info');
 })->name('enter_card_info');
 
@@ -56,7 +59,7 @@ Route::post('cart_item_delete/{id}', [CartController::class, 'delete'])->name('c
 // カートのajax
 Route::post('/change_cart_count/{id}/{count}', [CartController::class, 'update']);
 
-Route::get('confirm_payment', function(){
+Route::get('confirm_payment', function () {
     return 'Hello';
 })->name('confirm_payment');
 
