@@ -11,7 +11,6 @@ use App\Models\ItemAllergy;
 use App\Models\ItemPicture;
 
 
-
 class ItemController extends Controller
 {
     public function create()
@@ -21,13 +20,11 @@ class ItemController extends Controller
     }
 
 
-    // 商品一覧表示
+
     public function index()
-    {
-        $item_list = Item::all();
-        $category = Category::all();
-        // dd($item_list);
-        return view('user.items', compact('item_list', 'category'));
+    { // 商品名、種類名、最終更新日、在庫
+        $item_list = Item::orderBy("id","desc")->paginate(10);
+        return view('admin.item_index', compact('item_list'));
     }
 
     // 商品詳細表示
@@ -122,5 +119,11 @@ class ItemController extends Controller
 
         // return redirect()->route('item.index')->with('message', '商品を登録しました');
         return;
+    }
+
+ 
+    public function edit(Item $item)
+    {
+        return view('admin.item_edit', compact('item'));
     }
 }
