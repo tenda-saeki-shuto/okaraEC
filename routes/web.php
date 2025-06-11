@@ -6,30 +6,16 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 
-
-//レシピ登録画面に遷移する
-Route::get('/admin/recipes_create', function () {
-    return view('admin.recipes_create');
-});
-
-//ヘッダー画面のみ表示
-Route::get('/user/user_header', function () {
-    return view('user.user_header');
-});
-
-//マイページ画面の表示
-Route::get('/user/mypage', function () {
-    return view('user.mypage');
-});
-
-//管理者側テストヘッダー
-Route::get('/admin/test', function () {
-    return view('admin.test');
-});
-
+//初期で表示されている画面
 Route::get('/', function () {
     return view('dashboard');
 });
+
+//ヘッダーからマイページに画面遷移←ログインしていない場合はログイン画面にリダイレクト
+Route::middleware(['auth'])->group(function () {
+    Route::get('/user', [ProfileController::class, 'show'])->name('view.mypage');
+});
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -80,3 +66,22 @@ Route::get('confirm_payment', function () {
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin.php';
+
+
+
+// //レシピ登録画面に遷移する
+// Route::get('/admin/recipes_create', function(){
+//     return view('admin.recipes_create');
+// });
+
+
+
+// //マイページ画面の表示
+// Route::get('/user/mypage', function(){
+//     return view('user.mypage');
+// });
+
+// //管理者側テストヘッダー
+// Route::get('/admin/test', function(){
+//     return view('admin.test');
+// });
