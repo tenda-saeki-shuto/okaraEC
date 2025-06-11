@@ -6,6 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Quizzes extends Model
 {
+    protected $fillable = [
+        'title',
+        'content',
+        'img',
+        'start',
+        'end',
+    ];
+
     // public function QuizStatus()
     // {
     //     return $this->hasMany(QuizStatus::class);

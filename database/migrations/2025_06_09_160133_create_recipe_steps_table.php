@@ -16,8 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('recipe_id');
             $table->foreign('recipe_id')->references('id')->on('recipes');
             $table->string('content', 300);            
-            $table->string('img');
-
+            $table->string('img')->nullable();
+            $table->timestamps();
         });
     }
 
