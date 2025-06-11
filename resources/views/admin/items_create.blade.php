@@ -79,6 +79,11 @@
                 <label for="price">価格：</label><br>
                 <input type="text" class="price" name="price">円
             </div>
+            <!-- 在庫数 -->
+            <div class="section">
+                <label for="stock">在庫数：</label><br>
+                <input type="text" class="stock" name="stock">個
+            </div>
         
             
             <!-- 栄養情報 -->

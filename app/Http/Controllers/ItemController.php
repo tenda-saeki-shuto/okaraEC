@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Item;
 use Illuminate\Http\Request;
+use App\Models\Item;
 use App\Models\Allergy;
 use App\Models\ItemNutritionFact;
 use App\Models\ItemAllergy;
@@ -18,6 +18,13 @@ class ItemController extends Controller
         return view('admin.items_create', compact('allergy_list'));
     }
 
+    // 
+    public function show()
+    { // 商品名、種類名、最終更新日、在庫
+        $item_list = Item::all();
+        return view('', compact('item_list'));
+    }
+
     public function store(Request $request)
     {
         //table: item, item_nutrition_facts(栄養), item_picture(サブ写真), item_allergies,
@@ -27,7 +34,8 @@ class ItemController extends Controller
             'price' => 'required|integer',
             'content' => 'nullable|string|max:255',
             //'img' => 'required|string',
-            'category_id' => 'required|integer',                      
+            'category_id' => 'required|integer',      
+            'stock' => 'required|integer',                
         ]);
         // ここは変更
         $itemData['img']= 'sample.png';
