@@ -12,9 +12,8 @@ class QuizController extends Controller
     //
     public function index()
     {
-        // var_dump('aaa');
-        // return route("quiz.index");
-        return view("admin.quiz_create");
+        
+        return view("admin.quiz_create"); // あとで変える
     }
     public function create()
     {
