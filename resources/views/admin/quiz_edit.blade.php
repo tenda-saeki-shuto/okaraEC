@@ -52,9 +52,10 @@
             {{ session('message') }}
         </div>
     @endif
-    <form action="{{ route('quiz.store') }}" method="POST">
+    <form action="{{ route('quiz.update', $quiz) }}" method="POST">
+        @method('PATCH')
         @csrf
-        @include('admin.quiz_form');
+        @include('admin.quiz_form')
         <br><br>
         <button type="submit">登録</button>
     </form>

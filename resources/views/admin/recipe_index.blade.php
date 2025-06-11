@@ -58,6 +58,8 @@
             {{ session('message') }}
         </div>
     @endif
+    <a href="{{ route('recipe.create') }}">+新規追加</a>
+
     <div class="max-w-7xl mx-auto px-6">
         <table>
             <thead>

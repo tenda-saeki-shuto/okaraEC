@@ -69,11 +69,6 @@ class QuizSeeder extends Seeder
             ],
             [
                 'quiz_id' => 1,
-                'content' => '約2倍',
-                'is_answer' => true,
-            ],
-            [
-                'quiz_id' => 1,
                 'content' => '約3倍',
                 'is_answer' => false,
             ],
@@ -83,14 +78,14 @@ class QuizSeeder extends Seeder
                 'is_answer' => false,
             ],
             [
-                'quiz_id' => 2,
-                'content' => '3g',
-                'is_answer' => false,
+                'quiz_id' => 1,
+                'content' => '約2倍',
+                'is_answer' => true,
             ],
             [
                 'quiz_id' => 2,
-                'content' => '6g',
-                'is_answer' => true,
+                'content' => '3g',
+                'is_answer' => false,
             ],
             [
                 'quiz_id' => 2,
@@ -101,6 +96,11 @@ class QuizSeeder extends Seeder
                 'quiz_id' => 2,
                 'content' => '12g',
                 'is_answer' => false,
+            ],
+            [
+                'quiz_id' => 2,
+                'content' => '6g',
+                'is_answer' => true,
             ],
             [
                 'quiz_id' => 3,
@@ -114,13 +114,13 @@ class QuizSeeder extends Seeder
             ],
             [
                 'quiz_id' => 3,
-                'content' => '35~40%',
-                'is_answer' => true,
+                'content' => '50~60%',
+                'is_answer' => false,
             ],
             [
                 'quiz_id' => 3,
-                'content' => '50~60%',
-                'is_answer' => false,
+                'content' => '35~40%',
+                'is_answer' => true,
             ],
             [
                 'quiz_id' => 4,
@@ -144,11 +144,6 @@ class QuizSeeder extends Seeder
             ],
             [
                 'quiz_id' => 5,
-                'content' => '手抜き工事をする',
-                'is_answer' => true,
-            ],
-            [
-                'quiz_id' => 5,
                 'content' => 'おから作りのように大変である',
                 'is_answer' => false,
             ],
@@ -163,6 +158,11 @@ class QuizSeeder extends Seeder
                 'is_answer' => false,
             ],
             [
+                'quiz_id' => 5,
+                'content' => '手抜き工事をする',
+                'is_answer' => true,
+            ],
+            [
                 'quiz_id' => 6,
                 'content' => '食品',
                 'is_answer' => false,
@@ -174,13 +174,13 @@ class QuizSeeder extends Seeder
             ],
             [
                 'quiz_id' => 6,
-                'content' => 'ゴミ',
-                'is_answer' => true,
+                'content' => '燃料',
+                'is_answer' => false,
             ],
             [
                 'quiz_id' => 6,
-                'content' => '燃料',
-                'is_answer' => false,
+                'content' => 'ゴミ',
+                'is_answer' => true,
             ],
         ]);
     }
