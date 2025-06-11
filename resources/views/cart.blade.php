@@ -1,16 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="{{ asset('/css/cart.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <title>カートの中身</title>
 </head>
 <body>
     <!-- ヘッダー入れる -->
+    @include('user.user_header')
 
     <div class="flex flex-col items-center mt-20 w-full">
+        
+        
         <h1 class="text-3xl font-bold mb-5">現在のカートの中</h1>
         <table>
             <thead>
@@ -22,60 +27,81 @@
                 </tr>
             </thead>
             <tbody>
+                <!-- 合計金額の初期値を設定 -->
+                <?php $total=0; ?>
+                @foreach($carts as $cart)
                 <tr>
-                    <th>おからパウダー</th>
-                    <td class="text-center">1000円</td>
+                    <th>{{ $cart->items->name }}</th>
+                    <td class="text-center">{{ $cart->items->price }}円</td>
                     <td class="p-1">
                         <div class="flex">
-                            <select name="item_amount" class="flex-1 m-1">
+                            <select class="item_count flex-1 m-1" id="{{ $cart->id }}">
                                 @for($i=1; $i<=10; $i++)
-                                    <option value="{{ $i }}">{{ $i }}</option>
+                                    @if($cart->count === $i)
+                                        <option value="{{ $cart->count }}" selected="selected">{{ $cart->count }}</option>
+                                    @else
+                                        <option value="{{ $i }}">{{ $i }}</option>
+                                    @endif
                                 @endfor
                             </select>
-                            <button class="px-5 bg-sky-500 rounded-2xl text-white font-black flex-1 delete-btn">削除</button>
+                            <form action="{{ route('cart_item_delete', ['id'=>$cart->id]) }}" method="post">
+                                @csrf
+                                <button class="px-4 bg-sky-500 rounded-xl text-white font-black flex-1 delete-btn">削除</button>
+                            </form>
                         </div>
                     </td>
-                    <td class="text-center">1000円</td>
+                    <td class="text-center">{{ $cart->items->price * $cart->count }}円</td>
                 </tr>
-                <tr>
-                    <th>おからパウダー</th>
-                    <td class="text-center">1000円</td>
-                    <td class="p-1">
-                        <div class="flex">
-                            <select name="item_amount" class="flex-1 m-1">
-                                @for($i=1; $i<=10; $i++)
-                                    <option value="{{ $i }}">{{ $i }}</option>
-                                @endfor
-                            </select>
-                            <button class="px-5 bg-sky-500 rounded-2xl text-white font-black text-xl flex-1 delete-btn">削除</button>
-                        </div>
-                    </td>
-                    <td class="text-center">1000円</td>
-                </tr>
+
+                <!-- 合計金額の更新 -->
+                <?php $total+= $cart->items->price * $cart->count; ?>
+                @endforeach
             </tbody>
             <tfoot class="font-bold">
                 <tr>
                     <th scope="row" colspan="3" class="text-right">合計金額（税込）</th>
-                    <td class="text-center">3000円</td>
+                    <td class="text-center">{{ $total }}円</td>
                 </tr>
             </tfoot>
         </table>
-        <form action="">
-            <button class="py-3 px-8 bg-sky-500 rounded-2xl text-white font-black text-xl mt-5">購入手続きへ</button>
-        </form>
+        <button class="py-3 px-8 bg-sky-500 rounded-2xl text-white font-black text-xl mt-5"><a href="{{ route('confirm_payment') }}">購入手続きへ</a></button>
     </div>
 
     <script>
-        // 削除ボタンを押した際の処理
-        let delete_buttons = document.querySelectorAll(".delete-btn");
-        console.log(delete_buttons);
-        delete_buttons.forEach((delete_button) => {
-            delete_button.addEventListener('click', function(){
-                // カートの表からレコードごと消す(直近のtr要素を丸ごと消す)
-                let tr = delete_button.closest("tr");
-                tr.remove();
+        //要素の取得
+       const item_count = document.querySelectorAll('.item_count');
+        $(function(){
+            item_count.forEach((itemElement)=>{ 
+                const $item = $(itemElement);
+                $item.on('change', function() {
+                        const changedItem = this; 
+                        const id = changedItem.id;  //カートID
+                        const count = changedItem.value;  //変更後の数量
+                        $.ajax({
+                            headers: {
+                            // POSTのときはトークンの記述がないと"419 (unknown status)"になるので注意
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            type:'POST',
+                            // ルーティングで設定したURL
+                            url:'/change_cart_count/' + id + '/' + count, 
+                            // dataType: 'json',
+                        }).done(function (results){
+                            // 成功したときのコールバック
+                            console.log('OK');
+                        }).fail(function(jqXHR, textStatus, errorThrown){
+                            // 失敗したときのコールバック
+                            console.log('fail');
+                        });
+                });
             });
         });
+
+
+
+
+
+
     </script>
 </body>
 </html>
