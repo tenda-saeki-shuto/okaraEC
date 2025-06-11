@@ -12,9 +12,10 @@ class QuizController extends Controller
     //
     public function index()
     {
-        
-        return view("admin.quiz_create"); // あとで変える
+        $quizzes = Quizzes::orderBy("end","desc")->paginate(10);
+        return view("admin.quiz_index", compact('quizzes'));
     }
+
     public function create()
     {
         return view('admin.quiz_create');
@@ -54,8 +55,9 @@ class QuizController extends Controller
     public function show($id)
     {
     }
-    public function edit($id)
+    public function edit($quiz)
     {
+        
     }
     public function update(Request $request, $id)
     {
