@@ -22,12 +22,12 @@ class Recipes extends Model
 
     public function recipeIngredients()
     {
-        return $this->hasMany(RecipeIngredient::class);
+        return $this->hasMany(RecipeIngredients::class);
     }
 
     public function recipeSteps()
     {
-        return $this->hasMany(RecipeStep::class);
+        return $this->hasMany(RecipeSteps::class);
     }
 
     public function RecipeNutritionFact()
