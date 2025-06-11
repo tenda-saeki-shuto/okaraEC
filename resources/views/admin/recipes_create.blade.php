@@ -87,15 +87,26 @@
                 <br>
                 <!-- レシピ名 -->
                 <lavel>レシピ名：</lavel><br>
-                <input type = "text" name = "title" class = "w-auto py-2 border border-gray-300 rounded-md" id = "recipe_name"><br><br>
+                <input type = "text" name = "title" class = "w-auto py-2 border border-gray-300 rounded-md" id = "title"><br><br>
+
+                <!-- カテゴリ -->
+                <div class="section">
+                    <label for="category">カテゴリ：</label><br>
+                    <select name="category_id" id="category_id">
+                        <option value="cookie">おやつ</option>
+                        <option value="donuts">お惣菜</option>
+                    </select>
+                </div>
+                <br>
+               
+                <!-- メイン画像 -->
+                <lavel>メイン画像：</lavel><br>
+                <input type = "file" name = "img" class = "w-auto py-2 border border-gray-300 rounded-md" id = "img"><br><br>
                
                 <!-- 説明 -->
                 <lavel>説明：</lavel><br>
-                <input type = "textarea" name = "content" class = "w-auto py-2 border border-gray-300 rounded-md" id = "explanation"><br><br>
-                
-                <!-- メイン画像 -->
-                <lavel>メイン画像：</lavel><br>
-                <input type = "file" name = "img" class = "w-auto py-2 border border-gray-300 rounded-md" id = "main_img"><br><br>
+                <input type = "textarea" name = "content" class = "w-auto py-2 border border-gray-300 rounded-md" id = "content"><br><br>
+
                
                 <!-- かかる時間 -->
                 <lavel>かかる時間：</lavel><br>
@@ -121,9 +132,9 @@
                   <tbody>
                     <tr>
                       <!-- 材料を格納 -->
-                      <td><input type="text" name="material[]"></td>
+                      <td><input type="text" name="name[]"></td>
                       <!-- 数量を格納 -->
-                      <td><input type="text" name="quantity[]"></td>
+                      <td><input type="text" name="amount[]"></td>
                     </tr>
                   </tbody>
                   <tfoot>
@@ -138,10 +149,10 @@
                     <label for="procedure-1">手順1：</label><br>
 
                     <!-- 手順の説明の格納 -->
-                    <input type="text" name="procedure[]" id="procedure-1"><br><br>
+                    <input type="text" name="content[]" id="content[]"><br><br>
                     
                     <!-- 画像の格納 -->
-                    <input type="file" name="sub_img[]"><br><br>
+                    <input type="file" name="img[]" id="img[]"><br><br>
                   </div>
                 </div><br>
                 <button id="add-procedure" type="button" class="link-button">+手順を追加</button>

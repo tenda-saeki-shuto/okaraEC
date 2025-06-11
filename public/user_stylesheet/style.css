@@ -1,10 +1,40 @@
+
 /* ヘッダー */
 .header {
-  border-bottom: 2px dashed #ccc; /*下線を追加*/
-  text-decoration-line: none;
+    background-color: 	#f9ce9dfb; 
+    width: 100%;
+}
+
+.header-inner {
+    padding: 30px;
+    /* max-width: 1200px; */
+    margin: 0 auto;
 }
 
 /* ナビゲーションの設定 */
+body{
+    margin: 0;
+    padding: 0;
+    background-color: rgb(255, 255, 255);
+    font-family: "M PLUS 1p", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    width: 100%;
+    height: 100vh;
+    font-size: 20px;
+}
+
+button{
+    width: 100px;
+    height: 2rem;
+    background-color: #dd803dce;
+    border-radius: 10px;
+    font-size: 20px;
+}
+
+input{
+    height: 1.5rem;
+}
 .header-nav {
   display: flex;
   align-items: center;
@@ -38,10 +68,6 @@
   font: inherit;
 }
 
-/* ボタンのホバー時 */
-.btn-link:hover {
-  color: #004999;
-}
 
 /* 右コンテンツのアニメーション */
 a {
@@ -57,7 +83,7 @@ a::after {
   content: '';
   width: 100%;
   height: 2px;
-  background: black;
+  background: rgb(225, 163, 121);
   opacity: 0;
   visibility: hidden;
   transition: .3s;
@@ -73,7 +99,7 @@ a:hover::after {
   position: relative;
   display: inline-block;
   text-decoration: none;
-  color:#111;
+  color:#e3bb88;
 }
 
 .hover-underline::after {
@@ -83,7 +109,7 @@ a:hover::after {
   content: '';
   width: 100%;
   height: 2px;
-  background: black;
+  background: rgb(225, 163, 121);
   opacity: 0;
   visibility: hidden;
   transition: .3s;
