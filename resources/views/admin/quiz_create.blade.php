@@ -44,7 +44,7 @@
 </head>
 <body>
     <header>
-        {{-- ヘッダー入れてください --}}
+        {{ view('admin.admin_header') }}
     </header>
     <h1>クイズ作成画面</h1>
     @if (session('message'))
@@ -52,7 +52,6 @@
             {{ session('message') }}
         </div>
     @endif
-    {{-- 飛ぶ先入れてください --}}
     <form action="{{ route('quiz.store') }}" method="POST">
         @csrf
         <label for="title">クイズタイトル:</label>
