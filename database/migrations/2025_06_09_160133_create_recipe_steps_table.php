@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign('recipe_id')->references('id')->on('recipes');
             $table->string('content', 300);            
             $table->string('img');
-
+            $table->timestamps();
         });
     }
 

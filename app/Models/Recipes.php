@@ -6,6 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Recipes extends Model
 {
+    protected $fillable = [
+        'title',
+        'content',
+        'img',
+        'time',
+        'amount',
+        'category_id',
+    ];
     //
     public function category()
     {

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreign('recipe_id')->references('id')->on('recipes');
             $table->string('name', 20);
             $table->string('amount', 20);
+            $table->timestamps();
         });
     }
     /**
