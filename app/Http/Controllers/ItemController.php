@@ -67,7 +67,7 @@ class ItemController extends Controller
 
 
 
-    // 商品詳細表示
+
     public function show($id)
     {
         $item = Item::with([
@@ -77,8 +77,17 @@ class ItemController extends Controller
             'nutritionFacts'
         ])->findOrFail($id);
 
+        $user = Auth::user();
+
+        // お気に入り状態を追加
+        $item->is_favorited = false;
+        if (Auth::check()) {
+            $item->is_favorited = UserLike::where('user_id', $user->id)->where('item_id', $item->id)->exists();
+        }
+
         return view('user.item_detail', compact('item'));
     }
+
 
 
 

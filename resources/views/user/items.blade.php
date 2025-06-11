@@ -124,7 +124,8 @@
         },
         //エラー処理、ログインしていなかったらログイン画面にリダイレクト
         error: function () {
-            window.location.href = '/login';
+            window.location.href = '/login?redirect=' + encodeURIComponent(window.location.pathname);
+
         }
     });
     });
