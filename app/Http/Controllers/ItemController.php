@@ -10,21 +10,20 @@ use App\Models\ItemAllergy;
 use App\Models\ItemPicture;
 
 
-
 class ItemController extends Controller
 {
     public function create()
     {
-        $allergy_list = Allergy::all(); 
+        $allergy_list = Allergy::all();
         return view('admin.items_create', compact('allergy_list'));
     }
 
-    // // 
-    // public function show()
-    // { // 商品名、種類名、最終更新日、在庫
-    //     $item_list = Item::all();
-    //     return view('', compact('item_list'));
-    // }
+
+    public function index()
+    { // 商品名、種類名、最終更新日、在庫
+        $item_list = Item::orderBy("id","desc")->paginate(10);
+        return view('admin.item_index', compact('item_list'));
+    }
 
     public function store(Request $request)
     {
@@ -90,4 +89,9 @@ class ItemController extends Controller
     return;
     }
 
+ 
+    public function edit(Item $item)
+    {
+        return view('admin.item_edit', compact('item'));
+    }
 }
