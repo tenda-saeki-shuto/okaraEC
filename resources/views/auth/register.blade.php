@@ -7,6 +7,38 @@
             <x-input-label for="name" :value="__('Name')" />
             <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
+        </div><br>
+
+        <!-- 郵便番号 -->
+        <div>
+            <x-input-label for="postal-code" :value="__('postal-code')" />
+            <x-text-input id="postal-code" class="block mt-1 w-full" type="text" name="postal-code" :value="old('postal-code')" required autofocus autocomplete="postal-code" />
+            <x-input-error :messages="$errors->get('postal-code')" class="mt-2" />
+        </div>
+
+        <br>
+
+        <!-- 都道府県 -->
+        <div>
+            <x-input-label for="prefecture_id" :value="__('prefecture_id')" />
+            <select type="text" class="form-control" name="prfecture_id">
+                @foreach(config('pref') as $key => $score)
+                    <option value="{{$score}}">{{$score}}</option>
+                @endforeach
+            </select>
+        </div><br>
+
+        <!-- 住所 -->
+        <div>
+            <x-input-label for="address" :value="__('address')" />
+            <x-text-input id="address" class="block mt-1 w-full" type="text" name="address" :value="old('address')" required autofocus autocomplete="address" />
+            <x-input-error :messages="$errors->get('address')" class="mt-2" />
+        </div>
+
+        <div>
+            <x-input-label for="tel" :value="__('tel')" />
+            <x-text-input id="tel" class="block mt-1 w-full" type="text" name="tel" :value="old('tel')" required autofocus autocomplete="tel" />
+            <x-input-error :messages="$errors->get('tel')" class="mt-2" />
         </div>
 
         <!-- Email Address -->
