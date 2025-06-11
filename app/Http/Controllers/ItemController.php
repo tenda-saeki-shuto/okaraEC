@@ -43,6 +43,22 @@ class ItemController extends Controller
         return view('user.item_detail', compact('item'));
     }
 
+    // 商品一覧のフィルター
+    public function filter(Request $request)
+    {
+        $items = Item::all();
+
+        if ($request->filled('category')) {
+            $items = $items->where('category_id', $request->category);
+        }
+
+        return response()->json([
+            'items' => $items->values()
+        ]);
+    }
+
+
+
 
     public function store(Request $request)
     {

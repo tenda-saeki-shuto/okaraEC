@@ -8,22 +8,22 @@ use Illuminate\Support\Facades\Route;
 
 
 //レシピ登録画面に遷移する
-Route::get('/admin/recipes_create', function(){
+Route::get('/admin/recipes_create', function () {
     return view('admin.recipes_create');
 });
 
 //ヘッダー画面のみ表示
-Route::get('/user/user_header', function(){
+Route::get('/user/user_header', function () {
     return view('user.user_header');
 });
 
 //マイページ画面の表示
-Route::get('/user/mypage', function(){
+Route::get('/user/mypage', function () {
     return view('user.mypage');
 });
 
 //管理者側テストヘッダー
-Route::get('/admin/test', function(){
+Route::get('/admin/test', function () {
     return view('admin.test');
 });
 
@@ -47,9 +47,14 @@ Route::post('/admin/item', [ItemController::class, 'store'])->name('admin.item.s
 //商品一覧表示
 // 商品一覧
 Route::get('/items', [ItemController::class, 'index'])->name('items');
+// 商品一覧のフィルター
+Route::get('/items/filter', [ItemController::class, 'filter'])->name('items.filter');
+
+
 
 // 商品詳細
 Route::get('/item/{id}', [ItemController::class, 'show'])->name('item_detail');
+
 
 
 
@@ -57,7 +62,7 @@ Route::get('enter_card_info', function () {
     return view('enter_card_info');
 })->name('enter_card_info');
 
-Route::get('enter_card_info', function(){
+Route::get('enter_card_info', function () {
     return view('enter_card_info');
 })->name('enter_card_info');
 
@@ -68,7 +73,7 @@ Route::post('cart_item_delete/{id}', [CartController::class, 'delete'])->name('c
 // カートのajax
 Route::post('/change_cart_count/{id}/{count}', [CartController::class, 'update']);
 
-Route::get('confirm_payment', function(){
+Route::get('confirm_payment', function () {
     return 'Hello';
 })->name('confirm_payment');
 
