@@ -7,6 +7,7 @@ use App\Models\Item;
 use App\Models\Allergy;
 use App\Models\ItemNutritionFact;
 use App\Models\ItemAllergy;
+use App\Models\ItemPicture;
 
 
 
@@ -29,29 +30,27 @@ class ItemController extends Controller
     {
         //table: item, item_nutrition_facts(栄養), item_picture(サブ写真), item_allergies,
        
-        // dd($request->all());
+
         // 商品データ
+        // table: Items
         $itemData = $request->validate([
             'name' => 'required|max:30',
             'price' => 'required|integer',
             'content' => 'nullable|string|max:255',
-            //'img' => 'required|string',
+            'img' => 'required|string',
             'category_id' => 'required|integer',      
             'stock' => 'required|integer',       
         ]);
-        // dd($request['is_cold']);
+
         // 保存方法処理
         if($request['is_cold'] == 'refrigerated'){ // 冷蔵の時
             $itemData['is_cold'] = 1;
         } else { // 冷凍の時
             $itemData['is_frozen'] = 1;
         }
-        // ここは変更
-        $itemData['img']= 'sample.png';
-        // モデルに送信
         $item = Item::create($itemData);
 
-        // 商品の栄養
+        // table: item_nutrition_facts
         $nutritionData = $request->validate([
             'energy' => 'required|integer',
             'protein' => 'required|integer',
@@ -65,32 +64,30 @@ class ItemController extends Controller
         ItemNutritionFact::create($nutritionData); 
 
 
-        // 商品のアレルギー
-        // 複数個選択？
-        // バリデーションはいらない
-        $allergyIds = $request->input('allergies', []);
+        // アレルギー
+        // table: item_allergies
+        $allergyIds = [];  
         foreach ($allergyIds as $allergy_id) {
             ItemAllergy::create([
                 'item_id' => $item->id,
                 'allergy_id' => $allergy_id,
             ]);
         }
-        // itemAllergies::create($itemAllergiesData);
 
-    //     // サブ画像
-    //     $subImgs = $request->input('sub_imgs', []);
-    //     foreach ($subImgs as $img) {
-    //     ItemPicture::create([
-    //         'item_id' => $item->id,
-    //         'img' => $img,
-    //     ]);
-    // }
+        // サブ画像
+        $subImgs = $request->input('sub_imgs', []);
+        foreach ($subImgs as $img) {
+            $create = ItemPicture::create([
+                'item_id' => $item->id,
+                'img' => $img,
+            ]);
+        }
 
-        //var_dump($item->name);
 
 
 
     // return redirect()->route('item.index')->with('message', '商品を登録しました');
     return;
     }
+
 }
