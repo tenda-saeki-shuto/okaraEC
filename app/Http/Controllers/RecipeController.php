@@ -16,7 +16,7 @@ class RecipeController extends Controller
      */
     public function index()
     {
-        return view('admin.recipes_create');
+        return view('admin.recipes_create'); // あとで変える
     }
 
     /**
@@ -32,6 +32,8 @@ class RecipeController extends Controller
      */
     public function store(Request $request)
     {
+        //フォームの値をバリデーション
+        //レシピのメイン部分
         $recipe_main = $request->validate([
             'title' => 'required|max:30',
             'content' => 'required|max:300',
@@ -41,43 +43,35 @@ class RecipeController extends Controller
             'category_id' => 'required|integer|min:1',
         ]);
         $recipe_main['img'] = 'sample.png'; //あとで消す
-        $recipe = Recipes::create($recipe_main);
-
-
+        //レシピの材料部分
         $materials = $request->validate([
             'material.*' => 'required|max:20',
             'quantity.*' => 'required|max:20',
         ]);
+        //レシピの手順部分
+        $procedures = $request->validate([
+            'procedure.*' => 'required|max:20',
+            'sub_img.*' => 'nullable|max:300',
+        ]);
 
-        // var_dump($recipe->id);
-        var_dump(count($materials['material']));
+        //レシピのメイン部分を登録
+        $recipe = Recipes::create($recipe_main);
+        //レシピの材料を登録
         for ($i = 0; $i < count($materials['material']); $i++) {
-            var_dump($materials['material'][$i]);
-            var_dump($materials['quantity'][$i]);
             RecipeIngredients::create([
                 "recipe_id" => $recipe->id,
                 "name" => $materials['material'][$i],
                 "amount" => $materials['quantity'][$i],
             ]);
         }
-
-
-        // $procedures = $request->validate([
-        //     'procedure.*' => 'required|max:20',
-        //     // 'sub_img.*' => 'required|max:300',
-        // ]);
-
-        // var_dump($recipe->id);
-        // foreach ($procedures['selections'] as $procedure) {
-        //     var_dump($selection_content);
-        //     $ingredient['recipe_id'] = $recipe->id;
-        //     $ingredient['name'] = $selection_content;
-        //     $ingredient['amount'] = $selection_content;
-        //     QuizSelections::create($ingredient);
-        // }
-        var_dump($recipe_main);
-
-
+        //レシピの手順を登録
+        for ($i = 0; $i < count($procedures['procedure']); $i++) {
+            RecipeSteps::create([
+                "recipe_id" => $recipe->id,
+                "content" => $procedures['procedure'][$i],
+                "img" => $procedures['sub_img'][$i],
+            ]);
+        }
 
         $request->session()->flash('message', '保存しました');
         return redirect()->route('recipe.index');

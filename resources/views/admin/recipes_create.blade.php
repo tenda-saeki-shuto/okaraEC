@@ -40,8 +40,8 @@
         
             var tr_form = '' +
             '<tr>' +
-              '<td><input type="text" name="text_1[]"></td>' +
-              '<td><input type="text" name="text_2[]"></td>' +
+              '<td><input type="text" name="material[]"></td>' +
+              '<td><input type="text" name="quantity[]"></td>' +
             '</tr>';
           
             $(tr_form).appendTo($('table > tbody'));
