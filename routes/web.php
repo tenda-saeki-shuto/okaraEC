@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -16,6 +17,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
 
 //商品一覧表示
 Route::get('/items', function () {
@@ -36,5 +38,21 @@ Route::get('enter_card_info', function () {
     return view('enter_card_info');
 })->name('enter_card_info');
 
+Route::get('enter_card_info', function(){
+    return view('enter_card_info');
+})->name('enter_card_info');
+
+Route::get('cart', [CartController::class, 'index'])->name('cart');
+
+Route::post('cart_item_delete/{id}', [CartController::class, 'delete'])->name('cart_item_delete');
+
+// カートのajax
+Route::post('/change_cart_count/{id}/{count}', [CartController::class, 'update']);
+
+Route::get('confirm_payment', function(){
+    return 'Hello';
+})->name('confirm_payment');
+
 
 require __DIR__ . '/auth.php';
+require __DIR__ . '/admin.php';

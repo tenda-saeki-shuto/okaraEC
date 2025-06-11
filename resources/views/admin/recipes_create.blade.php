@@ -75,21 +75,27 @@
   <body>
     <div class="max-w-7xl max-auto px-6">
       <h1>レシピ登録</h1>
-        <form method="post" action="#">
-            @csrf 
+      
+    @if (session('message'))
+        <div class="text-red-600 font-bold">
+            {{ session('message') }}
+        </div>
+    @endif
+        <form method="post" action="{{ route('recipe.store') }}">
+            @csrf
             <div class = "w-full flex flex-col">
                 <br>
                 <!-- レシピ名 -->
                 <lavel>レシピ名：</lavel><br>
-                <input type = "text" name = "recipe_name" class = "w-auto py-2 border border-gray-300 rounded-md" id = "recipe_name"><br><br>
-               
-                <!-- メイン画像 -->
-                <lavel>メイン画像：</lavel><br>
-                <input type = "file" name = "main_img" class = "w-auto py-2 border border-gray-300 rounded-md" id = "main_img"><br><br>
+                <input type = "text" name = "title" class = "w-auto py-2 border border-gray-300 rounded-md" id = "recipe_name"><br><br>
                
                 <!-- 説明 -->
                 <lavel>説明：</lavel><br>
-                <input type = "textarea" name = "explanation" class = "w-auto py-2 border border-gray-300 rounded-md" id = "explanation"><br><br>
+                <input type = "textarea" name = "content" class = "w-auto py-2 border border-gray-300 rounded-md" id = "explanation"><br><br>
+                
+                <!-- メイン画像 -->
+                <lavel>メイン画像：</lavel><br>
+                <input type = "file" name = "img" class = "w-auto py-2 border border-gray-300 rounded-md" id = "main_img"><br><br>
                
                 <!-- かかる時間 -->
                 <lavel>かかる時間：</lavel><br>
@@ -98,6 +104,10 @@
                 <!-- 量 -->
                 <lavel>量：</lavel><br>
                 <input type = "text" name = "amount" class = "w-auto py-2 border border-gray-300 rounded-md" id = "amount"><br><br>
+               
+                <!-- kategori -->
+                <lavel>カテゴリ：</lavel><br>
+                <input type = "text" name = "category_id" class = "w-auto py-2 border border-gray-300 rounded-md" id = "amount"><br><br>
                
                 <!-- 材料テーブル -->
                 <lavel>材料：</lavel><br>

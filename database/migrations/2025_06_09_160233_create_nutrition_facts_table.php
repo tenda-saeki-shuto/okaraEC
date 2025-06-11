@@ -15,13 +15,14 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('recipe_id');
             $table->foreign('recipe_id')->references('id')->on('recipes');
-            $table->integer('energy');
-            $table->integer('protain');
-            $table->integer('fat');
-            $table->integer('carb');
-            $table->integer('fiber');
-            $table->integer('salt_eqv');
-
+            
+            $table->integer('energy')->unsigned()->nullable();
+            $table->float('protein')->unsigned()->nullable();
+            $table->float('fat')->unsigned()->nullable();
+            $table->float('carb')->unsigned()->nullable();
+            $table->float('fiber')->unsigned()->nullable();
+            $table->float('salt_eqv')->unsigned()->nullable();
+            $table->timestamps();
         });
     }
 
