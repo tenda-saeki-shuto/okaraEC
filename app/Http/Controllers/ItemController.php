@@ -18,16 +18,18 @@ class ItemController extends Controller
         return view('admin.items_create', compact('allergy_list'));
     }
 
-    // 
-    public function show()
-    { // 商品名、種類名、最終更新日、在庫
-        $item_list = Item::all();
-        return view('', compact('item_list'));
-    }
+    // // 
+    // public function show()
+    // { // 商品名、種類名、最終更新日、在庫
+    //     $item_list = Item::all();
+    //     return view('', compact('item_list'));
+    // }
 
     public function store(Request $request)
     {
         //table: item, item_nutrition_facts(栄養), item_picture(サブ写真), item_allergies,
+       
+        // dd($request->all());
         // 商品データ
         $itemData = $request->validate([
             'name' => 'required|max:30',
@@ -35,8 +37,15 @@ class ItemController extends Controller
             'content' => 'nullable|string|max:255',
             //'img' => 'required|string',
             'category_id' => 'required|integer',      
-            'stock' => 'required|integer',                
+            'stock' => 'required|integer',       
         ]);
+        // dd($request['is_cold']);
+        // 保存方法処理
+        if($request['is_cold'] == 'refrigerated'){ // 冷蔵の時
+            $itemData['is_cold'] = 1;
+        } else { // 冷凍の時
+            $itemData['is_frozen'] = 1;
+        }
         // ここは変更
         $itemData['img']= 'sample.png';
         // モデルに送信
