@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\Address;
+use App\Models\User;
 
 class ProfileController extends Controller
 {
@@ -56,5 +58,14 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function show(){
+        $user=Auth::user()->load([
+            'address.prefecture' //ネストされたリレーションの一括読み込み
+        ]);
+
+        //パスワードを除いて表示する
+        return view('user.mypage', compact('user'));
     }
 }
