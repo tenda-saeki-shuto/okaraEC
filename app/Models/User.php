@@ -67,4 +67,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserCoupon::class, 'user_id');
     }
+    public function creditCard()
+    {
+        return $this->hasOne(CreditCard::class);
+    }
 }
