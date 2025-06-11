@@ -25,6 +25,7 @@ class ItemSeeder extends Seeder
                 'is_frozen' => false,
                 'category_id' => 1,
                 'price' => 500,
+                'stock' => 50,
             ],
             [
                 'id' => 2,
@@ -36,6 +37,7 @@ class ItemSeeder extends Seeder
                 'is_frozen' => false,
                 'category_id' => 1,
                 'price' => 500,
+                'stock' => 50,
             ],
             [
                 'id' => 3,
@@ -47,6 +49,7 @@ class ItemSeeder extends Seeder
                 'is_frozen' => true,
                 'category_id' => 2,
                 'price' => 1000,
+                'stock' => 50,
             ],
         ]);
         DB::table('item_nutrition_facts')->insert([

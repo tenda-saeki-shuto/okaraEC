@@ -1,5 +1,7 @@
 <?php
 
+
+use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +20,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::get('/admin/item', [ItemController::class, 'create'])->name('admin.item.create');
+Route::post('/admin/item', [ItemController::class, 'store'])->name('admin.item.store'); // 保存処理
 
 //商品一覧表示
 Route::get('/items', function () {
