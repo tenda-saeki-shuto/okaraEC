@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Item;
 use App\Models\Allergy;
+use App\Models\Category;
 use App\Models\ItemNutritionFact;
 use App\Models\ItemAllergy;
 use App\Models\ItemPicture;
@@ -24,7 +25,9 @@ class ItemController extends Controller
     public function index()
     {
         $item_list = Item::all();
-        return view('user.items', compact('item_list'));
+        $category = Category::all();
+        // dd($item_list);
+        return view('user.items', compact('item_list', 'category'));
     }
 
     // 商品詳細表示

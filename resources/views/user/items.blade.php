@@ -16,15 +16,13 @@
     <div class="text-right mr-3 mt-4 mb-4">
     <form action="" method="GET" class="mb-4">
         <label for="category" class="mb-4">カテゴリ</label>
-        <select name="category" id="category" class="form-select border rounded px-2 py-1">
+        <select name="category" id="category" class="border rounded px-2 py-1 w-28">
             <option value="">全て</option>
-            <option value="1">スイーツ</option>
-            <option value="2">ドリンク</option>
-            {{-- @foreach ($categories as $category)
+            @foreach ($category as $category)
                 <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
                     {{ $category->name }}
                 </option>
-            @endforeach --}}
+            @endforeach
         </select>
     </form>
     </div>
@@ -37,6 +35,9 @@
                 <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow duration-300 aspect-[1/1]">
                     <img src="{{ asset('images/' . $item->image) }}" alt="{{ $item->name }}" class="w-4/6 h-4/6 object-cover rounded-t-lg">
                     <h2 class="text-xl font-bold mt-2">{{ $item->name }}</h2>
+                    @if($item->is_frozen === 1)
+                        <div class="bg-pink-300 text-center w-1/4 text-base rounded-full">冷凍商品</div>
+                    @endif
                     <p class="text-gray-600">¥{{ number_format($item->price) }}</p>
                     </div>
                 </a>
