@@ -47,7 +47,7 @@ Route::post('/admin/item', [ItemController::class, 'store'])->name('admin.item.s
 
 //商品一覧表示
 // 商品一覧
-Route::get('/items', [ItemController::class, 'index'])->name('items');
+Route::get('/items', [ItemController::class, 'user_index'])->name('items');
 // 商品一覧のフィルター
 Route::get('/items/filter', [ItemController::class, 'filter'])->name('items.filter');
 

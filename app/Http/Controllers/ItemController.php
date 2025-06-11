@@ -22,7 +22,7 @@ class ItemController extends Controller
 
 
     // 商品一覧表示
-    public function index()
+    public function user_index()
     {
         $user = Auth::user();
         $items = Item::all();
