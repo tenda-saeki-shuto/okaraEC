@@ -82,7 +82,9 @@ Route::get('confirm_payment', function () {
 Route::get('insert_payment_info', [PaymentController::class, 'index'])->name('insert_payment');
 
 // 決済情報入力から確認画面へ遷移するボタンが押された際のルート
-// Route::post('payment_confirm', [PaymentController::class, 'confirm'])->name('payment_confirm');
+Route::get('payment_confirm', function(){
+    return view('payment_confirm');
+});
 
 // 決済情報入力で変更ボタンが押された際のルート
 Route::post('/validate_address', [PaymentController::class, 'validateAddress']);
