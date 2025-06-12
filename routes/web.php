@@ -92,7 +92,10 @@ Route::post('/validate_address', [PaymentController::class, 'validateAddress']);
 // お気に入り登録
 Route::post('/favorite/toggle', [UserLikeController::class, 'toggle'])->middleware('auth');
 
-
+// トップ画面のルート
+Route::get('/top', function(){
+    return view('top');
+})->name('top');
 
 
 
