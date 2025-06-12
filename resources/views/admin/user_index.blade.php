@@ -60,15 +60,16 @@
         </div>
     @endif
     <div class="max-w-7xl mx-auto px-6">
-        <table>
+        <table border="1">
             <thead>
                 <tr>
                     <th scope="col" >ID</th>                    
                     <th scope="col" >名前</th>
-                    <th scope="col">都道府県</th>
+                    <!-- <th scope="col">都道府県</th> -->
                     <th scope="col">Email</th>
                     <th scope="col">TEL</th>
-
+                    <th scope="col">退会</th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
@@ -76,9 +77,11 @@
                 <tr>
                     <th scope="row">{{ $user->id }}</th>                    
                     <td>{{ $user->name }}</td>
-                    <td>{{ $prefectureData[$user->id] }}</td>                   
+                    <!-- <td>{{ $user->name }}</td>                    -->
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->updated_at }}</td>
+                    <td></td>
+                    <td><a href="{{ route('user.edit', $user) }}">編集</a></td>
                 </tr>
             @endforeach
            

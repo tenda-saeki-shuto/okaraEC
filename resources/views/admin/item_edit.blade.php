@@ -1,29 +1,28 @@
 <!DOCTYPE html>
-<html>
-  <header>
+<html lang="ja">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>レシピ登録</title>
-    {{ view('admin.admin_header') }}
-  </header>
-  <body>
-    <div class="max-w-7xl max-auto px-6">
-      <h1>レシピ更新</h1>
+    <title>商品更新</title>
+</head>
+<body>
+    <header>
+        {{ view('admin.admin_header') }}
+    </header>
+    <h1>商品更新</h1>
     @if (session('message'))
         <div class="text-red-600 font-bold">
             {{ session('message') }}
         </div>
     @endif
-        <form method="post" action="{{ route('recipe.update', $recipe) }}">
+    <div class="container">
+        <form action="{{ route('item.update', $item) }}" method="POST">
             @method('PATCH')
             @csrf
-            @include('admin.recipe_form')
-            <br>
+            @include('admin.item_from')
             <button type="submit">更新</button>
         </form>
     </div>
-  </body>
+
+</body>
 </html>
-
-
-  
