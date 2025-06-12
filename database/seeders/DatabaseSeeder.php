@@ -36,10 +36,10 @@ class DatabaseSeeder extends Seeder
         //         'address' => '〇〇〇〇市〇〇〇１－３－４',
         //     ],
         // ]);
-        // $this->call(ReferenceSeeder::class);
-        // $this->call(ItemSeeder::class);
-        // $this->call(QuizSeeder::class);
-        // $this->call(RecipeSeeder::class);
-         $this->call(UserOptSeeder::class);
+        $this->call(ReferenceSeeder::class);
+        $this->call(ItemSeeder::class);
+        $this->call(QuizSeeder::class);
+        $this->call(RecipeSeeder::class);
+        $this->call(UserOptSeeder::class);
     }
 }
