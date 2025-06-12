@@ -132,7 +132,7 @@
 <div class="section">
     <label>アレルギー：</label>
     <div>
-        @foreach ($allergy_list as $allergy_item)
+        @foreach ($allergy_list as $index => $allergy_item)
             @if (in_array($allergy_item->id, $item_allergies))
                 <label style="display: block;">
                     <input type="checkbox" name="allergies[]" value="{{ $allergy_item->id }}" checked>

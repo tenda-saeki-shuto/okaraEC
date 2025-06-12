@@ -95,9 +95,17 @@ class ItemController extends Controller
     public function create()
     {
         $item = $this->item;
+        $item_nutrition_facts = $this->item->nutritionFacts;
+        $item_allergies = [];
         $categories = Category::all();
         $allergy_list = Allergy::all();
-        return view('admin.item_create', compact('item', 'categories', 'allergy_list'));
+        return view('admin.item_create', compact(
+            'item',
+            'item_nutrition_facts',
+            'item_allergies',
+            'categories',
+            'allergy_list'
+        ));
     }
 
     public function store(Request $request)
@@ -175,7 +183,6 @@ class ItemController extends Controller
     {
         $item_nutrition_facts = $item->nutritionFacts;
         $item_allergies = $item->itemAllergies()->pluck('id')->toArray();
-        if (!isset($item_allergies)) $item_allergies['id'] = null;
         $categories = Category::all();
         $allergy_list = Allergy::all();
         return view('admin.item_edit', compact(

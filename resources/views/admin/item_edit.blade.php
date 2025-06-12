@@ -6,6 +6,9 @@
     <title>商品更新</title>
 </head>
 <body>
+    <header>
+        {{ view('admin.admin_header') }}
+    </header>
     <h1>商品更新</h1>
     @if (session('message'))
         <div class="text-red-600 font-bold">

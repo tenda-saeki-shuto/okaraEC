@@ -29,9 +29,8 @@ class Recipes extends Model
     {
         return $this->hasMany(RecipeSteps::class, 'recipe_id');
     }
-
-    // public function RecipeNutritionFact()
-    // {
-    //     return $this->hasMany(RecipeNutritionFact::class);
-    // }
+    public function recipeNutritionFacts()
+    {
+        return $this->hasOne(RecipeNutritionFact::class, 'recipe_id');
+    }
 }
