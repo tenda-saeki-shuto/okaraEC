@@ -6,7 +6,16 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\UserLikeController;
+use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Route;
+
+
+Route::get('/contact', [ContactController::class, 'showForm'])->name('contact.form');
+Route::get('/contact/confirm', [ContactController::class, 'confirm'])->name('contact.confirm');
+Route::post('/contact/confirm', [ContactController::class, 'confirm'])->name('contact.confirm');
+
+Route::get('/contact/submit', [ContactController::class, 'submitForm'])->name('contact.submit');
+Route::post('/contact/submit', [ContactController::class, 'submitForm'])->name('contact.submit');
 
 //初期で表示されている画面
 Route::get('/', function () {

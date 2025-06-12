@@ -31,7 +31,7 @@
                 <a href="/">レシピ&nbsp&nbsp</a>
                 <a href="/">クイズ&nbsp&nbsp</a>
                 <a href="/">お問い合わせフォーム&nbsp&nbsp</a>
-                <a href="{{ route('view.mypage') }}">マイページ</a>
+                <a href="/">マイページ</a>
                 <a href="/">home</a><img src="{{ asset('img/home.png') }}" alt="ホーム" class="w-10 h-10"></a>
                 <a href="/"><img src="{{ asset('img/cart.png') }}" alt="カート" class="w-10 h-10"></a>
             </div>
