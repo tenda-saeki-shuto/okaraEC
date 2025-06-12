@@ -7,6 +7,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\UserLikeController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RecipeController;
 
 //初期で表示されている画面
 Route::get('/', function () {
@@ -18,6 +19,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/user', [ProfileController::class, 'show'])->name('view.mypage');
 });
 
+//ヘッダーからレシピ画面に遷移
+Route::get('/recipes', [RecipeController::class, 'user_index'])->name('recipes');
+//レシピフィルター
+Route::get('/recipes/filter', [RecipeController::class, 'filter'])->name('recipes.filter');
+// レシピ詳細
+Route::get('/resips/{id}', [RecipeController::class, 'show'])->name('resipe_detail');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -113,3 +120,4 @@ require __DIR__ . '/admin.php';
 // Route::get('/admin/test', function(){
 //     return view('admin.test');
 // });
+
