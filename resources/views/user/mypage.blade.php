@@ -25,7 +25,7 @@
         </div>
 
 
-        
+
         <div class="image-row">
             <!-- お気に入り画面に遷移 -->
             <form action="#">
@@ -61,9 +61,9 @@
         </div>
 
         <!-- 退会ボタン -->
-        <form action="">
+        <a href="{{route('withdraw')}}">
             <button class="withdrawal">退会</button>
-        </form>
+        </a>
 
 
 

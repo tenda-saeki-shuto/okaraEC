@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes(); // これで deleted_at カラムを追加
+
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

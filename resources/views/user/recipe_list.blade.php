@@ -78,7 +78,7 @@
                 `;
             });
 
-            $('#recipe_list').html(html);
+            $('#recipes').html(html);
         },
         error: function () {
             alert('レシピ一覧の取得に失敗しました。');
