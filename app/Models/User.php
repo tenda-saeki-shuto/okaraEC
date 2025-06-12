@@ -77,7 +77,7 @@ class User extends Authenticatable
     public function addresses()
     {
         return $this->hasOne(Address::class, 'user_id');
-
+    }
     public function creditCard()
     {
         return $this->hasOne(CreditCard::class);
