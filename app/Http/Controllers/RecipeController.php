@@ -100,7 +100,7 @@ class RecipeController extends Controller
             // 'img' => 'nullable|max:300',
             'time' => 'required|max:20',
             'amount' => 'required|max:20',
-            'category_id' => 'required|integer|min:1',
+            'category_id' => 'required|integer|exists:categories,id',
         ]);
         $recipe_main['img'] = 'sample.png'; //あとで消す
         //レシピの栄養部分
@@ -126,11 +126,15 @@ class RecipeController extends Controller
         //レシピのメイン部分を登録
         $recipe = Recipes::create($recipe_main);
         //レシピの栄養を登録
-        $nutrition_facts['recipe_id'] = $recipe->id;
-        // dd($nutrition_facts);
         RecipeNutritionFact::create([
             'recipe_id'=> $recipe->id,
-            $nutrition_facts]);
+            'energy' => $nutrition_facts['energy'],
+            'protein' => $nutrition_facts['protein'],
+            'fat' => $nutrition_facts['fat'],
+            'carb' => $nutrition_facts['carb'],
+            'fiber' => $nutrition_facts['fiber'],
+            'salt_eqv' => $nutrition_facts['salt_eqv'],
+        ]);
         //レシピの材料を登録
         if (!empty($materials)) {
             foreach ($materials['material'] as $index => $name) {
@@ -172,9 +176,11 @@ class RecipeController extends Controller
     public function edit(Recipes $recipe)
     {
         $categories = Category::all();
+        $recipe_nutrition_facts = $recipe->recipeNutritionFacts;
+        // dd($recipe_nutrition_facts);
         $ingredients = $recipe->recipeIngredients;
         $steps = $recipe->recipeSteps;
-        return view('admin.recipe_edit', compact('recipe', 'categories', 'ingredients', 'steps'));
+        return view('admin.recipe_edit', compact('recipe', 'recipe_nutrition_facts', 'categories', 'ingredients', 'steps'));
     }
 
     /**
@@ -193,6 +199,15 @@ class RecipeController extends Controller
             'category_id' => 'required|integer|min:1',
         ]);
         $recipe_main['img'] = 'sample.png'; //あとで消す
+        //レシピの栄養部分
+        $nutrition_facts = $request->validate([
+            'energy' => 'nullable|integer|min:0',
+            'protein' => 'nullable|numeric|min:0',
+            'fat' => 'nullable|numeric|min:0',
+            'carb' => 'nullable|numeric|min:0',
+            'fiber' => 'nullable|numeric|min:0',
+            'salt_eqv' => 'nullable|numeric|min:0',
+        ]);
         //レシピの材料部分
         $materials = $request->validate([
             'ingredient_id.*' => 'nullable|integer',
@@ -208,7 +223,16 @@ class RecipeController extends Controller
         
         //レシピのメイン部分を登録
         $recipe->update($recipe_main);
-
+        //レシピの栄養を登録
+        $recipe->recipeNutritionFacts()->update([
+            'recipe_id'=> $recipe->id,
+            'energy' => $nutrition_facts['energy'],
+            'protein' => $nutrition_facts['protein'],
+            'fat' => $nutrition_facts['fat'],
+            'carb' => $nutrition_facts['carb'],
+            'fiber' => $nutrition_facts['fiber'],
+            'salt_eqv' => $nutrition_facts['salt_eqv'],
+        ]);
         //レシピの材料を登録
         $ingredient_ids = $recipe->recipeIngredients()->pluck('id')->toArray();
         $form_ingredient_ids = array_filter($materials['ingredient_id'] ?? []);
