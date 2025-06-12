@@ -13,14 +13,14 @@
     <!-- ヘッダー入れる -->
     @include('user.user_header')
     
-    <div class="container w-[80%]">
+    <div class="container w-[70%]">
         <h1 class="text-3xl font-bold mb-5 mt-20">決済確認</h1>
-        <p class="text-lg mb-5">以下の内容で注文します（まだ注文は確定押していません）</p>
+        <p class="text-lg mb-5">以下の内容で注文します（まだ注文は確定していません）</p>
         
 
         <h2 class="text-2xl font-bold mb-3">注文確認</h2>
         <!-- テーブル入れる -->
-         <table class="mb-5">
+         <table>
             <thead>
                 <tr class="bg-gray-200">
                     <th>商品名</th>
@@ -30,30 +30,36 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <th></th>
-                    <td class="text-center">円</td>
-                    <td class="p-1 text-center">1</td>
-                    <td class="text-center">円</td>
-                </tr>
+                <!-- 合計金額の初期値を設定 -->
+                <?php $total=0; ?>
+                @foreach($carts as $cart)
+                    <tr>
+                        <th>{{ $cart->items->name }}</th>
+                        <td class="text-center">{{ $cart->items->price }}円</td>
+                        <td class="text-center">{{ $cart->count }}</td>
+                        <td class="text-center">{{ $cart->items->price * $cart->count }}円</td>
+                    </tr>
+                    <!-- 合計金額の更新 -->
+                    <?php $total+= $cart->items->price * $cart->count; ?>
+                @endforeach
             </tbody>
             <tfoot class="font-bold">
                 <tr>
                     <th scope="row" colspan="3" class="text-right">合計金額（税込）</th>
-                    <td class="text-center">円</td>
+                    <td class="text-center">{{ $total }}円</td>
                 </tr>
             </tfoot>
         </table>
 
-        <div class="mb-5">
-            <h2 class="text-2xl font-bold mb-3">支払い情報</h2>
-            <p>クレジットカード</p>
-            <p>カード情報末尾　1234</p>
+        <div class="mb-5 mt-5">
+            <h2 class="text-2xl font-bold">お届け先</h2>
+            <p>○○県○○市00-0</p>
         </div>
 
         <div class="mb-5">
-            <h2 class="text-2xl font-bold">お届け先</h2>
-            <p>○○県○○市00-0</p>
+            <h2 class="text-2xl font-bold mb-3">支払い情報</h2>
+            <p>クレジットカード</p>
+            <p>カード情報末尾　{{ $shown_num }}</p>
         </div>
 
         <div class="flex justify-around mb-10">
