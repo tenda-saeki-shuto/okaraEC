@@ -67,8 +67,7 @@
                         <a href="/item/${item.id}" class="block no-underline">
                             <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow duration-300 aspect-[1/1]">
                                 <img src="/images/${item.image}" alt="${item.name}" class="w-4/6 h-4/6 object-cover rounded-t-lg">
-                                <h2 class="text-xl font-bold mt-2">${item.name}</h2>
-                                ${item.is_frozen === 1 ? '<div class="bg-pink-300 text-center w-1/4 text-base rounded-full">冷凍商品</div>' : ''}
+                                <div class="text-xl font-bold mt-2 relative">${item.name}${item.is_frozen === 1 ? '<div class="bg-pink-300 text-center w-1/4 text-base rounded-full ">冷凍商品</div>' : ''}</div>
                                 <p class="text-gray-600">¥${Number(item.price).toLocaleString()}</p>
                                 <button class="favorite-btn" data-item-id="${item.id}">
                                     <i class="fa fa-heart ${item.is_favorited ? 'text-danger' : 'text-secondary'}"></i>

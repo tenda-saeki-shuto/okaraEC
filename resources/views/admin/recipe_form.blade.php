@@ -119,24 +119,44 @@
   <input type="text" name="amount" class="w-auto py-2 border border-gray-300 rounded-md" id="amount" value="{{ old('amount', $recipe->amount) }}"><br><br>
 
   <!-- 栄養素 -->
-  <lavel>カロリー (kcal、整数のみ)：</lavel><br>
-  <x-input-error :messages="$errors->get('energy')" class="mt-2" />
-  <input type="text" name="energy" class="w-auto py-2 border border-gray-300 rounded-md" id="explanation" value="{{ old('content', $recipe->content) }}"><br>
-  <lavel>タンパク質 (g)：</lavel><br>
-  <x-input-error :messages="$errors->get('protein')" class="mt-2" />
-  <input type="text" name="protein" class="w-auto py-2 border border-gray-300 rounded-md" id="explanation" value="{{ old('content', $recipe->content) }}"><br>
-  <lavel>脂質 (g)：</lavel><br>
-  <x-input-error :messages="$errors->get('fat')" class="mt-2" />
-  <input type="text" name="fat" class="w-auto py-2 border border-gray-300 rounded-md" id="explanation" value="{{ old('content', $recipe->content) }}"><br>
-  <lavel>炭水化物 (g)：</lavel><br>
-  <x-input-error :messages="$errors->get('carb')" class="mt-2" />
-  <input type="text" name="carb" class="w-auto py-2 border border-gray-300 rounded-md" id="explanation" value="{{ old('content', $recipe->content) }}"><br>
-  <lavel>食物繊維 (g)：</lavel><br>
-  <x-input-error :messages="$errors->get('fiber')" class="mt-2" />
-  <input type="text" name="fiber" class="w-auto py-2 border border-gray-300 rounded-md" id="explanation" value="{{ old('content', $recipe->content) }}"><br>
-  <lavel>食塩含有量 (g)：</lavel><br>
-  <x-input-error :messages="$errors->get('salt_eqv')" class="mt-2" />
-  <input type="text" name="salt_eqv" class="w-auto py-2 border border-gray-300 rounded-md" id="explanation" value="{{ old('content', $recipe->content) }}"><br>
+<div class="section">
+    <label>栄養情報：</label>
+    <div class="nutrition">
+        <label for="calorie">カロリー：　</label>
+        <input type="text" id="calorie" name="energy" value="{{ old('energy', $recipe_nutrition_facts->energy ?? '') }}">kcal
+        <x-input-error :messages="$errors->get('energy')" class="mt-2" />
+    </div>
+
+    <div class="nutrition">
+        <label for="protein">タンパク質：</label>
+        <input type="text" id="protein" name="protein" value="{{ old('protein', $recipe_nutrition_facts->energy ?? '') }}">g
+        <x-input-error :messages="$errors->get('protein')" class="mt-2" />
+    </div>
+
+    <div class="nutrition">
+        <label for="fat">脂質：　　　</label>
+        <input type="text" id="fat" name="fat" value="{{ old('fat', $recipe_nutrition_facts->fat ?? '') }}">g
+        <x-input-error :messages="$errors->get('fat')" class="mt-2" />
+    </div>
+    
+    <div class="nutrition">
+        <label for="carbohydrates">炭水化物：　</label>
+        <input type="text" id="carbohydrates" name="carb" value="{{ old('carb', $recipe_nutrition_facts->carb ?? '') }}">g
+        <x-input-error :messages="$errors->get('carb')" class="mt-2" />
+    </div>
+
+    <div class="nutrition">
+        <label for="fiber">食物繊維：　</label>
+        <input type="text" id="fiber" name="fiber" value="{{ old('fiber', $recipe_nutrition_facts->fiber ?? '') }}">g
+        <x-input-error :messages="$errors->get('fiber')" class="mt-2" />
+    </div>
+
+    <div class="nutrition">
+        <label for="salt">食塩相当量：</label>
+        <input type="text" id="salt" name="salt_eqv" value="{{ old('salt_eqv', $recipe_nutrition_facts->salt_eqv ?? '') }}">g
+        <x-input-error :messages="$errors->get('salt_eqv')" class="mt-2" />
+    </div>
+</div>
   <br>
 
   <!-- 材料テーブル -->
