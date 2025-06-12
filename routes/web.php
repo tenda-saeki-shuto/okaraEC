@@ -3,6 +3,7 @@
 
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\UserLikeController;
 use Illuminate\Support\Facades\Route;
@@ -52,16 +53,17 @@ Route::get('/item/{id}', [ItemController::class, 'show'])->name('item_detail');
 
 
 
+
+// カード情報入力
 Route::get('enter_card_info', function () {
     return view('enter_card_info');
 })->name('enter_card_info');
 
-Route::get('enter_card_info', function () {
-    return view('enter_card_info');
-})->name('enter_card_info');
 
+// カート画面を表示するためのルート
 Route::get('cart', [CartController::class, 'index'])->name('cart');
 
+// カート画面で削除が押された際のルート
 Route::post('cart_item_delete/{id}', [CartController::class, 'delete'])->name('cart_item_delete');
 
 // カートのajax
@@ -71,8 +73,19 @@ Route::get('confirm_payment', function () {
     return 'Hello';
 })->name('confirm_payment');
 
-// お気に入りのトグル
+
+// 決済情報入力画面を表示するためのルート
+Route::get('insert_payment_info', [PaymentController::class, 'index'])->name('insert_payment');
+
+// 決済情報入力から確認画面へ遷移するボタンが押された際のルート
+// Route::post('payment_confirm', [PaymentController::class, 'confirm'])->name('payment_confirm');
+
+// 決済情報入力で変更ボタンが押された際のルート
+Route::post('/validate_address', [PaymentController::class, 'validateAddress']);
+
+// お気に入り登録
 Route::post('/favorite/toggle', [UserLikeController::class, 'toggle'])->middleware('auth');
+
 
 
 
