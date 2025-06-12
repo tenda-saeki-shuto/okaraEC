@@ -16,49 +16,51 @@ use App\Models\Prefecture;
 
 class ProfileController extends Controller
 {
+    public function index()
+    {
+        $profile = User::where('id', 4)->first();
+        var_dump($profile->id);
+        return view("profile.edit", compact("profile"));
+    }
     /**
      * Display the user's profile form.
      */
-    public function index()
+    public function edit(Request $request)
     {
-        $users = User::all();
-
-        $prefectureData['']=[];
-        foreach ($users as $user) {
-                    
-            //     dd($user); // $user->prefecture で確認可能
-            $address = Address::where('user_id', $user->id)->first();
-            $pref = Prefecture::where('id', $address->prefecture_id)->first();
-            $prefectureData[$user->id] = $pref->name;
-        }
-        return view('admin.user_index', compact('users', 'prefectureData'));
-    }
-
-    public function edit(User $user)
-    {
-        return view('admin.user_edit', compact('user'));
+        // dd($request->all());
+        $prefecture = Prefecture::all();
+        return view('profile.edit', [
+            'user' => $request->user(),
+            'prefecture'=> $prefecture,
+        ]);
     }
 
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(ProfileUpdateRequest $request)
     {
         $request->user()->fill($request->validated());
-
+        // dd($request->validated());
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
-
         $request->user()->save();
+        // $address = $request->validated('address','postal_code');
+        // dd($request->validated('postal_code'));
+        $request->user()->address->update([
+            'postal_code'=> $request->validated('postal_code'),
+            'prefecture_id'=> $request->validated('prefecture_id'),
+            'address'=> $request->validated('address'),
+        ]);
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return Redirect::route('userinfo.edit')->with('status', 'profile-updated');
     }
 
     /**
      * Delete the user's account.
      */
-    public function destroy(Request $request): RedirectResponse
+    public function destroy(Request $request)
     {
         $request->validateWithBag('userDeletion', [
             'password' => ['required', 'current_password'],
@@ -76,8 +78,9 @@ class ProfileController extends Controller
         return Redirect::to('/');
     }
 
-    public function show(){
-        $user=Auth::user()->load([
+    public function show()
+    {
+        $user = Auth::user()->load([
             'address.prefecture' //ネストされたリレーションの一括読み込み
         ]);
 

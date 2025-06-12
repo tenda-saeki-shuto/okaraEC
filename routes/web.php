@@ -28,6 +28,8 @@ Route::get('/', function () {
 //ヘッダーからマイページに画面遷移←ログインしていない場合はログイン画面にリダイレクト
 Route::middleware(['auth'])->group(function () {
     Route::get('/user', [ProfileController::class, 'show'])->name('view.mypage');
+    Route::get('/user/edit', [ProfileController::class, 'edit'])->name('userinfo.edit');
+    Route::patch('/user/edit', [ProfileController::class, 'update'])->name('userinfo.update');
 });
 
 //ヘッダーからレシピ画面に遷移
