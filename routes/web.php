@@ -7,6 +7,13 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\UserLikeController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\WithdrawController;
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/withdraw', [WithdrawController::class, 'show'])->name('withdraw.show');
+    Route::post('/withdraw', [WithdrawController::class, 'destroy'])->name('withdraw.destroy');
+});
 
 //初期で表示されている画面
 Route::get('/', function () {
@@ -104,10 +111,10 @@ require __DIR__ . '/admin.php';
 
 
 
-// //マイページ画面の表示
-// Route::get('/user/mypage', function(){
-//     return view('user.mypage');
-// });
+//マイページ画面の表示
+Route::get('/user/mypage', function(){
+    return view('user.mypage');
+});
 
 // //管理者側テストヘッダー
 // Route::get('/admin/test', function(){

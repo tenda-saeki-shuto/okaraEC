@@ -8,7 +8,6 @@
     </header>
 
     <body>
-        @include("user.user_header")
 
         <h1>登録情報</h1>
         <!-- 本来は以下にDBから取得したユーザー情報が表示される -->
