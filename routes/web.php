@@ -6,8 +6,19 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\UserLikeController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\RecipeController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RecipeController;
+
+
+Route::get('/contact', [ContactController::class, 'showForm'])->name('contact.form');
+Route::get('/contact/confirm', [ContactController::class, 'confirm'])->name('contact.confirm');
+Route::post('/contact/confirm', [ContactController::class, 'confirm'])->name('contact.confirm');
+
+Route::get('/contact/submit', [ContactController::class, 'submitForm'])->name('contact.submit');
+Route::post('/contact/submit', [ContactController::class, 'submitForm'])->name('contact.submit');
 
 //初期で表示されている画面
 Route::get('/', function () {
@@ -47,9 +58,12 @@ Route::get('/items/filter', [ItemController::class, 'filter'])->name('items.filt
 
 
 // 商品詳細
-Route::get('/item/{id}', [ItemController::class, 'show'])->name('item_detail');
+Route::get('/item/{id}', [RecipeController::class, 'show'])->name('item_detail');
 
-
+// 商品一覧
+Route::get('/recipes', [RecipeController::class, 'user_index'])->name('recipes');
+// 商品一覧のフィルター
+Route::get('/recipes/filter', [RecipeController::class, 'filter'])->name('recipes.filter');
 
 
 
@@ -81,7 +95,7 @@ Route::get('confirm_payment', function () {
 Route::get('insert_payment_info', [PaymentController::class, 'index'])->name('insert_payment');
 
 // 決済情報入力から確認画面へ遷移するボタンが押された際のルート
-Route::get('payment_confirm', function(){
+Route::get('payment_confirm', function () {
     return view('payment_confirm');
 });
 
@@ -92,6 +106,25 @@ Route::post('/validate_address', [PaymentController::class, 'validateAddress']);
 Route::post('/favorite/toggle', [UserLikeController::class, 'toggle'])->middleware('auth');
 
 
+// トップ画面のルート
+Route::get('/top', function(){
+    return view('top');
+})->name('top');
+
+
+//退会処理
+Route::middleware(['auth'])->group(
+    function () {
+        Route::get('/withdrawal', function () {
+            return view('user.withdrawal');
+        })->name('withdraw');
+    }
+);
+Route::middleware(['auth'])->group(
+    function () {
+        Route::post('/withdrawal/confirm', [UserController::class, 'withdrawal'])->name('withdrawal.confirm');
+    }
+);
 
 
 
