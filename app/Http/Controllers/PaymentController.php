@@ -7,6 +7,7 @@ use App\Models\Prefecture;
 use App\Models\User;
 use App\Models\Address;
 use App\Models\UserCoupon;
+use App\Models\Order;
 
 
 class PaymentController extends Controller
@@ -48,8 +49,11 @@ class PaymentController extends Controller
         return view('payment_confirm', compact('validated_data'));
     }
 
-    public function update($id){
-        // お届け住所の変更処理
-        return true;
+    public function validateAddress(Request $request){
+        // 郵便番号と住所のバリデーションを行う
+        $validated_data = $request->validate([
+            'postal_code' => ['required', 'regex:/^\d{7}$/'], //郵便番号
+            'address' => ['required'], //住所
+        ]);
     }
 }

@@ -9,6 +9,11 @@ export default {
         './resources/views/**/*.blade.php',
     ],
 
+    safelist: [
+        'no-underline',
+        'hover:no-underline',
+    ],
+
     theme: {
         extend: {
             fontFamily: {
