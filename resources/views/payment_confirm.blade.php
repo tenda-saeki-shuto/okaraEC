@@ -56,7 +56,7 @@
             <p>○○県○○市00-0</p>
         </div>
 
-        <div class="flex justify-around">
+        <div class="flex justify-around mb-10">
             <button>変更</button>
             <button>確定</button>
         </div>
