@@ -17,7 +17,7 @@ class UserOptSeeder extends Seeder
     {
         DB::table('addresses')->insert([
                 [
-                'user_id' => 4,
+                'user_id' => 1,
                 'postal_code' => '1234567',
                 'prefecture_id' => 2,
                 'address' => '〇〇〇〇市〇〇〇１－３－４',

@@ -20,10 +20,59 @@ class RecipeController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    public function recipe_index(){
+        $recipes = Recipes::all();
+        $category = Category::all();
+        
+        return view('user.recipe_list', compact('recipes', 'category'));
+    }
+
+    public function show($id)
+    {
+        // レシピの詳細情報を取得
+        $recipe = Recipes::with([
+            ''
+
+        ])->findOrFail($id);
+
+        // ビューにデータを渡す
+        return view('user.recipe_detail', compact('recipe'));
+    }
+
     public function index()
     {
-        $recipes = Recipes::orderBy("updated_at","desc")->paginate(20);
-        return view('admin.recipe_index', compact('recipes')); // あとで変える
+        // レシピを取得
+        $recipes = Recipes::orderBy('updated_at', 'desc')->paginate(20);
+
+        // ビューに渡す
+        return view('admin.recipe_index', compact('recipes'));
+    }
+
+    public function user_index()
+    {        
+        // レシピを取得
+        $recipes = Recipes::orderBy('updated_at', 'desc')->paginate(20);
+        $category = Category::all();
+
+        return view('user.recipe_list', compact('recipes', 'category'));
+
+    }
+
+    //レシピ一覧のフィルター
+    public function filter(Request $request)
+    {
+        $recipes = Recipes::query();
+
+        if ($request->filled('category')) {
+            $recipes->where('category_id', $request->category);
+        }
+
+        $recipes = $recipes->get();
+
+        return response()->json([
+            'recipes' => $recipes
+        ]);
     }
 
     /**
@@ -116,10 +165,10 @@ class RecipeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
-    }
+    // public function show(string $id)
+    // {
+    //     //
+    // }
 
     /**
      * Show the form for editing the specified resource.
