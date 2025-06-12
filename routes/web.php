@@ -10,8 +10,6 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RecipeController;
-
 
 Route::get('/contact', [ContactController::class, 'showForm'])->name('contact.form');
 Route::get('/contact/confirm', [ContactController::class, 'confirm'])->name('contact.confirm');
