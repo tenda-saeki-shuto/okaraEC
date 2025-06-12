@@ -59,8 +59,9 @@
             {{ session('message') }}
         </div>
     @endif
+    <a href="{{ route('item.create') }}">+新規追加</a>
     <div class="max-w-7xl mx-auto px-6">
-        <table>
+        <table border="1">
             <thead>
                 <tr>
                     <th scope="col" >商品名</th>                    
@@ -76,7 +77,7 @@
                     <td>{{ $item->content }}</td>
                     <td>{{ $item->stock }}</td>
                     <td>{{ $item->updated_at }}</td>
-                    <td><a href="{{ route('admin.item.edit', $item) }}">編集</a></td>
+                    <td><a href="{{ route('item.edit', $item) }}">編集</a></td>
                 </tr>
             @endforeach
             <div class="mb-4">

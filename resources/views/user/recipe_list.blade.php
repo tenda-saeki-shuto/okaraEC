@@ -53,7 +53,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 <script>
-    // プルダウン処理
+// プルダウン処理
     function fetchRecipes(categoryId = '') {
     $.ajax({
         url: '{{ route("recipes.filter") }}',
@@ -78,6 +78,7 @@
                 `;
             });
 
+            //指定した要素の中身を新しいHTML文字列で置き換える
             $('#recipes').html(html);
         },
         error: function () {
@@ -86,16 +87,19 @@
     });
 }
 
-// 初期表示で「すべて」に設定
-$(document).ready(function () {
-    $('#category').val('');
-    fetchRecipes();
+    // 初期表示で「すべて」に設定
+    $(document).ready(function () {
+        $('#category').val('');
 
-    $('#category').on('change', function () {
-        const categoryId = $(this).val();
-        fetchRecipes(categoryId);
+        //最初に全レシピを取得して表示
+        fetchRecipes();
+        
+        //カテゴリが変更されたら再読み込み
+        $('#category').on('change', function () {
+            const categoryId = $(this).val();
+            fetchRecipes(categoryId);
+        });
     });
-});
 
 
 

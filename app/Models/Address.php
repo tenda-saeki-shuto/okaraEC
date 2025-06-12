@@ -14,7 +14,7 @@ class Address extends Model
     //都道府県とのリレーション
     public function prefectures()
     {
-        return $this->belongsTo(Prefecture::class, 'prefecture_id');
+        return $this->belongsTo(Prefecture::class);
     }
 
     //代入の許可

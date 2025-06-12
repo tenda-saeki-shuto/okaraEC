@@ -28,7 +28,7 @@ class Item extends Model
     }
     public function itemAllergies()
     {
-        return $this->hasOne(ItemAllergy::class);
+        return $this->hasMany(ItemAllergy::class);
     }
     public function nutritionFacts()
     {

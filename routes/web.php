@@ -9,6 +9,7 @@ use App\Http\Controllers\UserLikeController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RecipeController;
 
 //初期で表示されている画面
 Route::get('/', function () {
@@ -20,6 +21,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/user', [ProfileController::class, 'show'])->name('view.mypage');
 });
 
+//ヘッダーからレシピ画面に遷移
+Route::get('/recipes', [RecipeController::class, 'user_index'])->name('recipes');
+//レシピフィルター
+Route::get('/recipes/filter', [RecipeController::class, 'filter'])->name('recipes.filter');
+// レシピ詳細
+Route::get('/resips/{id}', [RecipeController::class, 'show'])->name('resipe_detail');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -30,16 +37,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
-Route::get('/admin/item', [ItemController::class, 'create'])->name('admin.item.create');
-Route::post('/admin/item', [ItemController::class, 'store'])->name('admin.item.store');
-
-Route::get('/admin/item_list', [ItemController::class, 'index'])->name('admin.item.index');
-Route::get('/admin/item/{item}/edit', [ItemController::class, 'edit'])->name('admin.item.edit');
-
-Route::get('/admin/user', [ProfileController::class, 'index'])->name('admin.user.index');
-Route::get('/admin/user/{user}/edit', [ProfileController::class, 'edit'])->name('admin.user.edit');
-
 
 //商品一覧表示
 // 商品一覧
@@ -135,3 +132,4 @@ require __DIR__ . '/admin.php';
 // Route::get('/admin/test', function(){
 //     return view('admin.test');
 // });
+
