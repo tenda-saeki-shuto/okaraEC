@@ -12,10 +12,10 @@
     <!-- ヘッダー入れる -->
     @include('user.user_header')
     
-    <div class="flex flex-col items-center justify-arouind h-screen w-[60%]">    
-        <h1 class="text-3xl font-bold mb-5 mt-20">決済情報入力</h1>
+    <div class="flex flex-col items-center justify-arouind w-[60%] my-10 pb-10">    
+        <h1 class="text-3xl font-bold mb-5">決済情報入力</h1>
         
-        <div class="mb-20 w-[60%] items-start flex flex-col">
+        <div class="w-[60%] items-start flex flex-col">
             <div class="mb-10" id="showing">
                 <h2 class="text-xl font-bold mb-2">お届け先</h2>
                 <div>
@@ -29,12 +29,12 @@
                     <p id="default_prefecture">{{ $user_prefecture }}</p>
                 </div>
                 <div class="mt-4">
-                    <label for="address" class="text-lg w-full">住所　　</label>
+                    <label for="address" class="text-lg w-full">住所</label>
                     @foreach($user_info as $info)
                     <p id="default_address">{{ $info->addresses->address }}</p>
                     @endforeach
                 </div>
-                <button class="py-3 px-8 bg-sky-500 rounded-2xl text-white font-black text-xl mt-5" id="change_address_btn">お届け先変更</button>
+                <button class="w-48 bg-sky-500 h-10 rounded-xl text-white font-black text-xl mt-5" id="change_address_btn">お届け先変更</button>
             </div>
             
             
@@ -56,12 +56,12 @@
                     </select>
                 </div>
                 <div class="mt-4">
-                    <label for="address" class="text-lg w-full">住所　　</label>
+                    <label for="address" class="text-lg w-full">住所</label>
                     <input type="text" name="address" id="address" value="{{ old('address') }}">
                     <!-- エラー表示 -->
                     <p class="text-red-500" id="address_error"></p>
                 </div>
-                <button class="py-3 px-8 bg-sky-500 rounded-2xl text-white font-black text-xl mt-5" id="change_btn">変更</button>
+                <button class="w-48 bg-sky-500 h-10 rounded-xl text-white font-black text-xl mt-5" id="change_btn">変更</button>
             </div>
             
             
@@ -69,7 +69,7 @@
                 <h2 class="text-xl font-bold mb-2">支払情報</h2>
                 <p class="text-lg">クレジットカード</p>
                 <p class="text-lg">カード情報末尾 1234</p>
-                <a href="{{ route('enter_card_info') }}" class="py-3 px-8 bg-sky-500 rounded-2xl text-white font-black text-xl mt-5 block text-center !no-underline !hover:no-underline">カード情報変更</a>
+                <a href="{{ route('enter_card_info') }}" class="no-underline px-6 py-2 bg-sky-500 rounded-xl text-white block font-black text-xl mt-5">カード情報変更</a>
             </div>
             
             <div class="mb-10">
@@ -81,8 +81,7 @@
                     <input type="radio" name="coupon" value="2" id="2"><label for="2" class="text-lg ml-1">500円引きクーポン</labe>
                 </div>
             </div>
-            <button class="py-3 px-8 bg-sky-500 rounded-2xl text-white font-black text-xl mt-5">注文確認</button>
-          
+            <button class="w-48 bg-sky-500 h-10 rounded-xl text-white font-black text-xl mt-5">注文確認</button>
         </div>
     </div>
 
