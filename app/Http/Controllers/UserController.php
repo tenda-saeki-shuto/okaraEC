@@ -1,4 +1,5 @@
 <?php
+namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
@@ -96,6 +97,5 @@ class UserController extends Controller
             return redirect(route('view.mypage'));
         }
     }
-}
 }
 
