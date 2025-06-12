@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cart extends Model
 {
+
     //商品とのリレーション
     public function items()
     {
@@ -16,4 +17,10 @@ class Cart extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    protected $fillable = [
+        'user_id',
+        'item_id',
+        'count',
+    ];
 }
