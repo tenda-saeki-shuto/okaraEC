@@ -77,15 +77,21 @@
 
 
 
-            <form action="" method="POST">
+            <form action="{{ route('cart.add')}}" method="POST">
                 @csrf
-                <input type="hidden" name="item_id" value="1">
+                <input type="hidden" name="item_id" value="{{$item->id}}">
                 <div class="flex items-center mb-4 text-right">
                     <label for="quantity" class="mr-2">数量:</label>
                     <select name="count" class="border rounded">
-                        @for ($i = 1; $i <= 10; $i++)
+                        @if ($item->stock < 10)
+                            @for ($i = 1; $i <= $item->stock; $i++)
                             <option value="{{ $i }}">{{ $i }}</option>
-                        @endfor
+                            @endfor
+                        @else
+                            @for ($i = 1; $i <= 10; $i++)
+                                <option value="{{ $i }}">{{ $i }}</option>
+                            @endfor
+                        @endif
                     </select>
                 </div>
 
@@ -99,8 +105,16 @@
                 </div>
             </form>
 
+
         </div>
     </div>
+    @if (session('success'))
+    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+        <strong class="font-bold">成功！</strong>
+        <span class="block sm:inline">{{ session('success') }}</span>
+    </div>
+@endif
+
 </body>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
