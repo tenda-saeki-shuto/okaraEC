@@ -29,15 +29,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/admin/item', [ItemController::class, 'create'])->name('admin.item.create');
-Route::post('/admin/item', [ItemController::class, 'store'])->name('admin.item.store'); 
-
-Route::get('/admin/item_list', [ItemController::class, 'index'])->name('admin.item.index');
-Route::get('/admin/item/{item}/edit', [ItemController::class, 'edit'])->name('admin.item.edit');
-
-Route::get('/admin/user', [ProfileController::class, 'index'])->name('admin.user.index');
-Route::get('/admin/user/{user}/edit', [ProfileController::class, 'edit'])->name('admin.user.edit');
-
 
 //商品一覧表示
 // 商品一覧
