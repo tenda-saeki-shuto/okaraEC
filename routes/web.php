@@ -103,6 +103,13 @@ Route::post('/validate_address', [PaymentController::class, 'validateAddress']);
 // お気に入り登録
 Route::post('/favorite/toggle', [UserLikeController::class, 'toggle'])->middleware('auth');
 
+
+// トップ画面のルート
+Route::get('/top', function(){
+    return view('top');
+})->name('top');
+
+
 //退会処理
 Route::middleware(['auth'])->group(
     function () {
@@ -116,6 +123,7 @@ Route::middleware(['auth'])->group(
         Route::post('/withdrawal/confirm', [UserController::class, 'withdrawal'])->name('withdrawal.confirm');
     }
 );
+
 
 
 
