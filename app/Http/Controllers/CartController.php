@@ -53,13 +53,17 @@ class CartController extends Controller
         //ユーザー情報を取得
         $user = Auth::user();
 
-        Cart::create([
-            'user_id' => $user->id,
-            'item_id' => $request->item_id,
-            'count' => $request->count
-        ]);
+        try {
+            Cart::create([
+                'user_id' => $user->id,
+                'item_id' => $request->item_id,
+                'count' => $request->count
+            ]);
 
-        return redirect()->back()->with('success', 'カートに追加しました');
+            return redirect()->back()->with('success', 'カートに追加しました');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'カートへの追加に失敗しました。もう一度お試しください');
+        }
     }
 }
 

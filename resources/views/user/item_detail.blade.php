@@ -44,6 +44,30 @@
             <p class="text-xl font-bold text-red-600 mb-4">
                 ¥{{$item->price}}
             </p>
+            <form action="{{ route('cart.add')}}" method="POST">
+                @csrf
+                <input type="hidden" name="item_id" value="{{$item->id}}">
+                <div class="flex items-center mb-4 text-right">
+                    <label for="quantity" class="mr-2">数量:</label>
+                    <select name="count" class="border rounded">
+                        @if ($item->stock < 10)
+                            @for ($i = 1; $i <= $item->stock; $i++)
+                            <option value="{{ $i }}">{{ $i }}</option>
+                            @endfor
+                        @else
+                            @for ($i = 1; $i <= 10; $i++)
+                                <option value="{{ $i }}">{{ $i }}</option>
+                            @endfor
+                        @endif
+                    </select>
+                </div>
+
+                <div class="position:right flex justify-end">
+                    <button type="submit" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition-colors duration-300 w-30">
+                        カートに追加
+                    </button>
+                </div>
+            </form>
             <p class="mb-4">栄養素情報</p>
 
             <ul class="list-disc pl-5 mb-4">
@@ -76,44 +100,25 @@
             @endif
 
 
-
-            <form action="{{ route('cart.add')}}" method="POST">
-                @csrf
-                <input type="hidden" name="item_id" value="{{$item->id}}">
-                <div class="flex items-center mb-4 text-right">
-                    <label for="quantity" class="mr-2">数量:</label>
-                    <select name="count" class="border rounded">
-                        @if ($item->stock < 10)
-                            @for ($i = 1; $i <= $item->stock; $i++)
-                            <option value="{{ $i }}">{{ $i }}</option>
-                            @endfor
-                        @else
-                            @for ($i = 1; $i <= 10; $i++)
-                                <option value="{{ $i }}">{{ $i }}</option>
-                            @endfor
-                        @endif
-                    </select>
-                </div>
-
-                <div class="position:right flex justify-end">
-                    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors duration-300 mr-5 ml-8 w-30">
-                        定期購入
-                    </button>
-                    <button type="submit" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition-colors duration-300 w-30">
-                        カートに追加
-                    </button>
-                </div>
-            </form>
-
+            {{-- 定期購入
+            <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors duration-300 mr-5 ml-8 w-30">
+                定期購入
+            </button> --}}
 
         </div>
     </div>
+
+    {{-- 追加後のメッセージ表示 --}}
     @if (session('success'))
-    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
-        <strong class="font-bold">成功！</strong>
+    <div id="popup-message" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded shadow-lg z-50 transition-opacity duration-500" role="alert">
         <span class="block sm:inline">{{ session('success') }}</span>
     </div>
-@endif
+    @elseif(session('error'))
+    <div id="popup-message" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded shadow-lg z-50 transition-opacity duration-500" role="alert">
+        <span class="block sm:inline">{{ session('error') }}</span>
+    </div>
+    @endif
+
 
 </body>
 
@@ -150,4 +155,15 @@
     });
     });
 </script>
+
+    <script>
+        // 2秒後にフェードアウト
+        setTimeout(() => {
+            const popup = document.getElementById('popup-message');
+            if (popup) {
+                popup.style.opacity = '0';
+                setTimeout(() => popup.remove(), 500); // フェードアウト後に削除
+            }
+        }, 2000);
+    </script>
 </html>
