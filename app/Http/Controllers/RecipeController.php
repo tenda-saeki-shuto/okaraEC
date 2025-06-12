@@ -51,7 +51,7 @@ class RecipeController extends Controller
             // 'img' => 'nullable|max:300',
             'time' => 'required|max:20',
             'amount' => 'required|max:20',
-            'category_id' => 'required|integer|min:1',
+            'category_id' => 'required|integer|exists:categories,id',
         ]);
         $recipe_main['img'] = 'sample.png'; //あとで消す
         //レシピの栄養部分
