@@ -30,7 +30,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/admin/item', [ItemController::class, 'create'])->name('admin.item.create');
-Route::post('/admin/item', [ItemController::class, 'store'])->name('admin.item.store'); 
+Route::post('/admin/item', [ItemController::class, 'store'])->name('admin.item.store');
 
 Route::get('/admin/item_list', [ItemController::class, 'index'])->name('admin.item.index');
 Route::get('/admin/item/{item}/edit', [ItemController::class, 'edit'])->name('admin.item.edit');
@@ -68,6 +68,10 @@ Route::post('cart_item_delete/{id}', [CartController::class, 'delete'])->name('c
 
 // カートのajax
 Route::post('/change_cart_count/{id}/{count}', [CartController::class, 'update']);
+
+//カート登録
+Route::post('/cat/add', [CartController::class, 'add'])->name('cart.add');
+
 
 Route::get('confirm_payment', function () {
     return 'Hello';
