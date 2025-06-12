@@ -13,11 +13,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
+  
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+            'tel' => '090123456678', //電話番号の追加
         ]);
 
         User::create([
@@ -25,12 +25,21 @@ class DatabaseSeeder extends Seeder
             'name' => 'a',
             'email' => 'a@a',
             'password' => 'aaaaaaaa',
+            'tel' => '090123456678', //電話番号の追加
         ]);
 
-        $this->call(ReferenceSeeder::class);
-        $this->call(ItemSeeder::class);
-        $this->call(QuizSeeder::class);
-        $this->call(RecipeSeeder::class);
-        $this->call(UserOptSeeder::class);
+        //      DB::table('addresses')->insert([
+        //         [
+        //         'user_id' => 4,
+        //         'postal_code' => '1234567',
+        //         'prefecture_id' => 2,
+        //         'address' => '〇〇〇〇市〇〇〇１－３－４',
+        //     ],
+        // ]);
+        // $this->call(ReferenceSeeder::class);
+        // $this->call(ItemSeeder::class);
+        // $this->call(QuizSeeder::class);
+        // $this->call(RecipeSeeder::class);
+         $this->call(UserOptSeeder::class);
     }
 }

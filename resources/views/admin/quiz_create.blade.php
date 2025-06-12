@@ -44,7 +44,7 @@
 </head>
 <body>
     <header>
-        {{-- ヘッダー入れてください --}}
+        {{ view('admin.admin_header') }}
     </header>
     <h1>クイズ作成画面</h1>
     @if (session('message'))
@@ -52,41 +52,9 @@
             {{ session('message') }}
         </div>
     @endif
-    {{-- 飛ぶ先入れてください --}}
     <form action="{{ route('quiz.store') }}" method="POST">
         @csrf
-        <label for="title">クイズタイトル:</label>
-        <input type="text" id="title" name="title" required value="{{ old('title') }}">
-        <br><br>
-        <label for=start_time>開始日時:</label>
-        <input type="date" id="start_date" name="start" required value="{{ old('start') }}">
-        <br><br>
-        <label for="end_time">終了日時:</label>
-        <input type="date" id="end_date" name="end" required value="{{ old('end') }}">
-        <br><br>
-        <label for="description">問題文:</label>
-        <br>
-        <textarea id="description" name="content" rows="4" cols="100" required>{{ old('content') }}</textarea>
-        <br><br>
-        <label for="image">メイン画像:※１枚</label>
-        <div id="drop-area">
-            <p>ここに画像をドラッグ＆ドロップ</p>
-            <input type="file" id="image" name="img" accept="image/*" hidden value="{{ old('img') }}">
-            <button type="button" onclick="document.getElementById('image').click()">ファイルを選択</button>
-        </div>
-        <div id="preview"></div>
-        <br><br>
-        <label for="choices">選択肢:</label>
-        <br>
-        <input type="text" name="selections[]" required value="{{ old('selections[]') }}">
-        <br>
-        <input type="text" name="selections[]" required value="{{ old('selections[]') }}">
-        <br>
-        <input type="text" name="selections[]" required value="{{ old('selections[]') }}">
-        <br><br>
-        <label for="answer">正解:</label>
-        <br>
-        <input type="text" id="answer" name="content" required value="{{ old('content') }}">
+        @include('admin.quiz_form');
         <br><br>
         <button type="submit">登録</button>
     </form>

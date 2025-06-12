@@ -19,7 +19,7 @@ return new class extends Migration
             $table->boolean('is_cold')->default(false);
             $table->boolean('is_frozen')->default(false);
             $table->integer('price');
-
+            $table->integer('stock')->nullable();
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('categories');
             

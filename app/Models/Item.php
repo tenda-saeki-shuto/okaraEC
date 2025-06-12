@@ -6,6 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Item extends Model
 {
+    protected $fillable = [
+        'name',
+        'price',
+        'content',
+        'img',
+        'category_id',
+        'stock',
+        'is_cold',
+        'is_frozen',
+    ];
     //カテゴリとのリレーション
     public function categories()
     {
@@ -24,6 +34,14 @@ class Item extends Model
     {
         return $this->hasOne(ItemNutritionFact::class);
     }
+
+
+    public function likedByUsers()
+    {
+        return $this->belongsToMany(User::class, 'user_likes', 'item_id', 'user_id');
+    }
+
+
     //ユーザー・注文関連とのリレーション
     // public function userLikes()
     // {

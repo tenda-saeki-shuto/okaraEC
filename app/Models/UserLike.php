@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserLike extends Model
 {
+    protected $fillable = ['user_id', 'item_id'];
+
     //商品とのリレーション
     public function items()
     {
