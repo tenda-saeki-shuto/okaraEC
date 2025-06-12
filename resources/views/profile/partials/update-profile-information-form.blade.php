@@ -19,14 +19,14 @@
 
         <div>
             <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
+            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name ?? '')" required autofocus autocomplete="name" />
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
         </div>
 
         <!-- 追加：郵便番号 -->
         <div>
             <x-input-label for="postal_code" :value="__('postal_code')" />
-            <x-text-input id="postal_code" class="block mt-1 w-full" type="text" name="postal_code" :value="old('postal_code', $user->address->postal_code)" required autofocus autocomplete="postal_code" />
+            <x-text-input id="postal_code" class="block mt-1 w-full" type="text" name="postal_code" :value="old('postal_code', $user->address->postal_code ?? '')" required autofocus autocomplete="postal_code" />
             <x-input-error :messages="$errors->get('postal_code')" class="mt-2" />
             <p>※ハイフンなしで入力してください</p>
         </div>
@@ -38,7 +38,7 @@
             <option value="">選択してください</option>
             @foreach($prefecture as $pref)
             <option value="{{ $pref->id }}"
-                {{ old('prefecture_id', $user->address->prefecture_id) == $pref->id ? 'selected' : '' }}>
+                {{ old('prefecture_id', $user->address->prefecture_id  ?? '') == $pref->id ? 'selected' : '' }}>
                 {{ $pref->name }}
             </option>
             @endforeach
@@ -51,14 +51,14 @@
         <!-- 住所 -->
         <div>
             <x-input-label for="address" :value="__('address')" />
-            <x-text-input id="address" class="block mt-1 w-full" type="text" name="address" :value="old('address', $user->address->address)" required autofocus autocomplete="address" />
+            <x-text-input id="address" class="block mt-1 w-full" type="text" name="address" :value="old('address', $user->address->address ?? '')" required autofocus autocomplete="address" />
             <x-input-error :messages="$errors->get('address')" class="mt-2" />
         </div><br>
 
         <!-- 電話番号 -->
         <div>
             <x-input-label for="tel" :value="__('tel')" />
-            <x-text-input id="tel" class="block mt-1 w-full" type="text" name="tel" :value="old('tel', $user->tel)" required autofocus autocomplete="tel" />
+            <x-text-input id="tel" class="block mt-1 w-full" type="text" name="tel" :value="old('tel', $user->tel ?? '')" required autofocus autocomplete="tel" />
             <x-input-error :messages="$errors->get('tel')" class="mt-2" />
             <p>※ハイフンなしで入力してください</p>
         </div>
@@ -66,7 +66,7 @@
         <!-- kizonn -->
         <div>
             <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
+            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email ?? '')" required autocomplete="username" />
             <x-input-error class="mt-2" :messages="$errors->get('email')" />
 
             @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
