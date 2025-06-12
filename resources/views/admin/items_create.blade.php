@@ -29,7 +29,6 @@
     </style>
 </head>
 <body>
-
     <h1>商品登録</h1>
     <div class="container">
         <form action="" method="POST">

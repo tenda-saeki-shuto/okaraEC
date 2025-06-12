@@ -18,6 +18,12 @@ Route::post('/contact/confirm', [ContactController::class, 'confirm'])->name('co
 Route::get('/contact/submit', [ContactController::class, 'submitForm'])->name('contact.submit');
 Route::post('/contact/submit', [ContactController::class, 'submitForm'])->name('contact.submit');
 
+
+Route::get('/inquiry', [ContactController::class, 'index'])->name('inquiry');
+Route::POST('/inquiry', [ContactController::class, 'index'])->name('inquiry');
+Route::get('/inquiry/detail/{inquiry}', [ContactController::class, 'show'])->name('inquiry.detail');
+Route::get('/inquiry/detail/{inquiry}', [ContactController::class, 'show'])->name('inquiry.detail');
+
 //初期で表示されている画面
 Route::get('/', function () {
     return view('dashboard');

@@ -47,4 +47,18 @@ class ContactController extends Controller
         return view('user.contact_submit');
     }
 
+    public function index()
+    {
+        $inquiry_list= Inquiries::all();
+        return view('admin.inquiry_index', compact('inquiry_list')); 
+    }
+
+    public function show(Inquiries $inquiry)
+    {
+        // dd($inquiry);
+        // dd($id);
+        // $inquiry= Inquiries::find();
+        // dd($inquiry);
+        return view('admin.inquiry_detail', compact('inquiry')); 
+    }
 }
