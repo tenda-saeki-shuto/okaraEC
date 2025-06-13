@@ -116,6 +116,9 @@ Route::post('/payment_confirm', [PaymentController::class, 'confirm'])->name('pa
 // 決済情報入力で変更ボタンが押された際のルート
 Route::post('/validate_address', [PaymentController::class, 'validateAddress']);
 
+// 決済完了画面に飛ぶルート
+Route::get('/payment_complete', [PaymentController::class, 'showOrders'])->name('show_orders');
+
 // お気に入り登録
 Route::post('/favorite/toggle', [UserLikeController::class, 'toggle'])->middleware('auth');
 
