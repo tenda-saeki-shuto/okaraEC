@@ -90,10 +90,13 @@ Route::post('/cat/add', [CartController::class, 'add'])->name('cart.add');
 
 
 // 決済情報入力画面を表示するためのルート
-Route::get('insert_payment_info', [PaymentController::class, 'index'])->name('insert_payment');
+Route::get('/insert_payment_info', [PaymentController::class, 'index'])->name('insert_payment');
+
+// 決済確認画面で「戻る」ボタンが押された際のルート
+Route::post('/insert_payment_info', [PaymentController::class, 'changePaymentInfo'])->name('back_to_insert_payment');
 
 // 決済情報入力から確認画面へ遷移するボタンが押された際のルート
-Route::get('payment_confirm', [PaymentController::class, 'confirm']);
+Route::post('/payment_confirm', [PaymentController::class, 'confirm'])->name('payment_confirm');
 
 // 決済情報入力で変更ボタンが押された際のルート
 Route::post('/validate_address', [PaymentController::class, 'validateAddress']);
