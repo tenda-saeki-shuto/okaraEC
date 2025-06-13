@@ -10,18 +10,21 @@ use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RecipeController;
 
-
+// contact-> ユーザー用
 Route::get('/contact', [ContactController::class, 'showForm'])->name('contact.form');
+// Route::match(['get', 'post'], [ContactController::class, 'confirm'])->name('contact.confirm');
+
 Route::get('/contact/confirm', [ContactController::class, 'confirm'])->name('contact.confirm');
 Route::post('/contact/confirm', [ContactController::class, 'confirm'])->name('contact.confirm');
+// Route::match(['get', 'post'],[ContactController::class, 'submitForm'])->name('contact.submit');
 
 Route::get('/contact/submit', [ContactController::class, 'submitForm'])->name('contact.submit');
 Route::post('/contact/submit', [ContactController::class, 'submitForm'])->name('contact.submit');
 
-
-Route::get('/inquiry', [ContactController::class, 'index'])->name('inquiry');
-Route::POST('/inquiry', [ContactController::class, 'index'])->name('inquiry');
-Route::get('/inquiry/detail/{inquiry}', [ContactController::class, 'show'])->name('inquiry.detail');
+// inquiry-> 管理者用
+Route::match(['get', 'post'], '/inquiry', [ContactController::class, 'index'])->name('inquiry');
+// Route::get('/inquiry', [ContactController::class, 'index'])->name('inquiry');
+// Route::post('/inquiry', [ContactController::class, 'index'])->name('inquiry.submit');
 Route::get('/inquiry/detail/{inquiry}', [ContactController::class, 'show'])->name('inquiry.detail');
 
 //初期で表示されている画面
@@ -63,9 +66,6 @@ Route::get('/items/filter', [ItemController::class, 'filter'])->name('items.filt
 Route::get('/item/{id}', [ItemController::class, 'show'])->name('item_detail');
 
 
-
-
-
 // カード情報入力
 Route::get('enter_card_info', function () {
     return view('enter_card_info');
@@ -103,7 +103,6 @@ Route::post('/validate_address', [PaymentController::class, 'validateAddress']);
 
 // お気に入り登録
 Route::post('/favorite/toggle', [UserLikeController::class, 'toggle'])->middleware('auth');
-
 
 
 

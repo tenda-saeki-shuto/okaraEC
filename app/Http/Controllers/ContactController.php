@@ -55,10 +55,6 @@ class ContactController extends Controller
 
     public function show(Inquiries $inquiry)
     {
-        // dd($inquiry);
-        // dd($id);
-        // $inquiry= Inquiries::find();
-        // dd($inquiry);
-        return view('admin.inquiry_detail', compact('inquiry')); 
+           return view('admin.inquiry_detail', compact('inquiry')); 
     }
 }
