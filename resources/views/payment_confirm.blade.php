@@ -51,22 +51,39 @@
             </tfoot>
         </table>
 
-        <div class="mb-5 mt-5">
-            <h2 class="text-2xl font-bold">お届け先</h2>
-            <p>○○県○○市00-0</p>
-        </div>
-
-        <div class="mb-5">
-            <h2 class="text-2xl font-bold mb-3">支払い情報</h2>
-            <p>クレジットカード</p>
-            <p>カード情報末尾　{{ $shown_num }}</p>
-        </div>
-
-        <div class="flex justify-around mb-10">
-            <button>変更</button>
-            <button>確定</button>
-        </div>
+        <form action="{{ route('back_to_insert_payment') }}" method="post">
+            @csrf
+            <div class="mb-5 mt-5">
+                <h2 class="text-2xl font-bold">お届け先</h2>
+                <div>
+                    <label class="text-lg">郵便番号</label>
+                    <p>{{ $postal_code }}</p>
+                    <input type="hidden" name="postal_code" value="{{ $postal_code }}">
+                </div>
+                <div class="mt-4">
+                    <label for="prefecture" class="text-lg">都道府県</label>
+                    <p>{{ $prefecture }}</p>
+                    <input type="hidden" name="prefecture" value="{{ $prefecture }}">
+                </div>
+                <div class="mt-4">
+                    <label for="address" class="text-lg w-full">住所</label>
+                    <p>{{ $address }}</p>
+                    <input type="hidden" name="address" value="{{ $address }}">
+                </div>
+            </div>
+    
+            <div class="mb-5">
+                <h2 class="text-2xl font-bold mb-3">支払い情報</h2>
+                <p>クレジットカード</p>
+                <p>カード情報末尾{{ $shown_num }}</p>
+            </div>
+    
+            <div class="flex justify-around mb-10">
+                <button type="submit" class="w-48 bg-sky-500 h-10 rounded-xl text-white font-black text-xl mt-10">戻る</button>
+            </div>
+        </form>
     </div>
-
+    
+    <button>確定</button>
 </body>
 </html>

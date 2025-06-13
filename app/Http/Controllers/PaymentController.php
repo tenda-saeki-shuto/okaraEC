@@ -56,12 +56,23 @@ class PaymentController extends Controller
         $shown_num = substr($card_num, 12, 5);
 
         // 決済情報入力画面で選択されたクーポンの情報を取得
-        
+        $coupon = $request->coupon;
 
-        // 決済情報入力画面で入力されたお届け先を取得
+        // 決済情報入力画面で入力されたお届け先を取得(postal_code, prefecture(id), address, coupon(id))
+        $postal_code = $request->postal_code;
+        $prefecture = $request->prefecture;
+        $address = $request->address;
 
+        return view('payment_confirm', compact('carts', 'shown_num', 'coupon', 'postal_code', 'prefecture', 'address'));
+    }
 
-        return view('payment_confirm', compact('carts', 'shown_num'));
+    // 決済確認画面で「戻る」ボタンが押された際に決済情報入力画面にクーポンと住所の情報を送る処理
+    public function changePaymentInfo(Request $request){
+        $postal_code = $request->postal_code;
+        $user_prefecture = $request->prefecture;
+        $address = $request->address;
+        $prefectures=Prefecture::all(); //全ての都道府県の名前
+        return view('payment_info', compact('postal_code', 'user_prefecture', 'address', 'prefectures'));
     }
 
 
