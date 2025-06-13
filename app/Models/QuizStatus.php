@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class QuizStatus extends Model
 {
+
+    protected $table = 'quiz_status';
+
     public function User()
     {
         return $this->belongsTo(User::class);

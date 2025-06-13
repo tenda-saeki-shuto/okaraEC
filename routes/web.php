@@ -5,11 +5,12 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\QuizController;
 use App\Http\Controllers\UserLikeController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RecipeController;
+
 
 //初期で表示されている画面
 Route::get('/', function () {
@@ -108,7 +109,8 @@ Route::middleware(['auth'])->group(
     }
 );
 
-
+//クイズ画面
+Route::get('/quiz', [QuizController::class, 'user_index'])->name('user.quiz');
 
 
 require __DIR__ . '/auth.php';
@@ -132,4 +134,3 @@ require __DIR__ . '/admin.php';
 // Route::get('/admin/test', function(){
 //     return view('admin.test');
 // });
-
