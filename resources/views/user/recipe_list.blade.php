@@ -8,18 +8,50 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
-        .favorite-btn i {
-            font-size: 24px;
-            transition: color 0.3s ease;
-        }
         .text-danger {
             color: red;
         }
         .text-secondary {
             color: gray;
         }
-    </style>
 
+        /* 枠と文字サイズを固定 */
+        body {
+            font-size: 16px; /* フォントサイズ固定 */
+        }
+
+        #recipes > a.block {
+            width: 400px;
+            min-height: 400px;
+            padding: 0 auto;
+            display: block;
+        }
+
+        /* 画像の固定サイズ */
+        #recipes img {
+            width: 300px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 0.5rem; /* rounded-lg相当 */
+        }
+
+        /* テキストのフォントサイズ固定 */
+        #recipes h2 {
+            font-size: 1.25rem;
+            margin-top: 0.5rem;
+        }
+        #recipes p {
+            font-size: 0.875rem; 
+        }
+
+        #recipes {
+            padding-left: 20rem;   
+            padding-right: 20rem;  
+            grid-template-columns: repeat(3, 1fr);
+            justify-content: center;
+            gap: 1rem 0rem; /* 上下間隔1rem、左右間隔0.3remに狭く */
+        }
+    </style>
     <title>レシピ一覧</title>
 </head>
 <body>
@@ -32,6 +64,7 @@
     <form method="GET" class="mb-4">
         <label for="category" class="mb-4">カテゴリ</label>
         <select name="category" id="category" class="border rounded px-2 py-1 w-28">
+            <!-- カテゴリがある間それを表示 -->
             <option value="" {{ empty(request('category')) ? 'selected' : '' }}>全て</option>
             @foreach ($category as $category)
                 <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
@@ -66,7 +99,7 @@
 
             response.recipes.forEach(recipe => {
                 html += `
-                    <a href="/recipes/${recipe.id}" class="block">
+                    <a href="/resipes/${recipe.id}" class="block">
                         <div class="bg-white p-4 rounded-lg shadow aspect-[1/1]">
                             <img src="/storage/${recipe.img}" alt="${recipe.title}"
                             class="w-full h-48 object-cover rounded">
@@ -99,40 +132,5 @@
             fetchRecipes(categoryId);
         });
     });
-
-
-
-
-
-    //お気に入り処理
-    // $(document).on('click', '.favorite-btn', function (e) {
-    // e.preventDefault();
-    // const button = $(this);
-    // const itemId = button.data('item-id');
-    // const icon = button.find('i');
-
-    // $.ajax({
-    //     url: '/favorite/toggle',
-    //     type: 'POST',
-    //     headers: {
-    //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //     },
-    //     contentType: 'application/json',
-    //     data: JSON.stringify({ item_id: itemId }),
-    //     success: function (response) {
-    //         if (response.liked) {
-    //             icon.removeClass('text-secondary').addClass('text-danger');
-    //         } else {
-    //             icon.removeClass('text-danger').addClass('text-secondary');
-    //         }
-    //     },
-    //     //エラー処理、ログインしていなかったらログイン画面にリダイレクト
-    //     error: function () {
-    //         window.location.href = '/login?redirect=' + encodeURIComponent(window.location.pathname);
-
-    //     }
-    // });
-    // });
-
 </script>
 </html>
