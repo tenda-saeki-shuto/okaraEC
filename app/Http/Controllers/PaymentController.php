@@ -11,6 +11,7 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Cart;
 use App\Models\CreditCard;
+use Illuminate\Support\Facades\Auth;
 
 
 class PaymentController extends Controller
@@ -18,7 +19,7 @@ class PaymentController extends Controller
 
     public function index(){
         // セッションに登録されているユーザーの情報を取得する
-        $user_id = 1;
+        $user_id = Auth::id();
 
         // ビューに渡すデータの取得
         // ログインしているユーザーの郵便番号・都道府県・住所・支払情報・所有しているクーポン
@@ -44,7 +45,7 @@ class PaymentController extends Controller
     public function confirm(Request $request)
     {
         // ログインしているユーザーのIDを取得
-        $user_id = 1;
+        $user_id = Auth::id();
         // ユーザーのカートに入っている商品のデータを取得(cartsテーブル)
         $carts = Cart::with(['items:id,name,price'])->where('user_id', $user_id)->get();
 
@@ -80,7 +81,7 @@ class PaymentController extends Controller
     // 決済情報確認画面で確定が押された際のDB処理(注文番号、商品名、単価、数量を取得)
     public function showOrders(){
         // ログインしているユーザーのIDを取得
-        $user_id = 1;
+        $user_id = Auth::id();
 
         // オーダーのテーブルに登録されている情報を取得する
         $orders = Order::with(['orderDetails:id,order_id,item_name,price,count'])->get();
