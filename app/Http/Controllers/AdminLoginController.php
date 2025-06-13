@@ -25,7 +25,7 @@ class AdminLoginController extends Controller
         if (Auth::guard('admin')->attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect()->intended('/admin/top')->with([
+            return redirect()->intended(route('admin.top'))->with([
                 'message' => 'ログインしました'
             ]);
         }
