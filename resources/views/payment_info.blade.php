@@ -89,15 +89,15 @@
                     <h2 class="text-xl font-bold mb-2">支払情報</h2>
                     <p class="text-lg">クレジットカード</p>
                     <p class="text-lg">カード情報末尾 1234</p>
-                    <a href="{{ route('enter_card_info') }}" class="no-underline px-6 py-2 bg-sky-500 rounded-xl text-white block font-black text-xl mt-5">カード情報変更</a>
+                    <a href="{{ route('enter_card_info') }}" class="w-48 bg-sky-500 text-white no-underline px-6 py-2 rounded-xl block font-black text-xl mt-5">カード情報変更</a>
                 </div>
             
                 <div class="mb-10">
                     <h2 class="text-xl font-bold mb-2">クーポン</h2>
-                    <div class="border-2 border-solid mb-5 p-3 border-stone-950">
+                    <div class="border-2 border-solid mb-5 p-3 border-stone-950 w-64">
                         <input type="radio" name="coupon" value="1" id="1"><label for="1" class="text-lg ml-1">新規登録記念クーポン</label><br>
                     </div>
-                    <div class="border-2 border-solid p-3 border-stone-950">
+                    <div class="border-2 border-solid p-3 border-stone-950 w-64">
                         <input type="radio" name="coupon" value="2" id="2"><label for="2" class="text-lg ml-1">500円引きクーポン</labe>
                     </div>
                     <button type="submit" class="w-48 bg-sky-500 h-10 rounded-xl text-white font-black text-xl mt-10">注文確認</button>
