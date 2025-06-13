@@ -18,6 +18,23 @@ Route::post('/contact/confirm', [ContactController::class, 'confirm'])->name('co
 Route::get('/contact/submit', [ContactController::class, 'submitForm'])->name('contact.submit');
 Route::post('/contact/submit', [ContactController::class, 'submitForm'])->name('contact.submit');
 
+// contact-> ユーザー用
+Route::get('/contact', [ContactController::class, 'showForm'])->name('contact.form');
+// Route::match(['get', 'post'], [ContactController::class, 'confirm'])->name('contact.confirm');
+
+Route::get('/contact/confirm', [ContactController::class, 'confirm'])->name('contact.confirm');
+Route::post('/contact/confirm', [ContactController::class, 'confirm'])->name('contact.confirm');
+// Route::match(['get', 'post'],[ContactController::class, 'submitForm'])->name('contact.submit');
+
+Route::get('/contact/submit', [ContactController::class, 'submitForm'])->name('contact.submit');
+Route::post('/contact/submit', [ContactController::class, 'submitForm'])->name('contact.submit');
+
+// inquiry-> 管理者用
+Route::match(['get', 'post'], '/inquiry', [ContactController::class, 'index'])->name('inquiry');
+// Route::get('/inquiry', [ContactController::class, 'index'])->name('inquiry');
+// Route::post('/inquiry', [ContactController::class, 'index'])->name('inquiry.submit');
+Route::get('/inquiry/detail/{inquiry}', [ContactController::class, 'show'])->name('inquiry.detail');
+
 //初期で表示されている画面
 Route::get('/', function () {
     return view('dashboard');
@@ -62,8 +79,6 @@ Route::get('/item/{id}', [RecipeController::class, 'show'])->name('item_detail')
 Route::get('/recipes', [RecipeController::class, 'user_index'])->name('recipes');
 // 商品一覧のフィルター
 Route::get('/recipes/filter', [RecipeController::class, 'filter'])->name('recipes.filter');
-
-
 
 // カード情報入力
 Route::get('enter_card_info', function () {
@@ -121,7 +136,6 @@ Route::middleware(['auth'])->group(
         Route::post('/withdrawal/confirm', [UserController::class, 'withdrawal'])->name('withdrawal.confirm');
     }
 );
-
 
 
 

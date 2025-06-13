@@ -24,7 +24,6 @@
             </form>
         </div>
 
-
         <div class="image-row">
             <!-- お気に入り画面に遷移 -->
             <form action="#">
