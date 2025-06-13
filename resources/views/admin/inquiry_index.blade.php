@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>商品一覧</title>
+    <title>問い合わせ一覧</title>
 
     <style>
         #drop-area {
@@ -59,30 +59,27 @@
             {{ session('message') }}
         </div>
     @endif
-    <a href="{{ route('item.create') }}">+新規追加</a>
     <div class="max-w-7xl mx-auto px-6">
         <table border="1">
             <thead>
                 <tr>
-                    <th scope="col" >商品名</th>                    
-                    <th scope="col" >説明</th>
-                    <th scope="col">在庫</th>
-                    <th scope="col">最終更新日</th>
+                    <th scope="col" >問い合わせ日</th>                    
+                    <th scope="col" >名前</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">TEL</th>
                 </tr>
             </thead>
             <tbody>
-            @foreach ($item_list as $item)
+            @foreach ($inquiry_list as $inquiry)
                 <tr>
-                    <th scope="row">{{ $item->name }}</th>                    
-                    <td>{{ $item->content }}</td>
-                    <td>{{ $item->stock }}</td>
-                    <td>{{ $item->updated_at }}</td>
-                    <td><a href="{{ route('item.edit', $item) }}">編集</a></td>
+                    <th scope="row">{{ $inquiry->created_at }}</th>                    
+                    <td>{{ $inquiry->name }}</td>
+                    <td>{{ $inquiry->Email }}</td>
+                    <td>{{ $inquiry->tel }}</td>
+                    <td><a href="{{ route('inquiry.detail', $inquiry) }}">詳細</a></td>
                 </tr>
             @endforeach
-            <div class="mb-4">
-                {{ $item_list->links() }}
-            </div>
+           
             </tbody>
         </table>
     </div>
