@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Address;
 use App\Models\UserCoupon;
 use App\Models\Order;
+use App\Models\OrderDetail;
 use App\Models\Cart;
 use App\Models\CreditCard;
 
@@ -76,9 +77,15 @@ class PaymentController extends Controller
     }
 
 
-    // 決済情報確認画面で確定が押された際のDB処理
-    public function executePayment(){
+    // 決済情報確認画面で確定が押された際のDB処理(注文番号、商品名、単価、数量を取得)
+    public function showOrders(){
+        // ログインしているユーザーのIDを取得
+        $user_id = 1;
 
+        // オーダーのテーブルに登録されている情報を取得する
+        $orders = Order::with(['orderDetails:id,order_id,item_name,price,count'])->get();
+        
+        return view('payment_complete', compact('orders'));
     }
 
 
