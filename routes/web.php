@@ -7,8 +7,16 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\UserLikeController;
 use App\Http\Controllers\ContactController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RecipeController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Route;
+
+Route::get('/contact', [ContactController::class, 'showForm'])->name('contact.form');
+Route::get('/contact/confirm', [ContactController::class, 'confirm'])->name('contact.confirm');
+Route::post('/contact/confirm', [ContactController::class, 'confirm'])->name('contact.confirm');
+
+Route::get('/contact/submit', [ContactController::class, 'submitForm'])->name('contact.submit');
+Route::post('/contact/submit', [ContactController::class, 'submitForm'])->name('contact.submit');
 
 // contact-> ユーザー用
 Route::get('/contact', [ContactController::class, 'showForm'])->name('contact.form');
@@ -35,6 +43,8 @@ Route::get('/', function () {
 //ヘッダーからマイページに画面遷移←ログインしていない場合はログイン画面にリダイレクト
 Route::middleware(['auth'])->group(function () {
     Route::get('/user', [ProfileController::class, 'show'])->name('view.mypage');
+    Route::get('/user/edit', [ProfileController::class, 'edit'])->name('userinfo.edit');
+    Route::patch('/user/edit', [ProfileController::class, 'update'])->name('userinfo.update');
 });
 
 //ヘッダーからレシピ画面に遷移
@@ -63,8 +73,12 @@ Route::get('/items/filter', [ItemController::class, 'filter'])->name('items.filt
 
 
 // 商品詳細
-Route::get('/item/{id}', [ItemController::class, 'show'])->name('item_detail');
+Route::get('/item/{id}', [RecipeController::class, 'show'])->name('item_detail');
 
+// 商品一覧
+Route::get('/recipes', [RecipeController::class, 'user_index'])->name('recipes');
+// 商品一覧のフィルター
+Route::get('/recipes/filter', [RecipeController::class, 'filter'])->name('recipes.filter');
 
 // カード情報入力
 Route::get('enter_card_info', function () {
@@ -85,18 +99,16 @@ Route::post('/change_cart_count/{id}/{count}', [CartController::class, 'update']
 Route::post('/cat/add', [CartController::class, 'add'])->name('cart.add');
 
 
-Route::get('confirm_payment', function () {
-    return 'Hello';
-})->name('confirm_payment');
+// Route::get('confirm_payment', function () {
+//     return 'Hello';
+// })->name('confirm_payment');
 
 
 // 決済情報入力画面を表示するためのルート
 Route::get('insert_payment_info', [PaymentController::class, 'index'])->name('insert_payment');
 
 // 決済情報入力から確認画面へ遷移するボタンが押された際のルート
-Route::get('payment_confirm', function(){
-    return view('payment_confirm');
-});
+Route::get('payment_confirm', [PaymentController::class, 'confirm']);
 
 // 決済情報入力で変更ボタンが押された際のルート
 Route::post('/validate_address', [PaymentController::class, 'validateAddress']);
@@ -105,6 +117,25 @@ Route::post('/validate_address', [PaymentController::class, 'validateAddress']);
 Route::post('/favorite/toggle', [UserLikeController::class, 'toggle'])->middleware('auth');
 
 
+// トップ画面のルート
+Route::get('/top', function(){
+    return view('top');
+})->name('top');
+
+
+//退会処理
+Route::middleware(['auth'])->group(
+    function () {
+        Route::get('/withdrawal', function () {
+            return view('user.withdrawal');
+        })->name('withdraw');
+    }
+);
+Route::middleware(['auth'])->group(
+    function () {
+        Route::post('/withdrawal/confirm', [UserController::class, 'withdrawal'])->name('withdrawal.confirm');
+    }
+);
 
 
 

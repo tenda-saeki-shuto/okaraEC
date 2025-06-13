@@ -38,7 +38,7 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', 'min:8', 'max:20', Rules\Password::defaults()],
             'postal_code' => ['required', 'regex:/^\d{7}$/'], //郵便番号
             'prefecture_id' => ['required', 'exists:prefectures,id'],  // 都道府県
-            'address' => ['required'], //住所
+            'address' => ['required', 'max:30'], //住所
             'tel' => ['required', 'regex:/^\d{11}$/'], //電話番号
         ]);
 

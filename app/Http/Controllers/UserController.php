@@ -1,9 +1,7 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
-
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -84,6 +82,20 @@ class UserController extends Controller
         //パスワードを除いて表示する
         return view('user.mypage', compact('user'));
     }
-}
+  
+  
+  //退会処理
+  public function withdrawal(Request $request)
+    {
 
+        if ($request->input('confirm') === 'true') {
+            $user = Auth::user();
+            $user->delete();
+            Auth::logout();
+            return redirect(route('/'));
+        } else {
+            return redirect(route('view.mypage'));
+        }
+    }
+}
 

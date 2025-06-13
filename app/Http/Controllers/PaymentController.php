@@ -8,6 +8,8 @@ use App\Models\User;
 use App\Models\Address;
 use App\Models\UserCoupon;
 use App\Models\Order;
+use App\Models\Cart;
+use App\Models\CreditCard;
 
 
 class PaymentController extends Controller
@@ -40,14 +42,35 @@ class PaymentController extends Controller
 
     public function confirm(Request $request)
     {
-        // 郵便番号と住所のバリデーションを行う
-        $validated_data = $request->validate([
-            'postal_code' => ['required', 'regex:/^\d{7}$/'], //郵便番号
-            'address' => ['required'], //住所
-        ]);
+        // ログインしているユーザーのIDを取得
+        $user_id = 1;
+        // ユーザーのカートに入っている商品のデータを取得(cartsテーブル)
+        $carts = Cart::with(['items:id,name,price'])->where('user_id', $user_id)->get();
 
-        return view('payment_confirm', compact('validated_data'));
+        // クレジットカード情報を取得
+        $card_info = CreditCard::where('user_id',$user_id)->get();
+        foreach($card_info as $info){
+            $card_num = $info->card_number;
+        }
+        // カードの下４桁を取得
+        $shown_num = substr($card_num, 12, 5);
+
+        // 決済情報入力画面で選択されたクーポンの情報を取得
+        
+
+        // 決済情報入力画面で入力されたお届け先を取得
+
+
+        return view('payment_confirm', compact('carts', 'shown_num'));
     }
+
+
+    // 決済情報確認画面で確定が押された際のDB処理
+    public function executePayment(){
+
+    }
+
+
 
     public function validateAddress(Request $request){
         // 郵便番号と住所のバリデーションを行う
