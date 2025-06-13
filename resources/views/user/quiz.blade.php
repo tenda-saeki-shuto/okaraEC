@@ -8,6 +8,9 @@
     <title>おからクイズ！！</title>
 </head>
 <body>
+    <header>
+        @include('user.user_header')
+    </header>
     <div>今月のクイズ</div>
 
     {{-- ステータスがあったら回答済みを表示 --}}
@@ -22,10 +25,11 @@
     <div>{{$quiz_list->content}}</div>
 
     {{-- 選択肢ボタンを設置 --}}
-    <form action="" method="GET">
+    <form action="{{ route('quiz.answer') }}" method="POST">
+        @csrf
         @foreach ($quiz_list->quizSelections as $selection)
             {{-- ループの回数をクラスに入れてます。０～３ --}}
-            <button type="submit" value="{{$selection->id}}" class="{{$loop->index}}">
+            <button type="submit" name="selection_id" value="{{$selection->id}}" class="{{$loop->index}}">
                 {{$loop->index+1}}<br>
                 {{$selection->content}}
             </button>
@@ -35,11 +39,14 @@
     @if($quiz_list->quizStatus->isNotEmpty())
         @foreach($quiz_list->quizSelections as $selection)
             @if($selection->is_answer === 1)
-                <div class="{{$loop->index}}">正解:{{$loop->index+1}}<br>
-                    {{$selection->content}}</div>
+                <div class="{{ $loop->index }}">
+                    正解: {{ $loop->index + 1 }}<br>
+                    {{ $selection->content }}
+                </div>
             @endif
         @endforeach
     @endif
+
 
 
     {{-- トップ画面に飛ぶリンクを修正してください --}}

@@ -48,12 +48,8 @@ Route::get('/items/filter', [ItemController::class, 'filter'])->name('items.filt
 
 
 // 商品詳細
-Route::get('/item/{id}', [RecipeController::class, 'show'])->name('item_detail');
+Route::get('/item/{id}', [ItemController::class, 'show'])->name('item_detail');
 
-// 商品一覧
-Route::get('/recipes', [RecipeController::class, 'user_index'])->name('recipes');
-// 商品一覧のフィルター
-Route::get('/recipes/filter', [RecipeController::class, 'filter'])->name('recipes.filter');
 
 
 
@@ -109,9 +105,10 @@ Route::middleware(['auth'])->group(
     }
 );
 
-//クイズ画面
+//---クイズ画面---------------------------------------------------------------
 Route::get('/quiz', [QuizController::class, 'user_index'])->name('user.quiz');
-
+//クイズ結果画面
+Route::post('/quiz/answer', [QuizController::class, 'answer'])->name('quiz.answer');
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin.php';

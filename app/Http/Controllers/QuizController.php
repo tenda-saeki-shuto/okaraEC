@@ -9,7 +9,7 @@ use App\Models\QuizSelections;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
-
+use Termwind\Components\Raw;
 
 class QuizController extends Controller
 {
@@ -101,7 +101,7 @@ class QuizController extends Controller
     }
     public function destroy($id) {}
 
-
+    // ユーザー側クイズ表示
     public function user_index()
     {
         $user = Auth::user();
@@ -113,9 +113,30 @@ class QuizController extends Controller
                 $query->where('user_id', $user->id);
             }
         ])
-        ->whereMonth('start', $todayMonth)
-        ->first();
+            ->whereMonth('start', $todayMonth)
+            ->first();
         // dd($quiz_list);
         return view('user.quiz', compact('quiz_list'));
+    }
+
+    //クイズの正解表示
+    public function answer(Request $request)
+    {
+        //ユーザーの回答した選択肢
+        $user_answer = QuizSelections::find($request->selection_id);
+
+        if ($user_answer->is_answer === 1) {
+            $answer = $user_answer;
+            $is_answer = True;
+        } else {
+            //クイズの正解の選択肢
+            $answer = QuizSelections::where('quiz_id', $user_answer->quiz_id)
+                ->where('is_answer', 1)
+                ->first();
+
+            $is_answer = False;
+        }
+
+        return view('user.quiz_answer', compact('answer', 'is_answer'));
     }
 }
