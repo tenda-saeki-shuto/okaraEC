@@ -28,7 +28,8 @@ Route::group(['prefix' => 'admin'], function () {
         // 管理商品
         Route::resource('item', ItemController::class);
         // 管理ユーザー
-        Route::resource('user', UserController::class);    });
+        Route::resource('user', UserController::class);
+    });
 
 
     // Route::get('/', function () {
