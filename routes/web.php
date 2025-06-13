@@ -35,6 +35,21 @@ Route::match(['get', 'post'], '/inquiry', [ContactController::class, 'index'])->
 // Route::post('/inquiry', [ContactController::class, 'index'])->name('inquiry.submit');
 Route::get('/inquiry/detail/{inquiry}', [ContactController::class, 'show'])->name('inquiry.detail');
 
+
+Route::get('/admin/item', [ItemController::class, 'create'])->name('admin.item.create');
+Route::post('/admin/item', [ItemController::class, 'store'])->name('admin.item.store'); 
+
+Route::get('/admin/item_list', [ItemController::class, 'index'])->name('admin.item.index');
+Route::get('/admin/item/{item}/edit', [ItemController::class, 'edit'])->name('admin.item.edit');
+
+Route::get('/admin/user', [ProfileController::class, 'index'])->name('admin.user.index');
+Route::get('/admin/user/{user}/edit', [ProfileController::class, 'edit'])->name('admin.user.edit');
+
+// カード情報入力
+Route::get('enter_card_info', function () {
+    return view('enter_card_info');
+})->name('enter_card_info');
+
 //初期で表示されている画面
 Route::get('/', function () {
     return view('dashboard');
@@ -47,12 +62,21 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/user/edit', [ProfileController::class, 'update'])->name('userinfo.update');
 });
 
-//ヘッダーからレシピ画面に遷移
+//レシピ画面に遷移
 Route::get('/recipes', [RecipeController::class, 'user_index'])->name('recipes');
 //レシピフィルター
 Route::get('/recipes/filter', [RecipeController::class, 'filter'])->name('recipes.filter');
 // レシピ詳細
-Route::get('/resips/{id}', [RecipeController::class, 'show'])->name('resipe_detail');
+Route::get('/resipes/{id}', [RecipeController::class, 'show'])->name('recipe_detail');
+
+
+//商品一覧表示
+// 商品一覧
+Route::get('/items', [ItemController::class, 'user_index'])->name('items');
+// 商品一覧のフィルター
+Route::get('/items/filter', [ItemController::class, 'filter'])->name('items.filter');
+// 商品詳細
+Route::get('/item/{id}', [ItemController::class, 'show'])->name('item_detail');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -64,26 +88,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-//商品一覧表示
-// 商品一覧
-Route::get('/items', [ItemController::class, 'user_index'])->name('items');
-// 商品一覧のフィルター
-Route::get('/items/filter', [ItemController::class, 'filter'])->name('items.filter');
-
-
-
-// 商品詳細
-Route::get('/item/{id}', [RecipeController::class, 'show'])->name('item_detail');
-
-// 商品一覧
-Route::get('/recipes', [RecipeController::class, 'user_index'])->name('recipes');
-// 商品一覧のフィルター
-Route::get('/recipes/filter', [RecipeController::class, 'filter'])->name('recipes.filter');
-
-// カード情報入力
-Route::get('enter_card_info', function () {
-    return view('enter_card_info');
-})->name('enter_card_info');
 
 
 // カート画面を表示するためのルート
@@ -99,9 +103,6 @@ Route::post('/change_cart_count/{id}/{count}', [CartController::class, 'update']
 Route::post('/cat/add', [CartController::class, 'add'])->name('cart.add');
 
 
-// Route::get('confirm_payment', function () {
-//     return 'Hello';
-// })->name('confirm_payment');
 
 
 // 決済情報入力画面を表示するためのルート
@@ -113,8 +114,10 @@ Route::post('/insert_payment_info', [PaymentController::class, 'changePaymentInf
 // 決済情報入力から確認画面へ遷移するボタンが押された際のルート
 Route::post('/payment_confirm', [PaymentController::class, 'confirm'])->name('payment_confirm');
 
+
 // 決済情報入力で変更ボタンが押された際のルート
 Route::post('/validate_address', [PaymentController::class, 'validateAddress']);
+
 
 // お気に入り登録
 Route::post('/favorite/toggle', [UserLikeController::class, 'toggle'])->middleware('auth');
