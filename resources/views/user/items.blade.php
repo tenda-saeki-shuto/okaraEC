@@ -18,6 +18,12 @@
         .text-secondary {
             color: gray;
         }
+        #item_list {
+            max-width: 1280px; /* 例：400px × 3列 + gap込みの幅を想定 */
+            margin-left: auto;
+            margin-right: auto;
+            gap: 1rem 2rem;
+        }
     </style>
 
     <title>商品一覧</title>
