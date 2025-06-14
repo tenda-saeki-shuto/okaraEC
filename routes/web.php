@@ -106,7 +106,9 @@ Route::middleware(['auth'])->group(
 );
 
 //---クイズ画面---------------------------------------------------------------
-Route::get('/quiz', [QuizController::class, 'user_index'])->name('user.quiz');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/quiz', [QuizController::class, 'user_index'])->name('user.quiz');
+});
 //クイズ結果画面
 Route::post('/quiz/answer', [QuizController::class, 'answer'])->name('quiz.answer');
 

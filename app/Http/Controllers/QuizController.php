@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Coupon;
+use App\Models\UserCoupon;
 use Illuminate\Http\Request;
-
 use App\Models\Quizzes;
 use App\Models\QuizSelections;
+use App\Models\QuizStatus;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -124,10 +126,22 @@ class QuizController extends Controller
     {
         //ユーザーの回答した選択肢
         $user_answer = QuizSelections::find($request->selection_id);
+        //ユーザー情報
+        $user = Auth::user();
+        //クーポン情報
+        $coupon = Coupon::find(2);
+
 
         if ($user_answer->is_answer === 1) {
             $answer = $user_answer;
             $is_answer = True;
+            $massage = '正解！！';
+
+            UserCoupon::create([
+                'user_id' => $user->id,
+                'coupon_id' => $coupon->id,
+                'available' => 1
+            ]);
         } else {
             //クイズの正解の選択肢
             $answer = QuizSelections::where('quiz_id', $user_answer->quiz_id)
@@ -135,8 +149,16 @@ class QuizController extends Controller
                 ->first();
 
             $is_answer = False;
+            $massage = 'ざんね～ん';
         }
 
-        return view('user.quiz_answer', compact('answer', 'is_answer'));
+
+        // 回答処理、クイズステータスに追加
+        QuizStatus::create([
+            'quizzes_id' =>  $user_answer->quiz_id,
+            'user_id' => $user->id,
+        ]);
+
+        return view('user.quiz_answer', compact('answer', 'is_answer', 'massage', 'coupon'));
     }
 }
