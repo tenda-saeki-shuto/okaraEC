@@ -14,8 +14,13 @@ use Illuminate\View\View;
 use App\Models\Prefecture;
 use App\Models\Address;
 
+use App\Http\Controllers\Traits\HandlesGuestQuiz;
+
+
 class RegisteredUserController extends Controller
 {
+    use HandlesGuestQuiz;
+
     /**
      * Display the registration view.
      */
@@ -62,7 +67,14 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        //ゲストクイズ処理
+        $this->handleGuestQuizAfterLogin();
+
+
+        $redirect = session('redirect_after_login', route('dashboard'));
+        session()->forget('redirect_after_login');
+
+        return redirect($redirect);
     }
 }
 
@@ -79,4 +91,3 @@ class RegisteredUserController extends Controller
     // {
     //     $validated=""
     // }
-

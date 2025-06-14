@@ -9,8 +9,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
+use App\Http\Controllers\Traits\HandlesGuestQuiz;
+
+
 class AuthenticatedSessionController extends Controller
 {
+    use HandlesGuestQuiz;
+
     /**
      * Display the login view.
      */
@@ -28,7 +33,14 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        //ゲストクイズ処理
+        $this->handleGuestQuizAfterLogin();
+
+
+        $redirect = session('redirect_after_login', route('dashboard'));
+        session()->forget('redirect_after_login');
+
+        return redirect($redirect);
     }
 
     /**
