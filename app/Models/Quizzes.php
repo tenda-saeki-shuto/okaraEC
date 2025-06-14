@@ -14,10 +14,10 @@ class Quizzes extends Model
         'end',
     ];
 
-    // public function QuizStatus()
-    // {
-    //     return $this->hasMany(QuizStatus::class);
-    // }
+    public function QuizStatus()
+    {
+        return $this->hasMany(QuizStatus::class);
+    }
 
     public function QuizSelections()
     {

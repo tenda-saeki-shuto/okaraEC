@@ -5,11 +5,13 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\QuizController;
 use App\Http\Controllers\UserLikeController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+
 
 Route::get('/contact', [ContactController::class, 'showForm'])->name('contact.form');
 Route::get('/contact/confirm', [ContactController::class, 'confirm'])->name('contact.confirm');
@@ -50,6 +52,7 @@ Route::get('enter_card_info', function () {
     return view('enter_card_info');
 })->name('enter_card_info');
 
+
 //初期で表示されている画面
 Route::get('/', function () {
     return view('dashboard');
@@ -77,6 +80,7 @@ Route::get('/items', [ItemController::class, 'user_index'])->name('items');
 Route::get('/items/filter', [ItemController::class, 'filter'])->name('items.filter');
 // 商品詳細
 Route::get('/item/{id}', [ItemController::class, 'show'])->name('item_detail');
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -145,8 +149,12 @@ Route::middleware(['auth'])->group(
     }
 );
 
-
-
+//---クイズ画面---------------------------------------------------------------
+Route::middleware(['auth'])->group(function () {
+    Route::get('/quiz', [QuizController::class, 'user_index'])->name('user.quiz');
+});
+//クイズ結果画面
+Route::post('/quiz/answer', [QuizController::class, 'answer'])->name('quiz.answer');
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin.php';
@@ -169,4 +177,3 @@ require __DIR__ . '/admin.php';
 // Route::get('/admin/test', function(){
 //     return view('admin.test');
 // });
-

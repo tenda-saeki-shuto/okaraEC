@@ -29,7 +29,7 @@
             <div class="nav-right">
                 <a href="{{ route('items') }}">商品一覧&nbsp&nbsp</a>
                 <a href="{{ route('recipes') }}">レシピ&nbsp&nbsp</a>
-                <a href="/">クイズ&nbsp&nbsp</a>
+                <a href="{{route('user.quiz')}}">クイズ&nbsp&nbsp</a>
                 <a href="/">お問い合わせフォーム&nbsp&nbsp</a>
                 <a href="/">home</a><img src="{{ asset('img/home.png') }}" alt="ホーム" class="w-10 h-10"></a>
                 <a href="{{ route('view.mypage') }}">マイページ</a>

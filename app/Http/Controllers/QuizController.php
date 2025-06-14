@@ -2,28 +2,35 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Coupon;
+use App\Models\UserCoupon;
 use Illuminate\Http\Request;
-
 use App\Models\Quizzes;
 use App\Models\QuizSelections;
+use App\Models\QuizStatus;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+use Termwind\Components\Raw;
 
 class QuizController extends Controller
 {
     private $quiz;
 
-    public function __construct(Quizzes $quiz) {
+    public function __construct(Quizzes $quiz)
+    {
         $this->quiz = $quiz;
     }
     public function index()
     {
-        $quizzes = Quizzes::orderBy("updated_at","desc")->paginate(20);
+        $quizzes = Quizzes::orderBy("updated_at", "desc")->paginate(20);
         return view("admin.quiz_index", compact('quizzes'));
     }
-    
+
     public function create()
     {
         $quiz = $this->quiz;
-        $selections = ['','','',''];
+        $selections = ['', '', '', ''];
         return view('admin.quiz_create', compact('quiz', 'selections'));
     }
     public function store(Request $request)
@@ -49,17 +56,15 @@ class QuizController extends Controller
             QuizSelections::create($selection);
         }
         QuizSelections::create([
-                "quiz_id" => $quiz->id,
-                "content" => $answer['answer'],
-                "is_answer" => true,
-            ]);
+            "quiz_id" => $quiz->id,
+            "content" => $answer['answer'],
+            "is_answer" => true,
+        ]);
 
         $request->session()->flash('message', '保存しました');
         return redirect()->route('quiz.index');
     }
-    public function show($id)
-    {
-    }
+    public function show($id) {}
     public function edit(Quizzes $quiz)
     {
         $selections = $quiz->quizSelections;
@@ -88,16 +93,88 @@ class QuizController extends Controller
             $quiz->QuizSelections()->update($selection);
         }
         $quiz->QuizSelections()->update([
-                "quiz_id" => $quiz->id,
-                "content" => $answer['answer'],
-                "is_answer" => true,
-            ]);
+            "quiz_id" => $quiz->id,
+            "content" => $answer['answer'],
+            "is_answer" => true,
+        ]);
 
         $request->session()->flash('message', '更新しました');
         return redirect()->route('quiz.index');
     }
-    public function destroy($id)
+    public function destroy($id) {}
+
+    // ユーザー側クイズ表示
+    public function user_index()
     {
+        $user = Auth::user();
+        $todayMonth = Carbon::today()->month;
+
+        $quiz_list = Quizzes::with([
+            'quizSelections',
+            'quizStatus' => function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            }
+        ])
+            ->whereMonth('start', $todayMonth)
+            ->first();
+        // dd($quiz_list);
+        return view('user.quiz', compact('quiz_list'));
     }
 
+    //クイズの正解表示
+    public function answer(Request $request)
+    {
+        //ユーザーの回答した選択肢
+        $user_answer = QuizSelections::find($request->selection_id);
+        //ユーザー情報
+        $user = Auth::user();
+
+
+        //正解・不正解処理
+        if ($user_answer->is_answer === 1) {
+            $answer = $user_answer;
+            $is_answer = True;
+            $message = '正解！！';
+
+            //クーポン情報
+            $coupon = Coupon::find(2);
+
+            //クーポンの有効期限
+            $now = Carbon::now(); // 今
+            $base_day = $now->day; // 今日の日にち（例：31日）
+
+            $two_months_later = $now->copy()->addMonths(2); // 2か月後の同じ日
+
+            // 2か月後の月に同じ日が存在しない場合は月末にする
+            if ($base_day > $two_months_later->daysInMonth) {
+                $valid_at = $two_months_later->endOfMonth();
+            } else {
+                $valid_at = $two_months_later->day($base_day);
+            }
+
+
+            UserCoupon::create([
+                'user_id' => $user->id,
+                'coupon_id' => $coupon->id,
+                'valid_at' => $valid_at
+            ]);
+        } else {
+            //クイズの正解の選択肢
+            $answer = QuizSelections::where('quiz_id', $user_answer->quiz_id)
+                ->where('is_answer', 1)
+                ->first();
+
+            $is_answer = False;
+            $message = 'ざんね～ん';
+        }
+
+
+        // 回答処理、クイズステータスに追加
+        QuizStatus::create([
+            'quizzes_id' =>  $user_answer->quiz_id,
+            'user_id' => $user->id,
+        ]);
+
+        return view('user.quiz_answer', compact('answer', 'is_answer', 'message', 'coupon'));
+    }
 }
