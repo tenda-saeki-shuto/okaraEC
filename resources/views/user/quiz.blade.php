@@ -24,27 +24,42 @@
     {{-- 問題文 --}}
     <div>{{$quiz_list->content}}</div>
 
-    {{-- 選択肢ボタンを設置 --}}
-    <form action="{{ route('quiz.answer') }}" method="POST">
-        @csrf
-        @foreach ($quiz_list->quizSelections as $selection)
-            {{-- ループの回数をクラスに入れてます。０～３ --}}
-            <button type="submit" name="selection_id" value="{{$selection->id}}" class="{{$loop->index}}">
-                {{$selection->content}}
-            </button>
-        @endforeach
-    </form>
 
-    @if($quiz_list->quizStatus->isNotEmpty())
-        @foreach($quiz_list->quizSelections as $selection)
-            @if($selection->is_answer === 1)
-                <div class="{{ $loop->index }}">
-                    正解:<br>
-                    {{ $selection->content }}
-                </div>
-            @endif
+    {{------------- 選択肢 ----------------------------------------------------}}
+    {{-- 回答していない場合 ----------------------------------------------------}}
+    @if($quiz_list->quizStatus->isEmpty())
+
+        {{-- 選択肢ボタンを設置 --}}
+        <form action="{{ route('quiz.answer') }}" method="POST">
+            @csrf
+            @foreach ($quiz_list->quizSelections as $selection)
+                {{-- ループの回数をクラスに入れてます。０～３ --}}
+                <button type="submit" name="selection_id" value="{{$selection->id}}" class="{{$loop->index}}">
+                    {{$selection->content}}
+                </button>
+            @endforeach
+        </form>
+
+    {{-- 回答していた場合 -----------------------------------------------------}}
+    @else
+        @foreach ($quiz_list->quizSelections as $selection)
+        {{-- ループの回数をクラスに入れてます。０～３ --}}
+        <div>
+            {{$selection->content}}
+        </div>
         @endforeach
+
+        @foreach($quiz_list->quizSelections as $selection)
+        @if($selection->is_answer === 1)
+            <div class="{{ $loop->index }}">
+                正解:<br>
+                {{ $selection->content }}
+            </div>
+        @endif
+        @endforeach
+
     @endif
+
 
 
 

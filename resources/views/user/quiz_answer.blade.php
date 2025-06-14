@@ -8,15 +8,18 @@
     <title>クイズ正解</title>
 </head>
 <body>
+    <header>
+        @include('user.user_header')
+    </header>
     <div>今月のクイズ（回答）</div>
-    <div>{{$massage}}</div>
+    <div>{{$message}}</div>
     <div>{{$answer->content}}</div>
 
     @if($is_answer === true)
     <div>クーポンゲット</div>
     <div>
         <img src="{{$coupon->img}}" alt="クーポン画像">
-        <h2>{{$coupon->name}}</h2>
+        <h2>{{$coupon->name}}を獲得</h2>
         <p>{{$coupon->content}}</p>
     </div>
     @endif

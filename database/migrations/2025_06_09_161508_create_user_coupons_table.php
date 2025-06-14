@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('coupon_id');
             $table->foreign('coupon_id')->references('id')->on('coupons');
 
-            $table->dateTime('available');
+            $table->dateTime('valid_at');
             $table->timestamps();
         });
     }

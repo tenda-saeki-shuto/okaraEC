@@ -128,19 +128,35 @@ class QuizController extends Controller
         $user_answer = QuizSelections::find($request->selection_id);
         //ユーザー情報
         $user = Auth::user();
-        //クーポン情報
-        $coupon = Coupon::find(2);
 
 
+        //正解・不正解処理
         if ($user_answer->is_answer === 1) {
             $answer = $user_answer;
             $is_answer = True;
-            $massage = '正解！！';
+            $message = '正解！！';
+
+            //クーポン情報
+            $coupon = Coupon::find(2);
+
+            //クーポンの有効期限
+            $now = Carbon::now(); // 今
+            $base_day = $now->day; // 今日の日にち（例：31日）
+
+            $two_months_later = $now->copy()->addMonths(2); // 2か月後の同じ日
+
+            // 2か月後の月に同じ日が存在しない場合は月末にする
+            if ($base_day > $two_months_later->daysInMonth) {
+                $valid_at = $two_months_later->endOfMonth();
+            } else {
+                $valid_at = $two_months_later->day($base_day);
+            }
+
 
             UserCoupon::create([
                 'user_id' => $user->id,
                 'coupon_id' => $coupon->id,
-                'available' => 1
+                'valid_at' => $valid_at
             ]);
         } else {
             //クイズの正解の選択肢
@@ -149,7 +165,7 @@ class QuizController extends Controller
                 ->first();
 
             $is_answer = False;
-            $massage = 'ざんね～ん';
+            $message = 'ざんね～ん';
         }
 
 
@@ -159,6 +175,6 @@ class QuizController extends Controller
             'user_id' => $user->id,
         ]);
 
-        return view('user.quiz_answer', compact('answer', 'is_answer', 'massage', 'coupon'));
+        return view('user.quiz_answer', compact('answer', 'is_answer', 'message', 'coupon'));
     }
 }

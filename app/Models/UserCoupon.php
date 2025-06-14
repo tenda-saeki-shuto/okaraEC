@@ -9,7 +9,7 @@ class UserCoupon extends Model
     protected $fillable = [
         'user_id',
         'coupon_id',
-        'available'
+        'valid_at'
     ];
     //ユーザーとのリレーション
     public function users()

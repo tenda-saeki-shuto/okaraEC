@@ -201,7 +201,6 @@ class ReferenceSeeder extends Seeder
                 'content' => '2000円以上のご購入で、500円割引',
                 'discount' => 500,
                 'img' => 'sample.png',
-                'valid_date' => '2025-07-31 23:59',
             ],
             [
                 'id' => 2,
@@ -209,7 +208,6 @@ class ReferenceSeeder extends Seeder
                 'content' => '2000円以上のご購入で、500円割引',
                 'discount' => 500,
                 'img' => 'sample.png',
-                'valid_date' => '2025-08-31 23:59',
             ],
         ]);
     }
