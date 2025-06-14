@@ -112,69 +112,85 @@ class QuizController extends Controller
         $quiz_list = Quizzes::with([
             'quizSelections',
             'quizStatus' => function ($query) use ($user) {
-                $query->where('user_id', $user->id);
+                if ($user) {
+                    $query->where('user_id', $user->id);
+                }
             }
         ])
             ->whereMonth('start', $todayMonth)
             ->first();
-        // dd($quiz_list);
+
         return view('user.quiz', compact('quiz_list'));
     }
+
 
     //クイズの正解表示
     public function answer(Request $request)
     {
-        //ユーザーの回答した選択肢
+        // ユーザーの回答した選択肢
         $user_answer = QuizSelections::find($request->selection_id);
-        //ユーザー情報
         $user = Auth::user();
-        //クーポン情報
         $coupon = Coupon::find(2);
 
-
-        //正解・不正解処理
+        // 正解・不正解判定
         if ($user_answer->is_answer === 1) {
             $answer = $user_answer;
-            $is_answer = True;
+            $is_answer = 1;
             $message = '正解！！';
 
+            // ログインしていればクーポン付与
+            if ($user) {
+                $now = Carbon::now(); //今の日付
+                $base_day = $now->day; //今の日にち
+                $two_months_later = $now->copy()->addMonths(2); //2か月後の日付
+                $valid_at = $base_day > $two_months_later->daysInMonth //2か月後に日にちがなければ
+                    ? $two_months_later->endOfMonth() //月末に
+                    : $two_months_later->day($base_day); //そうでなければその日に
 
-
-            //クーポンの有効期限
-            $now = Carbon::now(); // 今
-            $base_day = $now->day; // 今日の日にち（例：31日）
-
-            $two_months_later = $now->copy()->addMonths(2); // 2か月後の同じ日
-
-            // 2か月後の月に同じ日が存在しない場合は月末にする
-            if ($base_day > $two_months_later->daysInMonth) {
-                $valid_at = $two_months_later->endOfMonth();
+                //クーポン追加
+                UserCoupon::create([
+                    'user_id' => $user->id,
+                    'coupon_id' => $coupon->id,
+                    'valid_at' => $valid_at
+                ]);
             } else {
-                $valid_at = $two_months_later->day($base_day);
+                // ゲストならセッションに保存
+                session([
+                    'guest_quiz_id' => $user_answer->quiz_id,
+                    'guest_selection_id' => $user_answer->id,
+                    'guest_is_answer' => $is_answer,
+                    'redirect_after_login' => route('user.quiz'),
+                ]);
             }
-
-
-            UserCoupon::create([
-                'user_id' => $user->id,
-                'coupon_id' => $coupon->id,
-                'valid_at' => $valid_at
-            ]);
         } else {
-            //クイズの正解の選択肢
+            // 不正解時の正解選択肢取得
             $answer = QuizSelections::where('quiz_id', $user_answer->quiz_id)
                 ->where('is_answer', 1)
                 ->first();
 
-            $is_answer = False;
+            $is_answer = 0;
             $message = 'ざんね～ん';
+
+            // // 不正解でもセッションに保存
+            // if (!Auth::check()) {
+            //     session([
+            //         'guest_quiz_id' => $user_answer->quiz_id,
+            //         'guest_selection_id' => $user_answer->id,
+            //         'guest_is_answer' => $is_answer,
+
+            //         'redirect_after_login' => route('user.quiz_answer'),
+            //     ]);
+            // }
         }
 
-
-        // 回答処理、クイズステータスに追加
-        QuizStatus::create([
-            'quizzes_id' =>  $user_answer->quiz_id,
-            'user_id' => $user->id,
-        ]);
+        // 回答履歴を保存（ログインユーザーのみ）
+        if ($user) {
+            QuizStatus::create([
+                'quizzes_id' => $user_answer->quiz_id,
+                'user_id' => $user->id,
+                'is_clear' => $is_answer
+            ]);
+        }
 
         return view('user.quiz_answer', compact('answer', 'is_answer', 'message', 'coupon'));
     }

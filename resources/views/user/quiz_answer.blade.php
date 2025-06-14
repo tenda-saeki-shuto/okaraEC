@@ -16,14 +16,21 @@
     <div class="text-center text-lg my-2">{{$message}}</div>
     <div class="text-center text-2xl font-semibold my-4">{{$answer->content}}</div>
 
-    @if($is_answer === true)
-    <div class="bg-yellow-300 text-center text-xl font-bold py-4">クーポンゲット！！</div>
-    <div class="bg-green-200 p-4 rounded-lg shadow-md text-center max-w-md mx-auto">
-        <img src="{{$coupon->img}}" alt="クーポン画像" class="mx-auto mb-4 w-32 h-32 object-contain">
-        <h2 class="text-xl font-bold">{{$coupon->name}}を獲得</h2>
-        <p class="mt-2">{{$coupon->content}}</p>
-    </div>
+    @if($is_answer === 1 && Auth::check())
+        <div class="bg-yellow-300 text-center text-xl font-bold py-4">クーポンゲット！！</div>
+        <div class="bg-green-200 p-4 rounded-lg shadow-md text-center max-w-md mx-auto">
+            <img src="{{$coupon->img}}" alt="クーポン画像" class="mx-auto mb-4 w-32 h-32 object-contain">
+            <h2 class="text-xl font-bold">{{$coupon->name}}を獲得</h2>
+            <p class="mt-2">{{$coupon->content}}</p>
+        </div>
+    @elseif($is_answer === 1 && !Auth::check())
+        <div class="bg-yellow-100 text-center text-lg font-semibold py-4">
+            正解です！ログイン・新規登録するとクーポンがもらえます🎁<br>
+            <a href="{{ route('login') }}" class="text-blue-600 underline">ログインはこちら</a>
+            <a href="{{ route('register') }}" class="hover-underline">新規登録</a>
+        </div>
     @endif
+
 
     <div class="text-center mt-6">
         <button onclick="location.href='{{route('user.quiz')}}'" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
