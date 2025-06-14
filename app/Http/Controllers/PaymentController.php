@@ -8,6 +8,10 @@ use App\Models\User;
 use App\Models\Address;
 use App\Models\UserCoupon;
 use App\Models\Order;
+use App\Models\OrderDetail;
+use App\Models\Cart;
+use App\Models\CreditCard;
+use Illuminate\Support\Facades\Auth;
 
 
 class PaymentController extends Controller
@@ -15,7 +19,7 @@ class PaymentController extends Controller
 
     public function index(){
         // セッションに登録されているユーザーの情報を取得する
-        $user_id = 1;
+        $user_id = Auth::id();
 
         // ビューに渡すデータの取得
         // ログインしているユーザーの郵便番号・都道府県・住所・支払情報・所有しているクーポン
@@ -40,14 +44,52 @@ class PaymentController extends Controller
 
     public function confirm(Request $request)
     {
-        // 郵便番号と住所のバリデーションを行う
-        $validated_data = $request->validate([
-            'postal_code' => ['required', 'regex:/^\d{7}$/'], //郵便番号
-            'address' => ['required'], //住所
-        ]);
+        // ログインしているユーザーのIDを取得
+        $user_id = Auth::id();
+        // ユーザーのカートに入っている商品のデータを取得(cartsテーブル)
+        $carts = Cart::with(['items:id,name,price'])->where('user_id', $user_id)->get();
 
-        return view('payment_confirm', compact('validated_data'));
+        // クレジットカード情報を取得
+        $card_info = CreditCard::where('user_id',$user_id)->get();
+        foreach($card_info as $info){
+            $card_num = $info->card_number;
+        }
+        // カードの下４桁を取得
+        $shown_num = substr($card_num, 12, 5);
+
+        // 決済情報入力画面で選択されたクーポンの情報を取得
+        $coupon = $request->coupon;
+
+        // 決済情報入力画面で入力されたお届け先を取得(postal_code, prefecture(id), address, coupon(id))
+        $postal_code = $request->postal_code;
+        $prefecture = $request->prefecture;
+        $address = $request->address;
+
+        return view('payment_confirm', compact('carts', 'shown_num', 'coupon', 'postal_code', 'prefecture', 'address'));
     }
+
+    // 決済確認画面で「戻る」ボタンが押された際に決済情報入力画面にクーポンと住所の情報を送る処理
+    public function changePaymentInfo(Request $request){
+        $postal_code = $request->postal_code;
+        $user_prefecture = $request->prefecture;
+        $address = $request->address;
+        $prefectures=Prefecture::all(); //全ての都道府県の名前
+        return view('payment_info', compact('postal_code', 'user_prefecture', 'address', 'prefectures'));
+    }
+
+
+    // 決済情報確認画面で確定が押された際のDB処理(注文番号、商品名、単価、数量を取得)
+    public function showOrders(){
+        // ログインしているユーザーのIDを取得
+        $user_id = Auth::id();
+
+        // オーダーのテーブルに登録されている情報を取得する
+        $orders = Order::with(['orderDetails:id,order_id,item_name,price,count'])->get();
+        
+        return view('payment_complete', compact('orders'));
+    }
+
+
 
     public function validateAddress(Request $request){
         // 郵便番号と住所のバリデーションを行う

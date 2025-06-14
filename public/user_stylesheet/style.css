@@ -70,13 +70,13 @@ input{
 
 
 /* 右コンテンツのアニメーション */
-a {
+.nav-right a {
   position: relative;
   display: inline-block;
   text-decoration: none;
   color:#111;
 }
-a::after {
+.nav-right a::after {
   position: absolute;
   bottom: -8px;
   left: 0;
@@ -88,7 +88,7 @@ a::after {
   visibility: hidden;
   transition: .3s;
 }
-a:hover::after {
+.nav-right a:hover::after {
   bottom: -4px;
   opacity: 1;
   visibility: visible;

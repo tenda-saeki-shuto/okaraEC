@@ -19,12 +19,10 @@
             <div class="row"><span class="label">住所：</span><span class="value">{{$user->address->prefecture->name ?? '未登録' }}</span></div>
             <div class="row"><span class="label">Email：</span><span class="value">{{ $user->email }}</span></div>
             <div class="row"><span class="label">TEL：</span><span class="value">{{ $user->tel }}</span></div>
-            <form action="">
+            <form action="{{ route('userinfo.edit', $user) }}">
                 <button type="submit" class="btn">ユーザー情報変更</button>
             </form>
         </div>
-
-
 
         <div class="image-row">
             <!-- お気に入り画面に遷移 -->

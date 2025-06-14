@@ -34,7 +34,7 @@
                     <th>{{ $cart->items->name }}</th>
                     <td class="text-center">{{ $cart->items->price }}円</td>
                     <td class="p-1">
-                        <div class="flex">
+                        <div class="flex items-center">
                             <select class="item_count flex-1 m-1" id="{{ $cart->id }}">
                                 @for($i=1; $i<=10; $i++)
                                     @if($cart->count === $i)
@@ -64,7 +64,7 @@
                 </tr>
             </tfoot>
         </table>
-        <button class="py-3 px-8 bg-sky-500 rounded-2xl text-white font-black text-xl mt-5"><a href="{{ route('confirm_payment') }}">購入手続きへ</a></button>
+        <a href="{{ route('insert_payment') }}" class="no-underline px-6 py-2 bg-sky-500 rounded-xl text-white block font-black text-xl mt-5">購入手続きへ</a>
     </div>
 
     <script>

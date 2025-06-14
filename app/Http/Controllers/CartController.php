@@ -11,7 +11,7 @@ class CartController extends Controller
     public function index()
     {
         // $user_idにはセッションに保存されているユーザーIDを入れる
-        $user_id = 1;
+        $user_id = Auth::id();
         $carts = Cart::with(['items:id,name,price'])->where('user_id', $user_id)->get();
         // dd($carts);
         return view('cart', compact('carts'));
