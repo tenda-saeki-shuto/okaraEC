@@ -128,6 +128,8 @@ class QuizController extends Controller
         $user_answer = QuizSelections::find($request->selection_id);
         //ユーザー情報
         $user = Auth::user();
+        //クーポン情報
+        $coupon = Coupon::find(2);
 
 
         //正解・不正解処理
@@ -136,8 +138,7 @@ class QuizController extends Controller
             $is_answer = True;
             $message = '正解！！';
 
-            //クーポン情報
-            $coupon = Coupon::find(2);
+
 
             //クーポンの有効期限
             $now = Carbon::now(); // 今
