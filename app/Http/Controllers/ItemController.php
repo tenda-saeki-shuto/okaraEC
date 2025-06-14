@@ -67,6 +67,7 @@ class ItemController extends Controller
             'itemAllergies.Allergies',
             'nutritionFacts'
         ])->findOrFail($id);
+        // dd($item);
 
         $user = Auth::user();
 
@@ -240,7 +241,7 @@ class ItemController extends Controller
         if (!empty($allergyIds)) {
             foreach ($allergyIds['allergies'] as $index => $allergy_id) {
                 $id = $form_allergy_ids[$index] ?? null;
-                
+
                 if ($id) {
                     $allergy = ItemAllergy::find($id);
                     if ($allergy) {
@@ -261,7 +262,7 @@ class ItemController extends Controller
         if (!empty($allergy_delete_ids)) {
             $item->itemAllergies()->whereIn('id', $allergy_delete_ids)->delete();
         }
-        
+
         // サブ画像
         $subImgs = $request->validate([
             'sub_imgs.*' => 'nullable|max:300',

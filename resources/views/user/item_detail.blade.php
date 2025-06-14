@@ -79,22 +79,14 @@
                 <li>食塩相当量: {{$item->nutritionFacts->salt_eqv}}mg</li>
             </ul>
             <p class="mb-4">アレルギー情報</p>
-            @if ($item->itemAllergies && $item->itemAllergies->Allergies)
-                @php
-                    $allergies = $item->itemAllergies->Allergies;
-                @endphp
-
-                @if (is_iterable($allergies))
-                    @foreach ($allergies as $allergy)
+            @if ($item->itemAllergies && $item->itemAllergies->isNotEmpty())
+                @foreach ($item->itemAllergies as $itemAllergy)
+                    @if ($itemAllergy->allergies)
                         <span class="inline-block bg-yellow-200 text-yellow-800 px-2 py-1 rounded mr-2 mb-2">
-                            {{ $allergy->name }}
+                            {{ $itemAllergy->allergies->name }}
                         </span>
-                    @endforeach
-                @else
-                    <span class="inline-block bg-yellow-200 text-yellow-800 px-2 py-1 rounded mr-2 mb-2">
-                        {{ $allergies->name }}
-                    </span>
-                @endif
+                    @endif
+                @endforeach
             @else
                 <p>アレルギー情報はありません。</p>
             @endif
