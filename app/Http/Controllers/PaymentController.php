@@ -244,8 +244,14 @@ class PaymentController extends Controller
 
     // 決済完了画面で「トップへ」が押された際の処理
     public function donePayment(){
+        $user_id = Auth::id();
+        
         // クーポンのセッションを消す
         session()->forget('coupon_id');
+
+        // カートの中を消す
+        Cart::where('user_id', $user_id)->delete();
+
         // トップ画面にリダイレクトする
         return redirect()->route('top');
     }
