@@ -35,18 +35,18 @@
                     <td class="text-center">{{ $cart->items->price }}円</td>
                     <td class="p-1">
                         <div class="flex items-center">
-                            <select class="item_count flex-1 m-1" id="{{ $cart->id }}">
-                                @for($i=1; $i<=10; $i++)
-                                    @if($cart->count === $i)
+                            <select class="item_count flex-1 m-1" id="{{ $cart->item_id }}">
+                                @for($i=1; $i<=50; $i++)
+                                    @if($cart->count == $i)
                                         <option value="{{ $cart->count }}" selected="selected">{{ $cart->count }}</option>
                                     @else
                                         <option value="{{ $i }}">{{ $i }}</option>
                                     @endif
                                 @endfor
                             </select>
-                            <form action="{{ route('cart_item_delete', ['id'=>$cart->id]) }}" method="post">
+                            <form action="{{ route('cart_item_delete', ['id'=>$cart->item_id]) }}" method="post">
                                 @csrf
-                                <button class="px-4 bg-sky-500 rounded-xl text-white font-black flex-1 delete-btn">削除</button>
+                                <button type="submit" class="px-4 bg-sky-500 rounded-xl text-white font-black flex-1 delete-btn">削除</button>
                             </form>
                         </div>
                     </td>
@@ -84,11 +84,15 @@
                         },
                         type:'POST',
                         // ルーティングで設定したURL
-                        url:'/change_cart_count/' + id + '/' + count, 
-                        // dataType: 'json',
+                        url:'/change_cart_count_ajax',
+                        data:{
+                            id: id,
+                            count: count
+                        } 
                     }).done(function (results){
                         // 成功したときのコールバック
                         console.log('OK');
+                        console.log(results);
                     }).fail(function(jqXHR, textStatus, errorThrown){
                         // 失敗したときのコールバック
                         console.log('fail');
@@ -96,12 +100,6 @@
                 });
             });
         });
-
-
-
-
-
-
     </script>
 </body>
 </html>

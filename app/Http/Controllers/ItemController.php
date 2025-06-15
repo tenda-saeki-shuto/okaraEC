@@ -10,6 +10,7 @@ use App\Models\ItemNutritionFact;
 use App\Models\ItemAllergy;
 use App\Models\ItemPicture;
 use App\Models\UserLike;
+use App\Models\Cart;
 use Illuminate\Support\Facades\Auth;
 use function PHPUnit\Framework\isNull;
 
@@ -71,13 +72,18 @@ class ItemController extends Controller
 
         $user = Auth::user();
 
+        // ユーザーのカート情報を取得
+        $user_id = Auth::id();
+        $cart_item = Cart::where('user_id', $user_id)->where('item_id', $id)->first();
+        // dd($cart_item);
+
         // お気に入り状態を追加
         $item->is_favorited = false;
         if (Auth::check()) {
             $item->is_favorited = UserLike::where('user_id', $user->id)->where('item_id', $item->id)->exists();
         }
 
-        return view('user.item_detail', compact('item'));
+        return view('user.item_detail', compact('item', 'cart_item'));
     }
 
     private $item;

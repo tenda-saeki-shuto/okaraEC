@@ -44,30 +44,53 @@
             <p class="text-xl font-bold text-red-600 mb-4">
                 ¥{{$item->price}}
             </p>
+            @if(!isset($cart_item))
+            <!-- 表示されたアイテムがカート内にない場合 -->
             <form action="{{ route('cart.add')}}" method="POST">
                 @csrf
                 <input type="hidden" name="item_id" value="{{$item->id}}">
                 <div class="flex items-center mb-4 text-right">
                     <label for="quantity" class="mr-2">数量:</label>
                     <select name="count" class="border rounded">
-                        @if ($item->stock < 10)
+                        @if ($item->stock < 50)
                             @for ($i = 1; $i <= $item->stock; $i++)
-                            <option value="{{ $i }}">{{ $i }}</option>
+                                <option value="{{ $i }}">{{ $i }}</option>
                             @endfor
                         @else
-                            @for ($i = 1; $i <= 10; $i++)
+                            @for ($i = 1; $i <= 50; $i++)
                                 <option value="{{ $i }}">{{ $i }}</option>
                             @endfor
                         @endif
                     </select>
+                    <div class="position:right flex justify-end">
+                        <button type="submit" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition-colors duration-300 w-auto">
+                            カートに追加
+                        </button>
+                    </div>
                 </div>
-
+            </form>
+            @else
+            <!-- 表示されたアイテムがカート内にある場合 -->
+            <form action="{{ route('cart.update', ['id'=>$cart_item->item_id])}}" method="POST">
+                @csrf
+                <label for="quantity" class="mr-2">カート内数量:</label>
+                <select name="count" class="border rounded">
+                    @for($i = 1; $i <= 50; $i++)
+                        @if($cart_item->count == $i)
+                        <option value="{{ $cart_item->count }}" selected>{{ $cart_item->count }}</option>
+                        @else
+                        <option value="{{ $i }}">{{ $i }}</option>
+                        @endif
+                    @endfor
+                </select>
                 <div class="position:right flex justify-end">
-                    <button type="submit" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition-colors duration-300 w-30">
-                        カートに追加
+                    <button type="submit" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition-colors duration-300 w-auto">
+                        数量変更
                     </button>
                 </div>
             </form>
+            @endif
+
             <p class="mb-4">栄養素情報</p>
 
             <ul class="list-disc pl-5 mb-4">
