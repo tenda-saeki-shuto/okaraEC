@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
@@ -21,7 +22,7 @@ class UserController extends Controller
     {
         $users = User::all();
 
-        $prefectureData=[];
+        $prefectureData = [];
         foreach ($users as $user) {
             // dd($user->address->prefecture->name); // $user->prefecture で確認可能
             // $address = Address::where('user_id', $user->id)->first();
@@ -32,7 +33,7 @@ class UserController extends Controller
     }
 
     public function edit(User $user)
-    {   
+    {
         $prefecture = Prefecture::orderBy('id')->get();
         return view('admin.user_edit', compact('user', 'prefecture'));
     }
@@ -74,28 +75,28 @@ class UserController extends Controller
         return Redirect::to('/');
     }
 
-    public function show(){
-        $user=Auth::user()->load([
+    public function show()
+    {
+        $user = Auth::user()->load([
             'address.prefecture' //ネストされたリレーションの一括読み込み
         ]);
 
         //パスワードを除いて表示する
         return view('user.mypage', compact('user'));
     }
-  
-  
-  //退会処理
-  public function withdrawal(Request $request)
+
+
+    //退会処理
+    public function withdrawal(Request $request)
     {
 
         if ($request->input('confirm') === 'true') {
             $user = Auth::user();
             $user->delete();
             Auth::logout();
-            return redirect(route('/'));
+            return redirect(route('top'));
         } else {
             return redirect(route('view.mypage'));
         }
     }
 }
-

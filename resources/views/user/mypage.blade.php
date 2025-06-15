@@ -26,36 +26,28 @@
 
         <div class="image-row">
             <!-- お気に入り画面に遷移 -->
-            <form action="#">
-                <div class="image-container">
-                    <button><img src="{{ asset('img/like.png') }}"></button>
-                    <p>お気に入り</p>
-                </div>
-            </form>
+            <div class="image-container">
+                <button onclick="location.href='{{route('user.like')}}'"><img src="{{ asset('img/like.png') }}"></button>
+                <p>お気に入り</p>
+            </div>
 
             <!-- 定購入一覧に遷移 -->
-            <form>
-                <div class="image-container">
-                    <button><img src="{{ asset('img/buy.png') }}"></button>
-                    <p>定期購入一覧</p>
-                </div>
-            </form>
+            <div class="image-container">
+                <button><img src="{{ asset('img/buy.png') }}"></button>
+                <p>定期購入一覧</p>
+            </div>
 
             <!-- クーポン -->
-            <form action="#">
-                <div class="image-container">
-                    <button><img src="{{ asset('img/coupon.png') }}"></button>
-                    <p>クーポン</p>
-                </div>
-            </form>
+            <div class="image-container">
+                <button><img src="{{ asset('img/coupon.png') }}"></button>
+                <p>クーポン</p>
+            </div>
 
             <!-- 購入履歴 -->
-            <form action="#">
-                <div class="image-container">
-                    <button><img src="{{ asset('img/history.png') }}"></button>
-                    <p>購入履歴</p>
-                </div>
-            </form>
+            <div class="image-container">
+                <button><img src="{{ asset('img/history.png') }}"></button>
+                <p>購入履歴</p>
+            </div>
         </div>
 
         <!-- 退会ボタン -->

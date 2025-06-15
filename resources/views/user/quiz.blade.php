@@ -61,7 +61,7 @@
 
     <!-- トップへボタン -->
     <div class="mt-6">
-        <button onclick="location.href='{{route('items')}}'"
+        <button onclick="location.href='{{route('top')}}'"
             class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded text-sm sm:text-base">
             トップへ
         </button>

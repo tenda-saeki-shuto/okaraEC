@@ -10,8 +10,14 @@ use App\Http\Controllers\UserLikeController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\UserController;
+use App\Models\UserLike;
 use Illuminate\Support\Facades\Route;
 
+
+// トップ画面のルート
+Route::get('/', function () {
+    return view('top');
+})->name('top');
 
 Route::get('/contact', [ContactController::class, 'showForm'])->name('contact.form');
 Route::get('/contact/confirm', [ContactController::class, 'confirm'])->name('contact.confirm');
@@ -53,10 +59,11 @@ Route::get('enter_card_info', function () {
 })->name('enter_card_info');
 
 //初期で表示されている画面
-Route::get('/', function () {
-    return view('dashboard');
-});
+// Route::get('/', function () {
+//     return view('dashboard');
+// });
 
+//----------------------マイページ----------------------------------------------
 //ヘッダーからマイページに画面遷移←ログインしていない場合はログイン画面にリダイレクト
 Route::middleware(['auth'])->group(function () {
     Route::get('/user', [ProfileController::class, 'show'])->name('view.mypage');
@@ -64,6 +71,14 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/user/edit', [ProfileController::class, 'update'])->name('userinfo.update');
 });
 
+//お気に入り画面遷移
+Route::get('/user/like', [UserLikeController::class, 'index'])->name('user.like');
+
+
+//-----------------------------------------------------------------------------
+
+
+//-----------------レシピ--------------------------------------------------------
 //レシピ画面に遷移
 Route::get('/recipes', [RecipeController::class, 'user_index'])->name('recipes');
 //レシピフィルター
@@ -71,20 +86,26 @@ Route::get('/recipes/filter', [RecipeController::class, 'filter'])->name('recipe
 // レシピ詳細
 Route::get('/resipes/{id}', [RecipeController::class, 'show'])->name('recipe_detail');
 
+//-------------------------------------------------------------------------------
 
-//商品一覧表示
+//----------------------商品一覧表示--------------------------------------------------
 // 商品一覧
 Route::get('/items', [ItemController::class, 'user_index'])->name('items');
 // 商品一覧のフィルター
 Route::get('/items/filter', [ItemController::class, 'filter'])->name('items.filter');
 // 商品詳細
 Route::get('/item/{id}', [ItemController::class, 'show'])->name('item_detail');
+// お気に入り登録
+Route::post('/favorite/toggle', [UserLikeController::class, 'toggle'])->middleware('auth');
+
+//-----------------------------------------------------------------------------------
 
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->name('dashboard');
 
+//-----------------------決済関係--------------------------------------------------------
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -118,7 +139,7 @@ Route::middleware('auth')->group(function () {
 });
 
 
-
+//-----------------カート----------------------------------------------------------
 // カート画面を表示するためのルート
 Route::get('cart', [CartController::class, 'index'])->name('cart');
 
@@ -131,18 +152,17 @@ Route::post('/change_cart_count/{id}/{count}', [CartController::class, 'update']
 //カート登録
 Route::post('/cat/add', [CartController::class, 'add'])->name('cart.add');
 
+//---------------------------------------------------------------------------------
 
 
+//---クイズ画面---------------------------------------------------------------
 
+Route::get('/quiz', [QuizController::class, 'user_index'])->name('user.quiz');
 
-// お気に入り登録
-Route::post('/favorite/toggle', [UserLikeController::class, 'toggle'])->middleware('auth');
+//クイズ結果画面
+Route::post('/quiz/answer', [QuizController::class, 'answer'])->name('quiz.answer');
 
-
-// トップ画面のルート
-Route::get('/top', function () {
-    return view('top');
-})->name('top');
+//----------------------------------------------------------------------------
 
 
 //退会処理
@@ -159,12 +179,6 @@ Route::middleware(['auth'])->group(
     }
 );
 
-//---クイズ画面---------------------------------------------------------------
-
-Route::get('/quiz', [QuizController::class, 'user_index'])->name('user.quiz');
-
-//クイズ結果画面
-Route::post('/quiz/answer', [QuizController::class, 'answer'])->name('quiz.answer');
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin.php';
