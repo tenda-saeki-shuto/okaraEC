@@ -10,7 +10,7 @@ use App\Http\Controllers\UserLikeController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\UserController;
-use App\Models\UserLike;
+use App\Http\Controllers\UserCouponController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -69,14 +69,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/user', [ProfileController::class, 'show'])->name('view.mypage');
     Route::get('/user/edit', [ProfileController::class, 'edit'])->name('userinfo.edit');
     Route::patch('/user/edit', [ProfileController::class, 'update'])->name('userinfo.update');
+    Route::get('/user/like', [UserLikeController::class, 'index'])->name('user.like'); //お気に入り一覧
+    Route::get('/user/coupon', [UserCouponController::class, 'index'])->name('user.coupon');//クーポン一覧
 });
 
-//お気に入り画面遷移
-Route::get('/user/like', [UserLikeController::class, 'index'])->name('user.like');
-
-
-//-----------------------------------------------------------------------------
-
+//--------------------------------------------------------------------------
 
 //-----------------レシピ--------------------------------------------------------
 //レシピ画面に遷移
@@ -113,10 +110,10 @@ Route::middleware('auth')->group(function () {
 
     // カート画面で「購入手続きへ」ボタンが押された際に、決済情報入力画面を表示するためのルート
     Route::get('/insert_payment_info', [PaymentController::class, 'index'])->name('insert_payment');
-  
+
     // 決済情報確認画面で「戻る」ボタンが押されたときのルート
     Route::get('/insert_payment_info/revise', [PaymentController::class, 'changePaymentInfo'])->name('revise_insert_payment');
-    
+
     // カード情報入力画面の表示
     Route::get('enter_card_info', function () {
         return view('enter_card_info');
@@ -124,13 +121,13 @@ Route::middleware('auth')->group(function () {
 
     // カード情報入力画面で「完了」ボタンが押された際のルート
     Route::post('/insert_payment_info', [PaymentController::class, 'registerCard'])->name('register_card');
-    
+
     // 決済情報入力で「注文確認」ボタンが押された際のルート
     Route::post('/payment_confirm', [PaymentController::class, 'confirm'])->name('payment_confirm');
-    
+
     // 決済情報入力で「選択を外す」ボタンが押された際のルート
     Route::post('/unuse_coupon', [PaymentController::class, 'unuseCoupon'])->name('unuse_coupon');
-    
+
     // 決済情報入力で変更ボタンが押された際のルート
     Route::post('/validate_address', [PaymentController::class, 'validateAddress']);
 

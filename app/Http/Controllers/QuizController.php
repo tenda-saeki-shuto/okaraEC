@@ -161,6 +161,9 @@ class QuizController extends Controller
                     'guest_is_answer' => $is_answer,
                     'redirect_after_login' => route('user.quiz'),
                 ]);
+
+                //セッションにクイズでクーポンを発行したことを保存
+                session()->flash('coupon_quiz', 'クイズ正解おめでとうございます<br>クーポンを獲得しました');
             }
         } else {
             // 不正解時の正解選択肢取得
@@ -171,16 +174,16 @@ class QuizController extends Controller
             $is_answer = 0;
             $message = 'ざんね～ん';
 
-            // // 不正解でもセッションに保存
-            // if (!Auth::check()) {
-            //     session([
-            //         'guest_quiz_id' => $user_answer->quiz_id,
-            //         'guest_selection_id' => $user_answer->id,
-            //         'guest_is_answer' => $is_answer,
+            // 不正解でもセッションに保存
+            if (!Auth::check()) {
+                session([
+                    'guest_quiz_id' => $user_answer->quiz_id,
+                    'guest_selection_id' => $user_answer->id,
+                    'guest_is_answer' => $is_answer,
 
-            //         'redirect_after_login' => route('user.quiz_answer'),
-            //     ]);
-            // }
+                    'redirect_after_login' => route('user.quiz_answer'),
+                ]);
+            }
         }
 
         // 回答履歴を保存（ログインユーザーのみ）
