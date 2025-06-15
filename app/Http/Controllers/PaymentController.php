@@ -51,7 +51,7 @@ class PaymentController extends Controller
         }
 
         // ユーザーが保有しているクーポンを取得(user_couponsテーブル)
-        $coupons = UserCoupon::with(['coupons:id,name,content,discount,img,valid_date'])->where('user_id',$user_id)->where('available',1)->get();
+        $coupons = UserCoupon::with(['coupons:id,name,content,discount,img,valid_date'])->where('user_id',$user_id)->get();
         return view('payment_info', compact('prefectures', 'shown_num', 'coupons'));
     }
 
@@ -61,12 +61,21 @@ class PaymentController extends Controller
         //全ての都道府県の名前を取得
         $prefectures=Prefecture::all();
         // ユーザーが保有しているクーポンを取得(user_couponsテーブル)
-        $coupons = UserCoupon::with(['coupons:id,name,content,discount,img,valid_date'])->where('user_id',$user_id)->where('available',1)->get();
+        $coupons = UserCoupon::with(['coupons:id,name,content,discount,img,valid_date'])->where('user_id',$user_id)->get();
         // couponsテーブルの書き換え
         $card_number = $request->card_number;
         $card_info = CreditCard::where('user_id', $user_id)->first();
-        $card_info->card_number = $card_number;
-        $card_info->save();
+        if($card_info == null){
+            // credit_cardsテーブルにユーザーのクレカ情報がなければ、新規レコードを登録する
+            $card = new CreditCard();
+            $card->user_id = $user_id;
+            $card->card_number = $card_number;
+            $card->save();
+        }else{
+            // ユーザーのクレカ情報があれば、更新する
+            $card_info->card_number = $card_number;
+            $card_info->save();
+        }
 
         // 表示する下４桁を取得
         $shown_num = substr($card_number, 12, 5);
@@ -125,7 +134,7 @@ class PaymentController extends Controller
 
         $prefectures=Prefecture::all(); //全ての都道府県の名前
         // ユーザーが保有しているクーポンを取得(user_couponsテーブル)
-        $coupons = UserCoupon::with(['coupons:id,name,content,discount,img,valid_date'])->where('user_id',$user_id)->where('available',1)->get();
+        $coupons = UserCoupon::with(['coupons:id,name,content,discount,img'])->where('user_id',$user_id)->get();
         return view('payment_info', compact('prefectures', 'coupons', 'shown_num'));
     }
 

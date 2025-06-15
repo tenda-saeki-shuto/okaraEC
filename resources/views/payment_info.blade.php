@@ -102,7 +102,12 @@
                         <p>クーポンがありません。</p>
                     @endif
                     <div>
-                        <button type="submit" id="submit_btn" class="w-48 bg-sky-500 h-10 rounded-xl text-white font-black text-xl mt-10">注文確認</button>
+                        @if(isset($shown_num))
+                            <button type="submit" class="w-48 bg-sky-500 h-10 rounded-xl text-white font-black text-xl mt-10">注文確認</button>
+                        @else
+                            <button type="button" id="submit_btn" class="w-48 bg-sky-500 h-10 rounded-xl text-white font-black text-xl mt-10">注文確認</button>
+                            <p id="submit_error" class="text-red-500"></p>
+                        @endif
                     </div>
                 </form>
             </div>
@@ -119,6 +124,7 @@
         let $change_btn = $("#change_btn");
         let $back_btn = $("#back_btn");
         let $unuse_coupon_btn = $("#unuse_coupon_btn");
+        let $submit_btn = $("#submit_btn");
 
         // inputタグ
         let $postal_code = $("#postal_code");
@@ -128,6 +134,7 @@
         // エラー表示
         let $postal_code_error = $("#postal_code_error");
         let $address_error = $("#address_error");
+        let $submit_error = $("#submit_error");
         
         // お届け先変更ボタンを押したときの処理
         $change_address_btn.on('click', function(){
@@ -143,6 +150,12 @@
             // お届け先入力フォームを出す
             $user_address.toggleClass('hidden');
             $change_address.toggleClass('hidden');
+        });
+
+        // クレジットカード情報を登録せずに「注文確認」ボタンを押した際の処理
+        $submit_btn.on('click', function(){
+            // エラー表示
+            $submit_error.html('クレジットカードを登録してください。');
         });
 
         $(function(){

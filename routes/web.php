@@ -126,11 +126,13 @@ Route::get('cart', [CartController::class, 'index'])->name('cart');
 Route::post('cart_item_delete/{id}', [CartController::class, 'delete'])->name('cart_item_delete');
 
 // カートのajax
-Route::post('/change_cart_count/{id}/{count}', [CartController::class, 'update']);
+Route::post('/change_cart_count_ajax', [CartController::class, 'ajaxUpdate']);
+
+// 商品画面でカート内の数量が変更された際のルート
+Route::post('/change_cart_count/{id}', [CartController::class, 'update'])->name('cart.update');
 
 //カート登録
 Route::post('/cat/add', [CartController::class, 'add'])->name('cart.add');
-
 
 
 
