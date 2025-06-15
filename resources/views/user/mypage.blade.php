@@ -39,7 +39,7 @@
 
             <!-- クーポン -->
             <div class="image-container">
-                <button><img src="{{ asset('img/coupon.png') }}"></button>
+                <button onclick="location.href='{{route('user.coupon')}}'"><img src="{{ asset('img/coupon.png') }}"></button>
                 <p>クーポン</p>
             </div>
 

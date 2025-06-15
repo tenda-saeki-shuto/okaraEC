@@ -49,6 +49,9 @@ trait HandlesGuestQuiz
                     'coupon_id' => $coupon->id,
                     'valid_at' => $valid_at
                 ]);
+
+                //セッションにクイズでクーポンを発行したことを保存
+                session()->flash('coupon_quiz', 'クーポンを獲得しました');
             }
         }
 
