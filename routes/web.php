@@ -134,7 +134,7 @@ Route::middleware('auth')->group(function () {
     // 決済完了画面に飛ぶルート
     Route::get('/payment_complete', [PaymentController::class, 'showOrders'])->name('show_orders');
 
-    // 
+    // 決済完了画面で「トップへ戻る」を押した際のルート
     Route::post('/payment_done', [PaymentController::class, 'donePayment'])->name('done_payment');
 });
 

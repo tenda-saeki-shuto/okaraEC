@@ -12,10 +12,9 @@
 <body>
     <!-- ヘッダー入れる -->
     @include('user.user_header')
-
     <div class="flex flex-col items-center mt-20 w-full">        
         <h1 class="text-3xl font-bold mb-5">現在のカートの中</h1>
-        @if(!empty($carts))
+        @if(!$carts->isEmpty())
         <table>
             <thead>
                 <tr class="bg-gray-200">
