@@ -28,7 +28,7 @@
             <!-- お気に入り画面に遷移 -->
             <form action="#">
                 <div class="image-container">
-                    <button><img src="{{ asset('img/like.png') }}"></button>
+                    <button onclick="location.href='{{route('user.like')}}"><img src="{{ asset('img/like.png') }}"></button>
                     <p>お気に入り</p>
                 </div>
             </form>
