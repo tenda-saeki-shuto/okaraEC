@@ -42,6 +42,14 @@
                     <!-- 合計金額の更新 -->
                     <?php $total+= $cart->items->price * $cart->count; ?>
                 @endforeach
+                @if($coupon != null)
+                    <tr>
+                        <th scope="row" colspan="3" class="text-right">クーポン</th>
+                        <td class="text-center">-{{ $coupon->discount }}円</td>
+                    </tr>
+                    <!-- クーポンの計算 -->
+                    <?php $total-= $coupon->discount; ?>
+                @endif
             </tbody>
             <tfoot class="font-bold">
                 <tr>
@@ -50,24 +58,21 @@
                 </tr>
             </tfoot>
         </table>
-
-        <form action="{{ route('back_to_insert_payment') }}" method="post">
-            @csrf
             <div class="mb-5 mt-5">
                 <h2 class="text-2xl font-bold">お届け先</h2>
                 <div>
                     <label class="text-lg">郵便番号</label>
-                    <p>{{ $postal_code }}</p>
+                    <p>{{ session('postal_code') }}</p>
                     <input type="hidden" name="postal_code" value="{{ $postal_code }}">
                 </div>
                 <div class="mt-4">
                     <label for="prefecture" class="text-lg">都道府県</label>
-                    <p>{{ $prefecture }}</p>
+                    <p>{{ session('prefecture') }}</p>
                     <input type="hidden" name="prefecture" value="{{ $prefecture }}">
                 </div>
                 <div class="mt-4">
                     <label for="address" class="text-lg w-full">住所</label>
-                    <p>{{ $address }}</p>
+                    <p>{{ session('address') }}</p>
                     <input type="hidden" name="address" value="{{ $address }}">
                 </div>
             </div>
@@ -77,13 +82,8 @@
                 <p>クレジットカード</p>
                 <p>カード情報末尾{{ $shown_num }}</p>
             </div>
-    
-            <div class="flex justify-around mb-10">
-                <button type="submit" class="w-48 bg-sky-500 h-10 rounded-xl text-white font-black text-xl mt-10">戻る</button>
-            </div>
-        </form>
+            <a href="{{ route('revise_insert_payment') }}" class="w-auto p-3 bg-sky-500 h-10 rounded-xl text-white font-black text-xl mt-10">戻る</a>
+            <a href="{{ route('insert_payment') }}" class="w-auto p-3 bg-sky-500 h-10 rounded-xl text-white font-black text-xl mt-10">確定</a>
     </div>
-    
-    <button>確定</button>
 </body>
 </html>
