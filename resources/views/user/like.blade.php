@@ -36,27 +36,44 @@
         @include('user.user_header')
     </header>
 
+<div class="container mx-auto px-4">
+    <h1 class="text-2xl font-bold mb-6">お気に入り一覧</h1>
 
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 ml-4 mr-4 mb-4">
-        @foreach($items as $item)
-            <a href="/item/{{$item->id}}" class="block no-underline">
-                <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow duration-300 aspect-[1/1]">
-                    <img src="/images/{{$item->image}}" alt="{{$item->name}}" class="w-4/6 h-4/6 object-cover rounded-t-lg">
-                    <div class="text-xl font-bold mt-2 relative">
-                        {{ $item->name }}
-                        @if ($item->is_frozen === 1)
-                            <div class="bg-pink-300 text-center w-1/4 text-base rounded-full">冷凍商品</div>
-                        @endif
+    {{-- お気に入り登録がある場合 --}}
+    @if($items->isNotEmpty())
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+            @foreach($items as $item)
+                <a href="/item/{{$item->id}}" class="block no-underline">
+                    <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow duration-300 aspect-[1/1]">
+                        <img src="/images/{{$item->image}}" alt="{{$item->name}}" class="w-4/6 h-4/6 object-cover rounded-t-lg mx-auto">
+                        <div class="text-xl font-bold mt-2 text-center relative">
+                            {{ $item->name }}
+                            @if ($item->is_frozen === 1)
+                                <div class="bg-pink-300 text-center w-1/4 text-base rounded-full mx-auto mt-1">冷凍商品</div>
+                            @endif
+                        </div>
+                        <p class="text-gray-600 text-center">¥{{ number_format($item->price) }}</p>
+                        <div class="text-center mt-2">
+                            <button type="button" class="favorite-btn" data-item-id="{{$item->id}}">
+                                <i class="fa fa-heart {{$item->is_favorited ? 'text-danger' : 'text-secondary'}}"></i>
+                            </button>
+                        </div>
                     </div>
-                    <p class="text-gray-600">¥{{ number_format($item->price) }}</p>
-                    <button class="favorite-btn" data-item-id="{{$item->id}}">
-                        <i class="fa fa-heart {{$item->is_favorited ? 'text-danger' : 'text-secondary'}}"></i>
-                    </button>
-                </div>
-            </a>
-        @endforeach
-    </div>
+                </a>
+            @endforeach
+        </div>
+    {{-- お気に入り登録がない場合 --}}
+    @else
+        <div class="text-center mt-10">
+            <p class="text-lg text-gray-600 mb-4">何も登録されていません</p>
+            <button onclick="location.href='{{ route('items') }}'" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                商品一覧へ
+            </button>
+        </div>
+    @endif
+</div>
+
+
 </body>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
