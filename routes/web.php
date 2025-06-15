@@ -70,7 +70,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/user/edit', [ProfileController::class, 'edit'])->name('userinfo.edit');
     Route::patch('/user/edit', [ProfileController::class, 'update'])->name('userinfo.update');
     Route::get('/user/like', [UserLikeController::class, 'index'])->name('user.like'); //お気に入り一覧
-    Route::get('/user/coupon', [UserCouponController::class, 'index'])->name('user.coupon');//クーポン一覧
+    Route::get('/user/coupon', [UserCouponController::class, 'index'])->name('user.coupon'); //クーポン一覧
 });
 
 //--------------------------------------------------------------------------
@@ -158,6 +158,10 @@ Route::get('/quiz', [QuizController::class, 'user_index'])->name('user.quiz');
 
 //クイズ結果画面
 Route::post('/quiz/answer', [QuizController::class, 'answer'])->name('quiz.answer');
+
+//過去のクイズ
+Route::get('/quiz/past/{id}', [QuizController::class, 'past_index'])->name('quiz.past');
+Route::post('/quiz/past_answer', [QuizController::class, 'past_answer'])->name('past.answer');
 
 //----------------------------------------------------------------------------
 
