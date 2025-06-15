@@ -1,39 +1,61 @@
-<head>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<header class="header">
+<header class="w-full bg-[#f9e8d1] shadow-sm">
     @section('google_fonts')
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1p&display=swap" rel="stylesheet">
     @endsection
-    <link rel="stylesheet" href="{{ asset('user_stylesheet/style.css') }}">
-    <div class="header-inner">
-        <nav class="header-nav">
+
+    <div class="w-full py-5">
+        <nav class="w-full flex justify-between items-center font-['M_PLUS_1p'] text-lg px-6">
             <!-- 左エリア -->
-            <div class="nav-left">
-            @auth
-                <form method="POST" action="{{ route('logout') }}" style="display:inline">
-                @csrf
-                <button type="submit" class="btn-link hover-underline">ログアウト</button>
-                </form>
-            @else
-                <a href="{{ route('login') }}" class="hover-underline">ログイン&nbsp&nbsp</a>
-                @if(Route::has('register'))
-                <a href="{{ route('register') }}" class="hover-underline">新規登録</a>
-                @endif
-            @endauth
+            <div class="flex items-center space-x-4">
+                @auth
+                    <form method="POST" action="{{ route('logout') }}" class="inline">
+                        @csrf
+                        <button type="submit"
+                            class="text-[#7c5b3e] hover:text-[#c98b50] transition duration-300 ease-in-out">
+                            ログアウト
+                        </button>
+                    </form>
+                @else
+                    <a href="{{ route('login') }}"
+                        class="text-[#a07146] hover:text-[#c98b50] transition duration-300 ease-in-out underline">
+                        ログイン
+                    </a>
+                    @if(Route::has('register'))
+                        <a href="{{ route('register') }}"
+                            class="text-[#a07146] hover:text-[#c98b50] transition duration-300 ease-in-out underline">
+                            新規登録
+                        </a>
+                    @endif
+                @endauth
             </div>
 
             <!-- 右エリア -->
-            <div class="nav-right">
-                <a href="{{ route('items') }}">商品一覧&nbsp&nbsp</a>
-                <a href="{{ route('recipes') }}">レシピ&nbsp&nbsp</a>
-                <a href="/">クイズ&nbsp&nbsp</a>
-                <a href="/">お問い合わせフォーム&nbsp&nbsp</a>
-                <a href="{{ route('view.mypage') }}">マイページ</a>
-                <a href="{{ route('dashboard') }}"><img src="{{ asset('img/home.png') }}" alt="ホーム" class="w-10 h-10"></a>
-                <a href="/"><img src="{{ asset('img/cart.png') }}" alt="カート" class="w-10 h-10"></a>
+            <div class="flex items-center gap-6 text-[#3b210e]">
+                @php
+                    $navLinks = [
+                        ['label' => '商品一覧', 'route' => route('items')],
+                        ['label' => 'レシピ', 'route' => route('recipes')],
+                        ['label' => 'クイズ', 'route' => '/'],
+                        ['label' => 'お問い合わせフォーム', 'route' => '/'],
+                        ['label' => 'マイページ', 'route' => route('view.mypage')],
+                    ];
+                @endphp
+
+                @foreach ($navLinks as $link)
+                    <a href="{{ $link['route'] }}"
+                        class="relative hover:text-[#c98b50] transition duration-300 ease-in-out after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-[#c98b50] after:opacity-0 hover:after:opacity-100 hover:after:bottom-[-2px] after:transition-all after:duration-300">
+                        {{ $link['label'] }}
+                    </a>
+                @endforeach
+
+                <a href="{{ route('dashboard') }}">
+                    <img src="{{ asset('img/home.png') }}" alt="ホーム" class="w-9 h-9" />
+                </a>
+                <a href="/">
+                    <img src="{{ asset('img/cart.png') }}" alt="カート" class="w-9 h-9" />
+                </a>
             </div>
         </nav>
     </div>
