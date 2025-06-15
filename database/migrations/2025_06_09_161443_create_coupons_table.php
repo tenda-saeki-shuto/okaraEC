@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('content', 30);
             $table->integer('discount');
             $table->string('img');
-            $table->dateTime('valid_date');
             $table->timestamps();
         });
     }

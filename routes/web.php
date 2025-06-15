@@ -5,11 +5,13 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\QuizController;
 use App\Http\Controllers\UserLikeController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+
 
 Route::get('/contact', [ContactController::class, 'showForm'])->name('contact.form');
 Route::get('/contact/confirm', [ContactController::class, 'confirm'])->name('contact.confirm');
@@ -37,13 +39,18 @@ Route::get('/inquiry/detail/{inquiry}', [ContactController::class, 'show'])->nam
 
 
 Route::get('/admin/item', [ItemController::class, 'create'])->name('admin.item.create');
-Route::post('/admin/item', [ItemController::class, 'store'])->name('admin.item.store'); 
+Route::post('/admin/item', [ItemController::class, 'store'])->name('admin.item.store');
 
 Route::get('/admin/item_list', [ItemController::class, 'index'])->name('admin.item.index');
 Route::get('/admin/item/{item}/edit', [ItemController::class, 'edit'])->name('admin.item.edit');
 
 Route::get('/admin/user', [ProfileController::class, 'index'])->name('admin.user.index');
 Route::get('/admin/user/{user}/edit', [ProfileController::class, 'edit'])->name('admin.user.edit');
+
+// カード情報入力
+Route::get('enter_card_info', function () {
+    return view('enter_card_info');
+})->name('enter_card_info');
 
 //初期で表示されている画面
 Route::get('/', function () {
@@ -73,6 +80,7 @@ Route::get('/items/filter', [ItemController::class, 'filter'])->name('items.filt
 // 商品詳細
 Route::get('/item/{id}', [ItemController::class, 'show'])->name('item_detail');
 
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
@@ -84,6 +92,7 @@ Route::middleware('auth')->group(function () {
 
     // カート画面で「購入手続きへ」ボタンが押された際に、決済情報入力画面を表示するためのルート
     Route::get('/insert_payment_info', [PaymentController::class, 'index'])->name('insert_payment');
+  
     // 決済情報確認画面で「戻る」ボタンが押されたときのルート
     Route::get('/insert_payment_info/revise', [PaymentController::class, 'changePaymentInfo'])->name('revise_insert_payment');
     
@@ -103,7 +112,6 @@ Route::middleware('auth')->group(function () {
     
     // 決済情報入力で変更ボタンが押された際のルート
     Route::post('/validate_address', [PaymentController::class, 'validateAddress']);
-    
 
     // 決済完了画面に飛ぶルート
     Route::get('/payment_complete', [PaymentController::class, 'showOrders'])->name('show_orders');
@@ -132,7 +140,7 @@ Route::post('/favorite/toggle', [UserLikeController::class, 'toggle'])->middlewa
 
 
 // トップ画面のルート
-Route::get('/top', function(){
+Route::get('/top', function () {
     return view('top');
 })->name('top');
 
@@ -151,8 +159,12 @@ Route::middleware(['auth'])->group(
     }
 );
 
+//---クイズ画面---------------------------------------------------------------
 
+Route::get('/quiz', [QuizController::class, 'user_index'])->name('user.quiz');
 
+//クイズ結果画面
+Route::post('/quiz/answer', [QuizController::class, 'answer'])->name('quiz.answer');
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin.php';
@@ -175,4 +187,3 @@ require __DIR__ . '/admin.php';
 // Route::get('/admin/test', function(){
 //     return view('admin.test');
 // });
-

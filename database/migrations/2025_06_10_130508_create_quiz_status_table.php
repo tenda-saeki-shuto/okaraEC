@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('quiz_status', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('quiz_id');
-            $table->foreign('quiz_id')->references('id')->on('quizzes');
+            $table->unsignedBigInteger('quizzes_id');
+            $table->foreign('quizzes_id')->references('id')->on('quizzes');
 
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-            
+
             $table->boolean('is_clear')->default(false);
             $table->timestamps();
         });
