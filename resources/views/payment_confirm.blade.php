@@ -83,7 +83,7 @@
                 <p>カード情報末尾{{ $shown_num }}</p>
             </div>
             <a href="{{ route('revise_insert_payment') }}" class="w-auto p-3 bg-sky-500 h-10 rounded-xl text-white font-black text-xl mt-10">戻る</a>
-            <a href="{{ route('insert_payment') }}" class="w-auto p-3 bg-sky-500 h-10 rounded-xl text-white font-black text-xl mt-10">確定</a>
+            <a href="{{ route('show_orders') }}" class="w-auto p-3 bg-sky-500 h-10 rounded-xl text-white font-black text-xl mt-10">確定</a>
     </div>
 </body>
 </html>

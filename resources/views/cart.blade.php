@@ -13,10 +13,9 @@
     <!-- ヘッダー入れる -->
     @include('user.user_header')
 
-    <div class="flex flex-col items-center mt-20 w-full">
-        
-        
+    <div class="flex flex-col items-center mt-20 w-full">        
         <h1 class="text-3xl font-bold mb-5">現在のカートの中</h1>
+        @if(!empty($carts))
         <table>
             <thead>
                 <tr class="bg-gray-200">
@@ -28,6 +27,7 @@
             </thead>
             <tbody>
                 <!-- 合計金額の初期値を設定 -->
+                <!-- カートに商品が入っている場合 -->
                 <?php $total=0; ?>
                 @foreach($carts as $cart)
                 <tr>
@@ -64,7 +64,18 @@
                 </tr>
             </tfoot>
         </table>
+        @if($total >= 2000)
+        <p>クーポンが使えます。</p>
+        @else
+        <p>あと<span class="font-bold">{{ 2000 - $total }}円分</span>購入で500円引きクーポンが使えます。</p>
+        @endif
+        <a href="{{ route('items') }}" class="no-underline px-6 py-2 bg-sky-500 rounded-xl text-white block font-black text-xl mt-10">商品一覧へ</a>
         <a href="{{ route('insert_payment') }}" class="no-underline px-6 py-2 bg-sky-500 rounded-xl text-white block font-black text-xl mt-5">購入手続きへ</a>
+        @else
+        <!-- カートに何も入っていない場合の表示 -->
+        <p class="text-2xl mt-10">カートに商品がありません。</p>
+        <a href="{{ route('items') }}" class="no-underline px-6 py-2 bg-sky-500 rounded-xl text-white block font-black text-xl mt-10">商品一覧へ</a>
+        @endif
     </div>
 
     <script>
