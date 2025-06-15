@@ -33,7 +33,7 @@
 
 
     <div class="text-center mt-6">
-        <button onclick="location.href='{{route('user.quiz')}}'" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+        <button onclick="location.href='{{route('top')}}'" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
             トップへ
         </button>
     </div>
