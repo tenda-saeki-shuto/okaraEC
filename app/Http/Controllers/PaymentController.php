@@ -12,6 +12,7 @@ use App\Models\OrderDetail;
 use App\Models\Cart;
 use App\Models\CreditCard;
 use App\Models\Coupon;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -50,9 +51,16 @@ class PaymentController extends Controller
             $shown_num = null;
         }
 
+        // カートに入っている商品の合計額を取得
+        $cart_items = Cart::with(['items:id,price'])->where('user_id',$user_id)->get();
+        $total = 0;
+        foreach($cart_items as $cart_item){
+            $total += $cart_item->count * $cart_item->items->price;
+        }
+
         // ユーザーが保有しているクーポンを取得(user_couponsテーブル)
-        $coupons = UserCoupon::with(['coupons:id,name,content,discount,img,valid_date'])->where('user_id',$user_id)->get();
-        return view('payment_info', compact('prefectures', 'shown_num', 'coupons'));
+        $coupons = UserCoupon::with(['coupons:id,name,content,discount,img'])->where('user_id',$user_id)->get();
+        return view('payment_info', compact('prefectures', 'shown_num', 'coupons', 'total'));
     }
 
     // カード情報入力画面で「完了」が押された際の処理
@@ -61,7 +69,7 @@ class PaymentController extends Controller
         //全ての都道府県の名前を取得
         $prefectures=Prefecture::all();
         // ユーザーが保有しているクーポンを取得(user_couponsテーブル)
-        $coupons = UserCoupon::with(['coupons:id,name,content,discount,img,valid_date'])->where('user_id',$user_id)->get();
+        $coupons = UserCoupon::with(['coupons:id,name,content,discount,img'])->where('user_id',$user_id)->get();
         // couponsテーブルの書き換え
         $card_number = $request->card_number;
         $card_info = CreditCard::where('user_id', $user_id)->first();
@@ -132,22 +140,80 @@ class PaymentController extends Controller
             $shown_num = null;
         }
 
+        // 合計金額
+        $cart_items = Cart::with(['items:id,price'])->where('user_id',$user_id)->get();
+        $total = 0;
+        foreach($cart_items as $cart_item){
+            $total += $cart_item->count * $cart_item->items->price;
+        }
+
         $prefectures=Prefecture::all(); //全ての都道府県の名前
         // ユーザーが保有しているクーポンを取得(user_couponsテーブル)
         $coupons = UserCoupon::with(['coupons:id,name,content,discount,img'])->where('user_id',$user_id)->get();
-        return view('payment_info', compact('prefectures', 'coupons', 'shown_num'));
+        return view('payment_info', compact('prefectures', 'coupons', 'shown_num', 'total'));
     }
 
 
-    // 決済情報確認画面で確定が押された際のDB処理(注文番号、商品名、単価、数量を取得)
+    // 決済情報確認画面で確定が押された際のDB処理(ordersテーブルにレコードを追加)
     public function showOrders(){
         // ログインしているユーザーのIDを取得
         $user_id = Auth::id();
 
-        // オーダーのテーブルに登録されている情報を取得する
-        $orders = Order::with(['orderDetails:id,order_id,item_name,price,count'])->get();
+        // クレジットカード情報
+        $card = CreditCard::where('user_id', $user_id)->first();
+
+        // 住所情報
+        $address = Address::with(['prefecture:id,name'])->where('user_id', $user_id)->first();
         
-        return view('payment_complete', compact('orders'));
+        // ユーザー情報
+        $user = User::where('id', $user_id)->first();
+
+        // ordersテーブルの更新
+        $order = new Order();
+        $order->user_id = $user_id;
+        $order->order_code = 12345678;
+        $order->dateTime = Carbon::now();
+        $order->status = 1;
+        $order->is_regular = 0;
+        $order->payment = 'クレジットカード'; //credit_cardsテーブルのcard_number
+        $order->postal_code = $address->postal_code;  //addressesテーブルのpostal_code
+        $order->prefecture = $address->prefecture->name;  //addressesテーブルのprefecture
+        $order->address = $address->address;  //addressesテーブルのaddress
+        $order->email = $user->email;  //usersテーブルのemail
+        $order->tel = $user->tel;  //usersテーブルのtel
+        $order->save();
+
+        // order_detailsテーブルの更新
+        $carts = Cart::with(['items:id,name,price'])->where('user_id', $user_id)->get();
+        foreach($carts as $cart){
+            $order_detail = new OrderDetail();
+            $order_detail->order_id = $order->id;
+            $order_detail->item_name = $cart->items->name;
+            $order_detail->price = $cart->items->price;
+            $order_detail->count = $cart->count;
+            $order_detail->save();
+        }
+
+        // クーポン情報を取り出す
+        $coupon_id = session('coupon_id');
+        $coupon_info = Coupon::where('id', $coupon_id)->get();
+
+        // ビューに返す注文情報を取得
+        $orders = Order::with(['orderDetails:id,order_id,item_name,price,count'])
+        ->where('user_id', $user_id)
+        ->orderBy('created_at', 'desc')
+        ->take(count($carts)) //直近の注文のみ取得
+        ->get();
+        foreach($orders as $order_record){
+            $order_details = $order_record->orderDetails;
+            // 注文番号の取得
+            $order_code = $order_record->order_code;
+        }
+
+        // セッション情報の削除
+        session()->forget(['postal_code', 'address', 'prefecture', 'prefecture_id']);
+
+        return view('payment_complete', compact('order_code', 'order_details', 'coupon_info'));
     }
 
 
@@ -174,5 +240,13 @@ class PaymentController extends Controller
             'prefecture' => session('prefecture'),
             'prefecture_id' => session('prefecture_id'),
         ]);
+    }
+
+    // 決済完了画面で「トップへ」が押された際の処理
+    public function donePayment(){
+        // クーポンのセッションを消す
+        session()->forget('coupon_id');
+        // トップ画面にリダイレクトする
+        return redirect()->route('top');
     }
 }

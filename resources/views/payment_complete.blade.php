@@ -12,11 +12,9 @@
 <body>
     <!-- ヘッダー入れる -->
     @include('user.user_header')
-    
     <p class="text-3xl font-bold mt-5 mb-5 ml-[10%]">以下の内容で注文完了しました。</p>
     <p class="text-3xl font-bold mt-5 mb-5 ml-[10%]">ありがとうございました。</p>
-    @foreach($orders as $order)
-    <h2 class="text-2xl font-bold mt-5 mb-5 ml-[10%]">注文番号：{{ $order->order_code }}</h1>
+    <h2 class="text-2xl font-bold mt-5 mb-5 ml-[10%]">注文番号：{{ $order_code }}</h1>
     <div class="flex flex-col items-center w-full">
         <table>
             <thead>
@@ -30,24 +28,26 @@
             <tbody>
                 <!-- 合計金額の初期値を設定 -->
                 <?php $total=0; ?>
-                    @foreach($order->orderDetails as $detail)
+                @foreach($order_details as $order_detail)
                     <tr>
-                        <th>{{ $detail->item_name }}</th>
-                        <td class="text-center">{{ $detail->price }}円</td>
-                        <td class="text-center">{{ $detail->count }}</td>
-                        <td class="text-center">{{ $detail->price * $detail->count }}円</td>
+                        <th>{{ $order_detail->item_name }}</th>
+                        <td class="text-center">{{ $order_detail->price }}円</td>
+                        <td class="text-center">{{ $order_detail->count }}</td>
+                        <td class="text-center">{{ $order_detail->price * $order_detail->count }}円</td>
                     </tr>
+                    <!-- 合計金額の更新 -->
+                    <?php $total+= ($order_detail->price * $order_detail->count); ?>
+                @endforeach
+                @foreach($coupon_info as $coupon)
                     <tr>
                         <th>クーポン</th>
-                        <th>-500円</th>
-                        <th>1</th>
-                        <th>-500円</th>
+                        <td class="text-center">-{{ $coupon->discount }}円</td>
+                        <td class="text-center">1</td>
+                        <td class="text-center">-{{ $coupon->discount * 1 }}円</td>
                     </tr>
-                    @endforeach
-
-                <!-- 合計金額の更新 -->
-                <?php $total+= ($detail->price * $detail->count) - 500; ?>
-        @endforeach
+                    <!-- クーポンの計算 -->
+                    <?php $total-= $coupon->discount * 1; ?>
+                @endforeach
             </tbody>
             <tfoot class="font-bold">
                 <tr>
@@ -57,6 +57,9 @@
             </tfoot>
         </table>
     </div>
-    <a href="{{ route('insert_payment') }}" class="no-underline px-6 py-2 bg-sky-500 rounded-xl text-white font-black text-xl mt-10 ml-[80%] inline-block">トップへ</a>
+    <form action="{{ route('done_payment') }}" method="post">
+        @csrf
+        <button type="submit">トップへ</button>
+    </form>
 </body>
 </html>

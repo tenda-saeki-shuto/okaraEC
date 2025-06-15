@@ -86,9 +86,9 @@
                 <h2 class="text-xl font-bold mb-2">クーポン</h2>
                 <form action="{{ route('payment_confirm') }}" method="post">
                     @csrf
-                    @if($coupons && count($coupons) > 0)
+                    @if($coupons && count($coupons) > 0 && $total >= 2000)
                         @foreach($coupons as $coupon)
-                            <div class="border-2 border-solid mb-5 p-3 border-stone-950 inline-block w-auto flex items-center">
+                            <div class="border-2 border-solid mb-5 p-3 border-stone-950 inline-block w-80 flex items-center">
                                 @if($coupon->coupon_id == session('coupon_id'))
                                     <input type="radio" class="coupon" name="coupon" value="{{ $coupon->coupon_id }}" id="{{ $coupon->coupon_id }}" class="align-middle" checked>
                                 @else
@@ -99,7 +99,7 @@
                             @endforeach
                             <button type="button" id="unuse_coupon_btn" class="w-auto px-3 bg-sky-500 h-10 rounded-xl text-white font-black text-xl">選択を外す</button>
                     @else
-                        <p>クーポンがありません。</p>
+                        <p>使用できるクーポンがありません。</p>
                     @endif
                     <div>
                         @if(isset($shown_num))

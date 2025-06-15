@@ -12,7 +12,7 @@ class Address extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
     //都道府県とのリレーション
-    public function prefectures()
+    public function prefecture()
     {
         return $this->belongsTo(Prefecture::class);
     }
@@ -31,10 +31,10 @@ class Address extends Model
         return $this->belongsTo(User::class);
     }
 
-    //orefectureとのリレーション
-    public function prefecture()
-    {
-        return $this->belongsTo(Prefecture::class);
-    }
+    // //orefectureとのリレーション
+    // public function prefecture()
+    // {
+    //     return $this->belongsTo(Prefecture::class);
+    // }
 
 }
