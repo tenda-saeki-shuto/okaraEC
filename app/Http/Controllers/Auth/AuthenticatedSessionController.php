@@ -37,7 +37,7 @@ class AuthenticatedSessionController extends Controller
         $this->handleGuestQuizAfterLogin();
 
 
-        $redirect = session('redirect_after_login', route('dashboard'));
+        $redirect = session('redirect_after_login', route('top'));
         session()->forget('redirect_after_login');
 
         return redirect($redirect);
