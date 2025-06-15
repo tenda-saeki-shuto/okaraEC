@@ -11,6 +11,7 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Cart;
 use App\Models\CreditCard;
+use App\Models\Coupon;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -26,22 +27,62 @@ class PaymentController extends Controller
         $prefectures=Prefecture::all(); //全ての都道府県の名前
 
         // usersテーブルから郵便番号、住所、都道府県IDを取得
-        $user_info = User::with(['addresses:id,user_id,postal_code,address,prefecture_id'])->where('id', $user_id)->get();
-
+        $user_info = User::with(['addresses:id,user_id,postal_code,address,prefecture_id'])->where('id', $user_id)->first();
+        $postal_code = $user_info->addresses->postal_code;
+        $address = $user_info->addresses->address;
+        $prefecture_id = $user_info->addresses->prefecture_id;
         // 都道府県IDから都道府県名を取得
-        foreach($user_info as $info){
-            $prefecture_id = $info->addresses->prefecture_id;        
+        $prefecture = Prefecture::find($prefecture_id)->name;
+
+        // 住所情報をセッションに保存
+        session()->put('postal_code', $postal_code);
+        session()->put('address', $address);
+        session()->put('prefecture', $prefecture);
+        session()->put('prefecture_id', $prefecture_id);
+
+        // クレジットカード情報を取得
+        $card_info = CreditCard::where('user_id',$user_id)->first();
+        if(isset($card_info->card_number)){
+            $card_num = $card_info->card_number;
+            // カードの下４桁を取得
+            $shown_num = substr($card_num, 12, 5);
+        }else{
+            $shown_num = null;
         }
-        $user_prefecture = Prefecture::find($prefecture_id)->name;
 
         // ユーザーが保有しているクーポンを取得(user_couponsテーブル)
-        $coupon = UserCoupon::with(['coupons:id,name,content,discount,img,valid_date'])->where('user_id',$user_id)->where('available',1)->get();
-
-        return view('payment_info', compact('prefectures', 'user_info', 'user_prefecture', 'coupon'));
+        $coupons = UserCoupon::with(['coupons:id,name,content,discount,img,valid_date'])->where('user_id',$user_id)->where('available',1)->get();
+        return view('payment_info', compact('prefectures', 'shown_num', 'coupons'));
     }
 
+    // カード情報入力画面で「完了」が押された際の処理
+    public function registerCard(Request $request){
+        $user_id = Auth::id();
+        //全ての都道府県の名前を取得
+        $prefectures=Prefecture::all();
+        // ユーザーが保有しているクーポンを取得(user_couponsテーブル)
+        $coupons = UserCoupon::with(['coupons:id,name,content,discount,img,valid_date'])->where('user_id',$user_id)->where('available',1)->get();
+        // couponsテーブルの書き換え
+        $card_number = $request->card_number;
+        $card_info = CreditCard::where('user_id', $user_id)->first();
+        $card_info->card_number = $card_number;
+        $card_info->save();
 
+        // 表示する下４桁を取得
+        $shown_num = substr($card_number, 12, 5);
+        return view('payment_info', compact('prefectures', 'coupons', 'shown_num'));
+    }
 
+    // 決済情報入力で「選択を外す」ボタンが押された際の処理
+    public function unuseCoupon(){
+        session()->forget('coupon_id');
+         return response()->json([
+            'status' => 'success',
+            'coupon_id' => session('coupon_id'), // null になっているはず
+        ]);
+    }
+
+    // 決済情報入力画面で「注文確認」ボタンが押されたときの処理
     public function confirm(Request $request)
     {
         // ログインしているユーザーのIDを取得
@@ -50,15 +91,15 @@ class PaymentController extends Controller
         $carts = Cart::with(['items:id,name,price'])->where('user_id', $user_id)->get();
 
         // クレジットカード情報を取得
-        $card_info = CreditCard::where('user_id',$user_id)->get();
-        foreach($card_info as $info){
-            $card_num = $info->card_number;
-        }
+        $card_info = CreditCard::where('user_id',$user_id)->first();
+        $card_num = $card_info->card_number;
         // カードの下４桁を取得
         $shown_num = substr($card_num, 12, 5);
 
-        // 決済情報入力画面で選択されたクーポンの情報を取得
-        $coupon = $request->coupon;
+        // 決済情報入力画面で選択されたクーポンの情報を取得し、セッションに保存
+        $coupon_id = $request->coupon;
+        $coupon = Coupon::where('id',$coupon_id)->first();
+        session()->put('coupon_id', $coupon_id);
 
         // 決済情報入力画面で入力されたお届け先を取得(postal_code, prefecture(id), address, coupon(id))
         $postal_code = $request->postal_code;
@@ -70,11 +111,22 @@ class PaymentController extends Controller
 
     // 決済確認画面で「戻る」ボタンが押された際に決済情報入力画面にクーポンと住所の情報を送る処理
     public function changePaymentInfo(Request $request){
-        $postal_code = $request->postal_code;
-        $user_prefecture = $request->prefecture;
-        $address = $request->address;
+        $user_id = Auth::id();
+
+        // クレジットカード情報を取得
+        $card_info = CreditCard::where('user_id',$user_id)->first();
+        if(isset($card_info->card_number)){
+            $card_num = $card_info->card_number;
+            // カードの下４桁を取得
+            $shown_num = substr($card_num, 12, 5);
+        }else{
+            $shown_num = null;
+        }
+
         $prefectures=Prefecture::all(); //全ての都道府県の名前
-        return view('payment_info', compact('postal_code', 'user_prefecture', 'address', 'prefectures'));
+        // ユーザーが保有しているクーポンを取得(user_couponsテーブル)
+        $coupons = UserCoupon::with(['coupons:id,name,content,discount,img,valid_date'])->where('user_id',$user_id)->where('available',1)->get();
+        return view('payment_info', compact('prefectures', 'coupons', 'shown_num'));
     }
 
 
@@ -96,6 +148,22 @@ class PaymentController extends Controller
         $validated_data = $request->validate([
             'postal_code' => ['required', 'regex:/^\d{7}$/'], //郵便番号
             'address' => ['required'], //住所
+            'prefecture_id' => ['required']  // 都道府県
+        ]);
+        // 都道府県IDから都道府県名を取得
+        $prefecture = Prefecture::find($validated_data['prefecture_id'])->name;
+
+        // セッション情報の上書き
+        session()->put('postal_code', $validated_data['postal_code']);
+        session()->put('address', $validated_data['address']);
+        session()->put('prefecture', $prefecture);
+        session()->put('prefecture_id', $validated_data['prefecture_id']);
+
+        return response()->json([
+            'postal_code' => session('postal_code'),
+            'address' => session('address'),
+            'prefecture' => session('prefecture'),
+            'prefecture_id' => session('prefecture_id'),
         ]);
     }
 }

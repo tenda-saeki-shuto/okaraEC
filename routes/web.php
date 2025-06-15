@@ -45,11 +45,6 @@ Route::get('/admin/item/{item}/edit', [ItemController::class, 'edit'])->name('ad
 Route::get('/admin/user', [ProfileController::class, 'index'])->name('admin.user.index');
 Route::get('/admin/user/{user}/edit', [ProfileController::class, 'edit'])->name('admin.user.edit');
 
-// カード情報入力
-Route::get('enter_card_info', function () {
-    return view('enter_card_info');
-})->name('enter_card_info');
-
 //初期で表示されている画面
 Route::get('/', function () {
     return view('dashboard');
@@ -86,19 +81,30 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    // 決済情報入力画面を表示するためのルート
+
+    // カート画面で「購入手続きへ」ボタンが押された際に、決済情報入力画面を表示するためのルート
     Route::get('/insert_payment_info', [PaymentController::class, 'index'])->name('insert_payment');
+    // 決済情報確認画面で「戻る」ボタンが押されたときのルート
+    Route::get('/insert_payment_info/revise', [PaymentController::class, 'changePaymentInfo'])->name('revise_insert_payment');
     
-    // 決済確認画面で「戻る」ボタンが押された際のルート
-    Route::post('/insert_payment_info', [PaymentController::class, 'changePaymentInfo'])->name('back_to_insert_payment');
+    // カード情報入力画面の表示
+    Route::get('enter_card_info', function () {
+        return view('enter_card_info');
+    })->name('enter_card_info');
+
+    // カード情報入力画面で「完了」ボタンが押された際のルート
+    Route::post('/insert_payment_info', [PaymentController::class, 'registerCard'])->name('register_card');
     
-    // 決済情報入力から確認画面へ遷移するボタンが押された際のルート
+    // 決済情報入力で「注文確認」ボタンが押された際のルート
     Route::post('/payment_confirm', [PaymentController::class, 'confirm'])->name('payment_confirm');
     
+    // 決済情報入力で「選択を外す」ボタンが押された際のルート
+    Route::post('/unuse_coupon', [PaymentController::class, 'unuseCoupon'])->name('unuse_coupon');
     
     // 決済情報入力で変更ボタンが押された際のルート
     Route::post('/validate_address', [PaymentController::class, 'validateAddress']);
     
+
     // 決済完了画面に飛ぶルート
     Route::get('/payment_complete', [PaymentController::class, 'showOrders'])->name('show_orders');
 });
