@@ -35,6 +35,7 @@
                 <a href="{{ route('view.mypage') }}">マイページ</a>
                 <a href="{{ route('dashboard') }}"><img src="{{ asset('img/home.png') }}" alt="ホーム" class="w-10 h-10"></a>
                 <a href="{{ route('cart') }}"><img src="{{ asset('img/cart.png') }}" alt="カート" class="w-10 h-10"></a>
+                <a href="{{ route('top') }}"><img src="{{ asset('img/home.png') }}" alt="ホーム" class="w-10 h-10"></a>
             </div>
         </nav>
     </div>

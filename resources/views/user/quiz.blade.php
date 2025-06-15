@@ -61,11 +61,52 @@
 
     <!-- トップへボタン -->
     <div class="mt-6">
-        <button onclick="location.href='{{route('items')}}'"
+        <button onclick="location.href='{{route('top')}}'"
             class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded text-sm sm:text-base">
             トップへ
         </button>
     </div>
 
-</body>
+    {{-- クーポン発行メッセージ --}}
+    @if(session('coupon_register'))
+        <div id="popup1" class="hidden fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded shadow-lg z-50 transition-opacity duration-500 text-center">
+            <span class="block sm:inline">{!! session('coupon_register') !!}</span>
+        </div>
+    @endif
+
+    @if(session('coupon_quiz'))
+        <div id="popup2" class="hidden fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded shadow-lg z-50 transition-opacity duration-500 text-center">
+            <span class="block sm:inline">{!! session('coupon_quiz') !!}</span>
+        </div>
+    @endif
+
+<script>
+    function showPopup(id, nextCallback) {
+        const popup = document.getElementById(id);
+        if (popup) {
+            popup.classList.remove('hidden');
+            popup.classList.add('opacity-100');
+
+            setTimeout(() => {
+                popup.classList.add('opacity-0');
+                setTimeout(() => {
+                    popup.remove();
+                    if (nextCallback) nextCallback();
+                }, 500);
+            }, 2000);
+        } else if (nextCallback) {
+            nextCallback();
+        }
+    }
+
+    @if(session('coupon_register') && session('coupon_quiz'))
+        showPopup('popup1', () => showPopup('popup2'));
+    @elseif(session('coupon_register'))
+        showPopup('popup1');
+    @elseif(session('coupon_quiz'))
+        showPopup('popup2');
+    @endif
+</script>
+
+
 </html>

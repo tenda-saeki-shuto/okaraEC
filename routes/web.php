@@ -10,8 +10,14 @@ use App\Http\Controllers\UserLikeController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserCouponController;
 use Illuminate\Support\Facades\Route;
 
+
+// トップ画面のルート
+Route::get('/', function () {
+    return view('top');
+})->name('top');
 
 Route::get('/contact', [ContactController::class, 'showForm'])->name('contact.form');
 Route::get('/contact/confirm', [ContactController::class, 'confirm'])->name('contact.confirm');
@@ -53,17 +59,23 @@ Route::get('enter_card_info', function () {
 })->name('enter_card_info');
 
 //初期で表示されている画面
-Route::get('/', function () {
-    return view('dashboard');
-});
+// Route::get('/', function () {
+//     return view('dashboard');
+// });
 
+//----------------------マイページ----------------------------------------------
 //ヘッダーからマイページに画面遷移←ログインしていない場合はログイン画面にリダイレクト
 Route::middleware(['auth'])->group(function () {
     Route::get('/user', [ProfileController::class, 'show'])->name('view.mypage');
     Route::get('/user/edit', [ProfileController::class, 'edit'])->name('userinfo.edit');
     Route::patch('/user/edit', [ProfileController::class, 'update'])->name('userinfo.update');
+    Route::get('/user/like', [UserLikeController::class, 'index'])->name('user.like'); //お気に入り一覧
+    Route::get('/user/coupon', [UserCouponController::class, 'index'])->name('user.coupon');//クーポン一覧
 });
 
+//--------------------------------------------------------------------------
+
+//-----------------レシピ--------------------------------------------------------
 //レシピ画面に遷移
 Route::get('/recipes', [RecipeController::class, 'user_index'])->name('recipes');
 //レシピフィルター
@@ -71,20 +83,26 @@ Route::get('/recipes/filter', [RecipeController::class, 'filter'])->name('recipe
 // レシピ詳細
 Route::get('/resipes/{id}', [RecipeController::class, 'show'])->name('recipe_detail');
 
+//-------------------------------------------------------------------------------
 
-//商品一覧表示
+//----------------------商品一覧表示--------------------------------------------------
 // 商品一覧
 Route::get('/items', [ItemController::class, 'user_index'])->name('items');
 // 商品一覧のフィルター
 Route::get('/items/filter', [ItemController::class, 'filter'])->name('items.filter');
 // 商品詳細
 Route::get('/item/{id}', [ItemController::class, 'show'])->name('item_detail');
+// お気に入り登録
+Route::post('/favorite/toggle', [UserLikeController::class, 'toggle'])->middleware('auth');
+
+//-----------------------------------------------------------------------------------
 
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->name('dashboard');
 
+//-----------------------決済関係--------------------------------------------------------
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -92,10 +110,10 @@ Route::middleware('auth')->group(function () {
 
     // カート画面で「購入手続きへ」ボタンが押された際に、決済情報入力画面を表示するためのルート
     Route::get('/insert_payment_info', [PaymentController::class, 'index'])->name('insert_payment');
-  
+
     // 決済情報確認画面で「戻る」ボタンが押されたときのルート
     Route::get('/insert_payment_info/revise', [PaymentController::class, 'changePaymentInfo'])->name('revise_insert_payment');
-    
+
     // カード情報入力画面の表示
     Route::get('enter_card_info', function () {
         return view('enter_card_info');
@@ -103,13 +121,13 @@ Route::middleware('auth')->group(function () {
 
     // カード情報入力画面で「完了」ボタンが押された際のルート
     Route::post('/insert_payment_info', [PaymentController::class, 'registerCard'])->name('register_card');
-    
+
     // 決済情報入力で「注文確認」ボタンが押された際のルート
     Route::post('/payment_confirm', [PaymentController::class, 'confirm'])->name('payment_confirm');
-    
+
     // 決済情報入力で「選択を外す」ボタンが押された際のルート
     Route::post('/unuse_coupon', [PaymentController::class, 'unuseCoupon'])->name('unuse_coupon');
-    
+
     // 決済情報入力で変更ボタンが押された際のルート
     Route::post('/validate_address', [PaymentController::class, 'validateAddress']);
 
@@ -118,7 +136,7 @@ Route::middleware('auth')->group(function () {
 });
 
 
-
+//-----------------カート----------------------------------------------------------
 // カート画面を表示するためのルート
 Route::get('cart', [CartController::class, 'index'])->name('cart');
 
@@ -134,17 +152,19 @@ Route::post('/change_cart_count/{id}', [CartController::class, 'update'])->name(
 //カート登録
 Route::post('/cat/add', [CartController::class, 'add'])->name('cart.add');
 
+//---------------------------------------------------------------------------------
 
 
+//---クイズ画面---------------------------------------------------------------
 
 // お気に入り登録
 Route::post('/favorite/toggle', [UserLikeController::class, 'toggle'])->middleware('auth');
+Route::get('/quiz', [QuizController::class, 'user_index'])->name('user.quiz');
 
+//クイズ結果画面
+Route::post('/quiz/answer', [QuizController::class, 'answer'])->name('quiz.answer');
 
-// トップ画面のルート
-Route::get('/top', function () {
-    return view('top');
-})->name('top');
+//----------------------------------------------------------------------------
 
 
 //退会処理
@@ -161,12 +181,6 @@ Route::middleware(['auth'])->group(
     }
 );
 
-//---クイズ画面---------------------------------------------------------------
-
-Route::get('/quiz', [QuizController::class, 'user_index'])->name('user.quiz');
-
-//クイズ結果画面
-Route::post('/quiz/answer', [QuizController::class, 'answer'])->name('quiz.answer');
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin.php';
