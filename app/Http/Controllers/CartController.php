@@ -11,7 +11,7 @@ class CartController extends Controller
     public function index()
     {
         // $user_idにはセッションに保存されているユーザーIDを入れる
-        $user_id = 1;
+        $user_id = Auth::id();
         $carts = Cart::with(['items:id,name,price'])->where('user_id', $user_id)->get();
         // dd($carts);
         return view('cart', compact('carts'));
@@ -19,32 +19,38 @@ class CartController extends Controller
 
     public function delete($id)
     {
-        $cart_item = Cart::find($id);
+        $cart_item = Cart::where('item_id',$id)->first();
         $cart_item->delete();
         // 削除したらカート画面にリダイレクト
         return redirect()->route('cart');
     }
 
-    public function update($id, $count)
+    public function ajaxUpdate(Request $request)
     {
-
-        // DB処理を追加
+        $user_id = Auth::id();
         // カート情報を取得し更新
-        $cart = Cart::find($id);
-        $cart->count = $count;
+        $cart = Cart::where('user_id', $user_id)->where('item_id', $request->id)->first();
+        $cart->count = $request->count;
         $cart->save();
-
 
         return response()->json([
             'message' => '数量を更新しました',
-            'id' => $id,
-            'new_count' => $count
+            'cart' => $cart,
         ]);
+    }
+
+    public function update($id, Request $request)
+    {
+        $user_id = Auth::id();
+        // カート情報を取得し更新
+        $cart = Cart::where('user_id', $user_id)->where('item_id', $id)->first();
+        $cart->count = $request->count;
+        $cart->save();
+        return redirect()->route('item_detail', ['id'=>$id]);
     }
 
     public function add(Request $request)
     {
-
         $request->validate([
             'item_id' => 'required|integer',
             'count' => 'required|integer|min:1'

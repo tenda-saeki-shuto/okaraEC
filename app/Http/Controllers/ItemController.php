@@ -10,6 +10,7 @@ use App\Models\ItemNutritionFact;
 use App\Models\ItemAllergy;
 use App\Models\ItemPicture;
 use App\Models\UserLike;
+use App\Models\Cart;
 use Illuminate\Support\Facades\Auth;
 use function PHPUnit\Framework\isNull;
 
@@ -67,8 +68,14 @@ class ItemController extends Controller
             'itemAllergies.Allergies',
             'nutritionFacts'
         ])->findOrFail($id);
+        // dd($item);
 
         $user = Auth::user();
+
+        // ユーザーのカート情報を取得
+        $user_id = Auth::id();
+        $cart_item = Cart::where('user_id', $user_id)->where('item_id', $id)->first();
+        // dd($cart_item);
 
         // お気に入り状態を追加
         $item->is_favorited = false;
@@ -76,7 +83,7 @@ class ItemController extends Controller
             $item->is_favorited = UserLike::where('user_id', $user->id)->where('item_id', $item->id)->exists();
         }
 
-        return view('user.item_detail', compact('item'));
+        return view('user.item_detail', compact('item', 'cart_item'));
     }
 
     private $item;
@@ -240,7 +247,7 @@ class ItemController extends Controller
         if (!empty($allergyIds)) {
             foreach ($allergyIds['allergies'] as $index => $allergy_id) {
                 $id = $form_allergy_ids[$index] ?? null;
-                
+
                 if ($id) {
                     $allergy = ItemAllergy::find($id);
                     if ($allergy) {
@@ -261,7 +268,7 @@ class ItemController extends Controller
         if (!empty($allergy_delete_ids)) {
             $item->itemAllergies()->whereIn('id', $allergy_delete_ids)->delete();
         }
-        
+
         // サブ画像
         $subImgs = $request->validate([
             'sub_imgs.*' => 'nullable|max:300',

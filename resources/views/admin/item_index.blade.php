@@ -61,7 +61,7 @@
     @endif
     <a href="{{ route('item.create') }}">+新規追加</a>
     <div class="max-w-7xl mx-auto px-6">
-        <table>
+        <table border="1">
             <thead>
                 <tr>
                     <th scope="col" >商品名</th>                    
