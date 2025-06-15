@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 
 // トップ画面のルート
-Route::get('/top', function () {
+Route::get('/', function () {
     return view('top');
 })->name('top');
 
@@ -60,9 +60,9 @@ Route::get('enter_card_info', function () {
 
 
 //初期で表示されている画面
-Route::get('/', function () {
-    return view('dashboard');
-});
+// Route::get('/', function () {
+//     return view('dashboard');
+// });
 
 //----------------------マイページ----------------------------------------------
 //ヘッダーからマイページに画面遷移←ログインしていない場合はログイン画面にリダイレクト
@@ -73,7 +73,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 //お気に入り画面遷移
-Route::get('/like', [UserLikeController::class, 'index'])->name('user.like');
+Route::get('/user/like', [UserLikeController::class, 'index'])->name('user.like');
 
 
 //-----------------------------------------------------------------------------
