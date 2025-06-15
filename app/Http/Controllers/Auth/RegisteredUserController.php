@@ -97,7 +97,7 @@ class RegisteredUserController extends Controller
         );
 
         //セッションに新規登録でクーポンを発行したことを保存
-        session()->flash('coupon_register', 'クーポンを獲得しました');
+        session()->flash('coupon_register', '新規登録ありがとうございます<br>クーポンを獲得しました');
 
 
         return redirect($redirect);

@@ -51,7 +51,7 @@ trait HandlesGuestQuiz
                 ]);
 
                 //セッションにクイズでクーポンを発行したことを保存
-                session()->flash('coupon_quiz', 'クーポンを獲得しました');
+                session()->flash('coupon_quiz', 'クイズ正解おめでとうございます<br>クーポンを獲得しました');
             }
         }
 
