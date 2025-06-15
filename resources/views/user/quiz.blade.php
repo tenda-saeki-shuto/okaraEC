@@ -67,6 +67,11 @@
         </button>
     </div>
 
+    過去のクイズ一覧
+    @foreach ($quiz_list_past as $quiz_past)
+        <a href="{{route('quiz.past', ['id'=> $quiz_past->id])}}">{{$quiz_past->title}}</a>
+    @endforeach
+
     {{-- クーポン発行メッセージ --}}
     @if(session('coupon_register'))
         <div id="popup1" class="hidden fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded shadow-lg z-50 transition-opacity duration-500 text-center">
@@ -79,6 +84,7 @@
             <span class="block sm:inline">{!! session('coupon_quiz') !!}</span>
         </div>
     @endif
+</body>
 
 <script>
     function showPopup(id, nextCallback) {

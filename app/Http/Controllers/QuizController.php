@@ -109,6 +109,7 @@ class QuizController extends Controller
         $user = Auth::user();
         $todayMonth = Carbon::today()->month;
 
+        // 今月のクイズを取得
         $quiz_list = Quizzes::with([
             'quizSelections',
             'quizStatus' => function ($query) use ($user) {
@@ -120,8 +121,16 @@ class QuizController extends Controller
             ->whereMonth('start', $todayMonth)
             ->first();
 
-        return view('user.quiz', compact('quiz_list'));
+        // すでに回答済みならリダイレクト
+        // if ($user && $quiz_list && $quiz_list->quizStatus->isNotEmpty()) {
+        //     return redirect()->route('user.quiz')->with('message', 'すでにクイズに回答済みです');
+        // }
+
+        $quiz_list_past = Quizzes::whereMonth('start', '<', $todayMonth)->get();
+
+        return view('user.quiz', compact('quiz_list', 'quiz_list_past'));
     }
+
 
 
     //クイズの正解表示
@@ -196,5 +205,36 @@ class QuizController extends Controller
         }
 
         return view('user.quiz_answer', compact('answer', 'is_answer', 'message', 'coupon'));
+    }
+
+    //過去のクイズ画面
+    public function past_index($id)
+    {
+        //クイズを取得
+        $quiz_list = Quizzes::with('quizSelections')->where('id', $id)->first();
+
+        return view('user.quiz_past', compact('quiz_list'));
+    }
+
+    public function past_answer(Request $request)
+    {
+        // ユーザーの回答した選択肢
+        $user_answer = QuizSelections::find($request->selection_id);
+
+        // 正解・不正解判定
+        if ($user_answer->is_answer === 1) {
+            $answer = $user_answer;
+            $is_answer = 1;
+            $message = '正解！！';
+        } else {
+            // 不正解時の正解選択肢取得
+            $answer = QuizSelections::where('quiz_id', $user_answer->quiz_id)
+                ->where('is_answer', 1)
+                ->first();
+
+            $is_answer = 0;
+            $message = 'ざんね～ん';
+        }
+        return view('user.quiz_past_answer', compact('answer', 'is_answer', 'message'));
     }
 }
