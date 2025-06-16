@@ -4,86 +4,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <title>レシピ一覧</title>
-
-    <style>
-        #drop-area {
-            border: 2px dashed #ccc;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            color: #999;
-            margin-bottom: 20px;
-        }
-
-        #drop-area.highlight {
-            border-color: #6c6;
-        }
-
-        .preview-image {
-            position: relative;
-            display: inline-block;
-            margin: 10px;
-        }
-
-        .preview-image img {
-            max-width: 200px;
-            display: block;
-        }
-
-        .remove-btn {
-            position: absolute;
-            top: 0;
-            right: 0;
-            background: red;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-    </style>
 </head>
 
-<body>
-    <header>
-        {{ view('admin.admin_header') }}
-    </header>
-    <h1>レシピ一覧</h1>
-    @if (session('message'))
-        <div class="text-red-600 font-bold">
-            {{ session('message') }}
-        </div>
-    @endif
-    <a href="{{ route('recipe.create') }}">+新規追加</a>
+@include('admin.admin_header')
 
-    <div class="max-w-7xl mx-auto px-6">
-        <table border="1">
-            <thead>
-                <tr>
-                    <th scope="col">レシピ名</th>
-                    <th scope="col">説明文</th>
-                    <th scope="col">画像</th>
-                    <th scope="col">最終更新</th>
-                    <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody>
-            @foreach ($recipes as $recipe)
-                <tr>
-                    <th scope="row">{{ $recipe->title }}</th>
-                    <td>{{ $recipe->content }}</td>
-                    <td>{{ $recipe->img }}</td>
-                    <td>{{ $recipe->updated_at }}</td>
-                    <td><a href="{{ route('recipe.edit', $recipe) }}">編集</a></td>
-                </tr>
-            @endforeach
-            </tbody>
-        </table>
-    </div>
+<body>
+    <section class="text-gray-600 body-font">
+        <div class="container px-5 py-24 mx-auto">
+            <div class="flex flex-col text-center w-full mb-20">
+                <h1 class="sm:text-4xl text-3xl font-medium title-font mb-2 text-gray-900">レシピ一覧</h1>
+                @if (session('message'))
+                    <div class="text-red-600 font-bold">
+                        {{ session('message') }}
+                    </div>
+                @endif
+                <div class="flex pl-4 mt-4 lg:w-2/3 w-full mx-auto">
+                    <a class="flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"
+                        href="{{ route('recipe.create') }}">
+                        +新規追加</a>
+                </div>
+            </div>
+            <div class="lg:w-2/3 w-full mx-auto overflow-auto">
+                <table class="table-auto w-full text-left whitespace-no-wrap">
+                    <thead>
+                        <tr>
+                            <th
+                                class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
+                                レシピ名</th>
+                            <th
+                                class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
+                                説明文</th>
+                            <th
+                                class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
+                                画像</th>
+                            <th
+                                class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
+                                最終更新
+                            </th>
+                            <th
+                                class="w-10 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tr rounded-br">
+                                　　　
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($recipes as $recipe)
+                            <tr>
+                                <td class="border-t-2 border-gray-200 px-4 py-3">{{ $recipe->title }}</td>
+                                <td class="border-t-2 border-gray-200 px-4 py-3">{{ $recipe->content }}</td>
+                                <td class="border-t-2 border-gray-200 px-4 py-3 text-lg text-gray-900">{{ $recipe->img }}
+                                <td class="border-t-2 border-gray-200 w-10 text-center">
+                                    {{ $recipe->updated_at }}
+                                </td>
+                                <td class="border-t-2 border-gray-200 w-10 text-center">
+                                    <a href="{{ route('recipe.edit', $recipe) }}">編集</a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
 </body>
 
 </html>

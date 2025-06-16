@@ -95,7 +95,7 @@ class ItemController extends Controller
 
     public function index()
     { // 商品名、種類名、最終更新日、在庫
-        $item_list = Item::orderBy("id", "desc")->paginate(20);
+        $item_list = Item::orderBy("updated_at", "desc")->paginate(20);
         return view('admin.item_index', compact('item_list'));
     }
 
@@ -140,12 +140,12 @@ class ItemController extends Controller
 
         // table: item_nutrition_facts
         $nutritionData = $request->validate([
-            'energy' => 'nullable|integer',
-            'protein' => 'nullable|integer',
-            'fat' => 'nullable|integer',
-            'carb' => 'nullable|integer',
-            'fiber' => 'nullable|integer',
-            'salt_eqv' => 'nullable|integer',
+            'energy' => 'nullable|integer|min:0',
+            'protein' => 'nullable|numeric|min:0',
+            'fat' => 'nullable|numeric|min:0',
+            'carb' => 'nullable|numeric|min:0',
+            'fiber' => 'nullable|numeric|min:0',
+            'salt_eqv' => 'nullable|numeric|min:0',
         ]);
 
         $nutritionData['item_id'] = $item->id;
@@ -189,7 +189,7 @@ class ItemController extends Controller
     public function edit(Item $item)
     {
         $item_nutrition_facts = $item->nutritionFacts;
-        $item_allergies = $item->itemAllergies()->pluck('id')->toArray();
+        $item_allergies = $item->itemAllergies()->pluck('allergy_id')->toArray();
         $categories = Category::all();
         $allergy_list = Allergy::all();
         return view('admin.item_edit', compact(
@@ -226,12 +226,12 @@ class ItemController extends Controller
 
         // table: item_nutrition_facts
         $nutritionData = $request->validate([
-            'energy' => 'nullable|integer',
-            'protein' => 'nullable|integer',
-            'fat' => 'nullable|integer',
-            'carb' => 'nullable|integer',
-            'fiber' => 'nullable|integer',
-            'salt_eqv' => 'nullable|integer',
+            'energy' => 'nullable|integer|min:0',
+            'protein' => 'nullable|numeric|min:0',
+            'fat' => 'nullable|numeric|min:0',
+            'carb' => 'nullable|numeric|min:0',
+            'fiber' => 'nullable|numeric|min:0',
+            'salt_eqv' => 'nullable|numeric|min:0',
         ]);
 
         $nutritionData['item_id'] = $item->id;

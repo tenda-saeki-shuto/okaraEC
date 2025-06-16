@@ -25,11 +25,6 @@
             @auth('admin')
                 <p>ログイン中です。</p>
             @endauth
-            <form method="POST" action="{{ route('admin.login.destroy') }}">
-                @method('DELETE')
-                @csrf
-                <button type="submit">ログアウト</button>
-            </form>
         </main>
     </div>
 </body>
