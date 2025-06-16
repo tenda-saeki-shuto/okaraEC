@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title',30);
             $table->string('content',300);
-            $table->string('img');
+            $table->string('img')->nullable();
             $table->string('time',20);
             $table->string('amount',20);
             $table->unsignedBigInteger('category_id');
