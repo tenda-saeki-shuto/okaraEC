@@ -13,21 +13,21 @@
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit"
-                            class="text-[#7c5b3e] hover:text-[#c98b50] border-b-4 border-transparent hover:border-[#c96d50] transition-borders duration-300 ease-in-out inline-block">
+                            class="border-b-4 border-transparent text-[#7c5b3e] hover:text-[#c98b50] hover:border-[#c96d50] transition-all duration-300 ease-in-out inline-block">
                             ログアウト
                         </button>
                     </form>
                 @else
                     <div>
                         <a href="{{ route('login') }}"
-                            class="text-[#7c5b3e] border-b-4 border-transparent hover:text-[#c98b50] hover:border-[#c96d50] transition-borders duration-300 ease-in-out inline-block">
+                            class="border-b-4 border-transparent text-[#7c5b3e] hover:text-[#c98b50] hover:border-[#c96d50] transition-all duration-300 ease-in-out inline-block">
                             ログイン
                         </a>
                     </div>
                     @if(Route::has('register'))
                     <div>
                         <a href="{{ route('register') }}"
-                            class="text-[#7c5b3e] border-b-4 border-transparent hover:text-[#c98b50] hover:border-[#c96d50] transition-borders duration-300 ease-in-out inline-block">
+                            class="border-b-4 border-transparent text-[#7c5b3e] hover:text-[#c98b50] hover:border-[#c96d50] transition-all duration-300 ease-in-out inline-block">
                             新規登録
                         </a>
                     </div>
@@ -37,11 +37,11 @@
 
             <!-- 右エリア -->
             <div id="navMenu" class="nav-right flex items-center space-x-4 whitespace-nowrap text-lg hidden lg:flex">
-                <a href="{{ route('items') }}" class="text-[#7c5b3e] hover:text-[#c98b50] hover:border-b-4 border-[#c96d50] transition-borders duration-100 ease-in-out">商品一覧&nbsp;&nbsp;</a>
-                <a href="{{ route('recipes') }}" class="text-[#7c5b3e] hover:text-[#c98b50] hover:border-b-4 border-[#c96d50] transition-borders duration-100 ease-in-out">レシピ&nbsp;&nbsp;</a>
-                <a href="{{route('user.quiz')}}" class="text-[#7c5b3e] hover:text-[#c98b50] hover:border-b-4 border-[#c96d50] transition-borders duration-100 ease-in-out">クイズ&nbsp;&nbsp;</a>
-                <a href="{{ route('contact.form') }}" class="text-[#7c5b3e] hover:text-[#c98b50] hover:border-b-4 border-[#c96d50] transition-borders duration-100 ease-in-out">お問い合わせフォーム&nbsp&nbsp</a>
-                <a href="{{ route('view.mypage') }}" class="text-[#7c5b3e] hover:text-[#c98b50] hover:border-b-4 border-[#c96d50] transition-borders duration-100 ease-in-out">マイページ</a>
+                <a href="{{ route('items') }}" class="border-b-4 border-transparent text-[#7c5b3e] hover:text-[#c98b50] hover:border-[#c96d50] transition-all duration-300 ease-in-out inline-block">商品一覧&nbsp;&nbsp;</a>
+                <a href="{{ route('recipes') }}" class="border-b-4 border-transparent text-[#7c5b3e] hover:text-[#c98b50] hover:border-[#c96d50] transition-all duration-300 ease-in-out inline-block">レシピ&nbsp;&nbsp;</a>
+                <a href="{{route('user.quiz')}}" class="border-b-4 border-transparent text-[#7c5b3e] hover:text-[#c98b50] hover:border-[#c96d50] transition-all duration-300 ease-in-out inline-block">クイズ&nbsp;&nbsp;</a>
+                <a href="{{ route('contact.form') }}" class="border-b-4 border-transparent text-[#7c5b3e] hover:text-[#c98b50] hover:border-[#c96d50] transition-all duration-300 ease-in-out inline-block">お問い合わせフォーム&nbsp&nbsp</a>
+                <a href="{{ route('view.mypage') }}" class="border-b-4 border-transparent text-[#7c5b3e] hover:text-[#c98b50] hover:border-[#c96d50] transition-all duration-300 ease-in-out inline-block">マイページ</a>
                 <a href="{{ route('cart') }}"><img src="{{ asset('img/cart.png') }}" alt="カート" class="w-10 h-10"></a>
                 <a href="{{ route('top') }}"><img src="{{ asset('img/home.png') }}" alt="ホーム" class="w-10 h-10"></a>
             </div>
@@ -58,7 +58,7 @@
                 </button>
 
                 <!-- メニュー本体 -->
-                <nav id="morphMenu" class="fixed top-0 left-0 w-full h-screen bg-[#f9e8d1] clip-circle-small transition-[clip-path] duration-700 ease-in-out overflow-hidden z-40 pointer-events-none" aria-hidden="true">
+                <nav id="morphMenu" class="fixed top-0 left-0 w-full h-screen bg-[#f9e8d1] bg-opacity-75 clip-circle-small transition-[clip-path] duration-700 ease-in-out overflow-hidden z-40 pointer-events-none" aria-hidden="true">
                     <div class="flex flex-col items-center justify-center h-full text-[#a07146] font-bold space-y-6 text-2xl">
                         <a href="{{ route('items') }}" class="hover:text-[#c98b50] transition">商品一覧&nbsp;&nbsp;</a>
                         <a href="{{ route('recipes') }}" class="hover:text-[#c98b50] transition">レシピ&nbsp;&nbsp;</a>
@@ -70,11 +70,6 @@
                     </div>
                 </nav>
             </div>
-
-            <!-- <button id="menu" class="lg:hidden p-2 float-end text-4xl absolute right-10 h-32 text-[#c98b50]">☰</button> -->
-            <!-- <div id="hiddenNav" class="nav-right flex flex-col items-center justify-center text-lg text-center hidden lg:hidden bg-[#f9e8d1] py-15"> -->
-                
-            <!-- </div> -->
         </nav>
     </div>
 </header>
@@ -109,21 +104,3 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 </script>
-<!-- <script>
-    let menu = document.getElementById('menu');
-    
-    menu.addEventListener('click', function () {
-        let hiddenNav = document.getElementById('hiddenNav');
-        // トグルで hidden クラスを切り替える
-        hiddenNav.classList.toggle('hidden');
-    });
-</script> -->
-
-<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(function () {
-        $('#menu').on('click', function () {
-            $('#hiddenNav').slideToggle(300); // 300ms でスライド表示/非表示
-        });
-    });
-</script> -->
