@@ -85,12 +85,10 @@
 
         <!-- 修正：退会ボタンをやや下に配置し、右寄せで固定 -->
         <div class="flex justify-end mt-40 mr-8">
-            <form action="">
-                <button type="submit"
-                        class="bg-white text-red-700 border-2 border-red-700 rounded-lg py-3 px-8 font-bold hover:bg-red-700 hover:text-white transition w-48">
-                        退会
-                </button>
-            </form>
+            <button onclick="location.href='{{route(name: 'withdraw')}}'"
+                    class="bg-white text-red-700 border-2 border-red-700 rounded-lg py-3 px-8 font-bold hover:bg-red-700 hover:text-white transition w-48">
+                    退会
+            </button>
         </div>
     </div>
 </body>
