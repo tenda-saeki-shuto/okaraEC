@@ -57,6 +57,7 @@ class PaymentController extends Controller
         foreach($cart_items as $cart_item){
             $total += $cart_item->count * $cart_item->items->price;
         }
+        
 
         // 今日の日付を取得
         $today = new Carbon('today');
@@ -78,26 +79,57 @@ class PaymentController extends Controller
         // ユーザーが保有しているクーポンを取得(user_couponsテーブル)
         $coupons = UserCoupon::with(['coupons:id,name,content,discount,img'])->where('user_id',$user_id)->where('valid_at', '>', $today)->get();
         
-        // couponsテーブルの書き換え
-        $card_number = $request->card_number;
-        $card_info = CreditCard::where('user_id', $user_id)->first();
-        if($card_info == null){
-            // credit_cardsテーブルにユーザーのクレカ情報がなければ、新規レコードを登録する
-            $card = new CreditCard();
-            $card->user_id = $user_id;
-            $card->card_number = $card_number;
-            $card->save();
-        }else{
-            // ユーザーのクレカ情報があれば、更新する
-            $card_info->card_number = $card_number;
-            $card_info->save();
+        // credit_cardsテーブルの書き換え
+        // バリデーションを行う
+        $validated_data = $request->validate([
+            'card_number' => ['required', 'regex:/^[0-9]+$/', 'digits_between:13,19'],
+            'month' => ['required', 'regex:/^[0-9]+$/', 'integer', 'between:1,12'],
+            'year' => ['required', 'regex:/^[0-9]+$/', 'integer', 'min:0', 'max:99'],
+            'cvc' => ['required', 'regex:/^[0-9]+$/', 'digits_between:3,4']
+        ]);
+
+        // 有効期限のチェック
+        $month = $request->input('month');
+        $year = $request->input('year');
+        // yearの形4桁に変換
+        if ($year < 100) {
+            $year += 2000;
         }
+        $expiration = \Carbon\Carbon::createFromDate($year, $month, 1)->endOfMonth();
+        $now = now();
 
-        // 表示する下４桁を取得
-        $shown_num = substr($card_number, 12, 5);
-        return view('payment_info', compact('prefectures', 'coupons', 'shown_num'));
+        if ($expiration->lt($now)) {
+            // 有効期限が切れている場合
+            return back()->withErrors(['month' => 'クレジットカードの有効期限が切れています。'])->withInput();
+        }else{
+            // 有効期限が切れていない場合
+            $card_number = $request->card_number;
+            $card_info = CreditCard::where('user_id', $user_id)->first();
+            if($card_info == null){
+                // credit_cardsテーブルにユーザーのクレカ情報がなければ、新規レコードを登録する
+                $card = new CreditCard();
+                $card->user_id = $user_id;
+                $card->card_number = $card_number;
+                $card->save();
+            }else{
+                // ユーザーのクレカ情報があれば、更新する
+                $card_info->card_number = $card_number;
+                $card_info->save();
+            }
+
+            // カートに入っている商品の合計額を取得
+            $cart_items = Cart::with(['items:id,price'])->where('user_id',$user_id)->get();
+            $total = 0;
+            foreach($cart_items as $cart_item){
+                $total += $cart_item->count * $cart_item->items->price;
+            }
+            
+            // 表示する下４桁を取得
+            $shown_num = substr($card_number, 12, 5);
+            return view('payment_info', compact('prefectures', 'coupons', 'shown_num', 'total'));
+        }
     }
-
+    
     // 決済情報入力で「選択を外す」ボタンが押された際の処理
     public function unuseCoupon(){
         session()->forget('coupon_id');
