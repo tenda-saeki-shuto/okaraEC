@@ -30,18 +30,18 @@ class OrderController extends Controller
     }
     public function show($id)
     {
-        $order = Order::with('orderDetails')->find($id); // 例：1件だけ取得
+        $order_list = Order::with('orderDetails')->find($id); // 例：1件だけ取得
 
         // 合計金額計算
         $total = 0;
-        foreach ($order->orderDetails as $detail) {
+        foreach ($order_list->orderDetails as $detail) {
             $total += $detail->price * $detail->count;
         }
-        $order->total_price = $total;
+        $order_list->total_price = $total;
 
-        // dd($order->payment);
+        // dd($order_list);
 
-        return view('user.order_detail', compact('order'));
+        return view('user.order_detail', compact('order_list'));
     }
 
 }
