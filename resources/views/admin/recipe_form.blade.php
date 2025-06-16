@@ -75,7 +75,7 @@
 
 </script>
 
-<div class="w-full flex flex-col">
+<div class="">
   <br>
   <!-- レシピ名 -->
   <lavel>レシピ名：</lavel><br>

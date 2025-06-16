@@ -1,3 +1,43 @@
+<style>
+    #drop-area {
+        border: 2px dashed #ccc;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        color: #999;
+        margin-bottom: 20px;
+    }
+
+    #drop-area.highlight {
+        border-color: #6c6;
+    }
+
+    .preview-image {
+        position: relative;
+        display: inline-block;
+        margin: 10px;
+    }
+
+    .preview-image img {
+        max-width: 200px;
+        display: block;
+    }
+
+    .remove-btn {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background: red;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+</style>
+
 <label for="title">クイズタイトル:</label>
 <x-input-error :messages="$errors->get('title')" class="mt-2" />
 <input type="text" id="title" name="title" required value="{{ old('title', $quiz->title) }}">
@@ -27,14 +67,72 @@
 
 <label for="choices">選択肢:</label>
 <br>
-@for ($i=0; $i<4; $i++)
-    @if ($i==3)
+@for ($i = 0; $i < 4; $i++)
+    @if ($i == 3)
         <label for="answer">正解:</label>
         <x-input-error :messages="$errors->get('answer')" class="mt-2" />
         <input type="text" name="answer" required value="{{ old('answer', $selections[$i]->content ?? '') }}">
     @else
         <x-input-error :messages="$errors->get('selections[]')" class="mt-2" />
-        <input type="text" name="selections[]" required value="{{ old("selections.$i", $selections[$i]->content ?? '') }}">    
+        <input type="text" name="selections[]" required value="{{ old("selections.$i", $selections[$i]->content ?? '') }}">
     @endif
     <br>
 @endfor
+
+
+
+<script>
+    const dropArea = document.getElementById('drop-area');
+    const input = document.getElementById('image');
+    const preview = document.getElementById('preview');
+
+    // ドラッグイベント
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropArea.addEventListener(eventName, e => {
+            e.preventDefault();
+            dropArea.classList.add('highlight');
+        }, false);
+    });
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropArea.addEventListener(eventName, e => {
+            e.preventDefault();
+            dropArea.classList.remove('highlight');
+        }, false);
+    });
+
+    // ドロップ処理
+    dropArea.addEventListener('drop', e => {
+        const files = e.dataTransfer.files;
+        handleFiles(files);
+    });
+
+    // ファイル選択時
+    input.addEventListener('change', () => {
+        handleFiles(input.files);
+    });
+
+    function handleFiles(files) {
+        [...files].forEach(file => {
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'preview-image';
+
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+
+                    const btn = document.createElement('button');
+                    btn.textContent = '×';
+                    btn.className = 'remove-btn';
+                    btn.onclick = () => wrapper.remove();
+
+                    wrapper.appendChild(img);
+                    wrapper.appendChild(btn);
+                    preview.appendChild(wrapper);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+</script>

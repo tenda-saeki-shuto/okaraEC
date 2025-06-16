@@ -2,92 +2,71 @@
 <html lang="ja">
 
 <head>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>ユーザ一覧</title>
-
-    <style>
-        #drop-area {
-            border: 2px dashed #ccc;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            color: #999;
-            margin-bottom: 20px;
-        }
-
-        #drop-area.highlight {
-            border-color: #6c6;
-        }
-
-        .preview-image {
-            position: relative;
-            display: inline-block;
-            margin: 10px;
-        }
-
-        .preview-image img {
-            max-width: 200px;
-            display: block;
-        }
-
-        .remove-btn {
-            position: absolute;
-            top: 0;
-            right: 0;
-            background: red;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-    </style>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <title>ユーザー一覧</title>
 </head>
 
-<body class="bg-color-green-600">
-    <header>
-        {{ view('admin.admin_header') }}
-    </header>
-    <h1></h1>
-    @if (session('message'))
-        <div class="text-red-600 font-bold">
-            {{ session('message') }}
-        </div>
-    @endif
-    <div class="max-w-7xl mx-auto px-6">
-        <table border="1">
-            <thead>
-                <tr>
-                    <th scope="col" >ID</th>                    
-                    <th scope="col" >名前</th>
-                    <!-- <th scope="col">都道府県</th> -->
-                    <th scope="col">Email</th>
-                    <th scope="col">TEL</th>
-                    <th scope="col">退会</th>
-                    <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody>
-            @foreach ($users as $user)
-                <tr>
-                    <th scope="row">{{ $user->id }}</th>                    
-                    <td>{{ $user->name }}</td>
-                    <!-- <td>{{ $user->name }}</td>                    -->
-                    <td>{{ $user->email }}</td>
-                    <td>{{ $user->updated_at }}</td>
-                    <td></td>
-                    <td><a href="{{ route('user.edit', $user) }}">編集</a></td>
-                </tr>
-            @endforeach
-           
-            </tbody>
-        </table>
-    </div>
+@include('admin.admin_header')
+
+<body>
+    <section class="text-gray-600 body-font">
+        <div class="container px-5 py-24 mx-auto">
+            <div class="flex flex-col text-center w-full mb-20">
+                <h1 class="sm:text-4xl text-3xl font-medium title-font mb-2 text-gray-900">ユーザー一覧</h1>
+                @if (session('message'))
+                    <div class="text-red-600 font-bold">
+                        {{ session('message') }}
+                    </div>
+                @endif
+            </div>
+            <div class="lg:w-5/6 w-full mx-auto overflow-auto">
+                <table class="table-auto w-full text-left whitespace-no-wrap">
+                    <thead>
+                        <tr>
+                            <th
+                                class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
+                                ID</th>
+                            <th
+                                class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
+                                名前</th>
+                            <th
+                                class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
+                                Email</th>
+                            <th
+                                class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
+                                TEL</th>
+                            <th
+                                class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
+                                最終更新</th>
+                            <th
+                                class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
+                                退会</th>
+                            <th
+                                class="w-10 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tr rounded-br">
+                                　　　</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($users as $user)
+                            <tr>
+                                <td class="border-t-2 border-gray-200 px-4 py-3">{{ $user->id }}</td>
+                                <td class="border-t-2 border-gray-200 px-4 py-3">{{ $user->name }}</td>
+                                <td class="border-t-2 border-gray-200 px-4 py-3">{{ $user->email }}
+                                <td class="border-t-2 border-gray-200 px-4 py-3">{{ $user->tel }}
+                                <td class="border-t-2 border-gray-200 px-4 py-3">{{ $user->updated_at }}
+                                <td class="border-t-2 border-gray-200 px-4 py-3">{{ $user->deleted_at }}
+                                <td class="border-t-2 border-gray-200 w-10 text-center">
+                                    <a href="{{ route('user.edit', $user) }}">編集</a>
+                                </td>
+                            </tr>
+                        @endforeach
+
+                    </tbody>
+                </table>
+            </div>
 </body>
 
 </html>

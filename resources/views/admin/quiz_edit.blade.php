@@ -1,135 +1,39 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>クイズ作成画面</title>
-
-    <style>
-        #drop-area {
-            border: 2px dashed #ccc;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            color: #999;
-            margin-bottom: 20px;
-        }
-        #drop-area.highlight {
-            border-color: #6c6;
-        }
-        .preview-image {
-            position: relative;
-            display: inline-block;
-            margin: 10px;
-        }
-        .preview-image img {
-            max-width: 200px;
-            display: block;
-        }
-        .remove-btn {
-            position: absolute;
-            top: 0;
-            right: 0;
-            background: red;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-    </style>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <title>クイズ更新</title>
 </head>
+
+@include('admin.admin_header')
+
 <body>
-    <header>
-        {{ view('admin.admin_header') }}
-    </header>
-    <h1>クイズ更新</h1>
-    @if (session('message'))
-        <div class="text-red-600 font-bold">
-            {{ session('message') }}
+    <section class="text-gray-600 body-font">
+        <div class="container px-5 py-24 mx-auto">
+            <div class="flex flex-col px-6 w-full">
+                <h1 class="sm:text-4xl text-3xl font-medium title-font mb-2 text-gray-900">
+                    クイズ更新
+                </h1>
+                @if (session('message'))
+                    <div class="text-red-600 font-bold">
+                        {{ session('message') }}
+                    </div>
+                @endif
+            </div>
+            <form action="{{ route('quiz.update', $quiz) }}" method="POST">
+                @method('PATCH')
+                @csrf
+                @include('admin.quiz_form')
+                <br><br>
+                <button type="submit">更新</button>
+            </form>
         </div>
-    @endif
-    <form action="{{ route('quiz.update', $quiz) }}" method="POST">
-        @method('PATCH')
-        @csrf
-        @include('admin.quiz_form')
-        <br><br>
-        <button type="submit">更新</button>
-    </form>
+    </section>
 </body>
 
-
-
-
-
-
-
-
-
-
-
-
-
-    <script>
-    const dropArea = document.getElementById('drop-area');
-    const input = document.getElementById('image');
-    const preview = document.getElementById('preview');
-
-    // ドラッグイベント
-    ['dragenter', 'dragover'].forEach(eventName => {
-        dropArea.addEventListener(eventName, e => {
-            e.preventDefault();
-            dropArea.classList.add('highlight');
-        }, false);
-    });
-    ['dragleave', 'drop'].forEach(eventName => {
-        dropArea.addEventListener(eventName, e => {
-            e.preventDefault();
-            dropArea.classList.remove('highlight');
-        }, false);
-    });
-
-    // ドロップ処理
-    dropArea.addEventListener('drop', e => {
-        const files = e.dataTransfer.files;
-        handleFiles(files);
-    });
-
-    // ファイル選択時
-    input.addEventListener('change', () => {
-        handleFiles(input.files);
-    });
-
-    function handleFiles(files) {
-        [...files].forEach(file => {
-            if (file.type.startsWith('image/')) {
-                const reader = new FileReader();
-                reader.onload = e => {
-                    const wrapper = document.createElement('div');
-                    wrapper.className = 'preview-image';
-
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-
-                    const btn = document.createElement('button');
-                    btn.textContent = '×';
-                    btn.className = 'remove-btn';
-                    btn.onclick = () => wrapper.remove();
-
-                    wrapper.appendChild(img);
-                    wrapper.appendChild(btn);
-                    preview.appendChild(wrapper);
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-    }
-    </script>
-
-
-
-
 </html>
+

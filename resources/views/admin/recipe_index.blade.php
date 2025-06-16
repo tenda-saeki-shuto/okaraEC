@@ -27,7 +27,7 @@
                         +新規追加</a>
                 </div>
             </div>
-            <div class="lg:w-2/3 w-full mx-auto overflow-auto">
+            <div class="lg:w-5/6 w-full mx-auto overflow-auto">
                 <table class="table-auto w-full text-left whitespace-no-wrap">
                     <thead>
                         <tr>
@@ -42,12 +42,10 @@
                                 画像</th>
                             <th
                                 class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
-                                最終更新
-                            </th>
+                                最終更新</th>
                             <th
                                 class="w-10 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tr rounded-br">
-                                　　　
-                            </th>
+                                　　　</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -55,7 +53,7 @@
                             <tr>
                                 <td class="border-t-2 border-gray-200 px-4 py-3">{{ $recipe->title }}</td>
                                 <td class="border-t-2 border-gray-200 px-4 py-3">{{ $recipe->content }}</td>
-                                <td class="border-t-2 border-gray-200 px-4 py-3 text-lg text-gray-900">{{ $recipe->img }}
+                                <td class="border-t-2 border-gray-200 px-4 py-3">{{ $recipe->img }}
                                 <td class="border-t-2 border-gray-200 w-10 text-center">
                                     {{ $recipe->updated_at }}
                                 </td>
