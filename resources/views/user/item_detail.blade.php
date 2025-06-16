@@ -25,95 +25,142 @@
     <title>商品詳細</title>
 
 </head>
-<body>
-    <header>
-        @include('user.user_header')
-    </header>
+<body class="bg-white font-sans text-gray-800 m-0 p-0">
+    @include('user.user_header')
+
     <div class="container mx-auto p-4">
-        <div class="bg-white p-6 rounded-lg shadow-md">
-            <img src="{{ asset('images/sample.jpg') }}" alt="商品画像" class="w-full h-64 object-cover rounded-lg mb-4">
-            <h2 class="text-2xl font-semibold mb-2">
-                {{$item->name}}
-            </h2>
-            <button class="favorite-btn" data-item-id="{{$item->id}}">
-                <i class="fa fa-heart {{ $item->is_favorited ? 'text-danger' : 'text-secondary' }}"></i>
-            </button>
-            <p class="text-gray-700 mb-4">
+        <div class="bg-white p-6 rounded-lg shadow-md flex flex-col">
+            <!-- メイン画像 -->
+            <img src="{{ asset('img/cookie.png') }}" alt="クッキー" id="main-image" class="w-full max-w-[600px] h-auto aspect-[4/3] object-cover rounded-lg mb-4 mx-auto">
+            <!-- サブ画像4つ -->
+            <div class="w-full max-w-[70%] mx-auto grid grid-cols-2 place-items-center sm:grid-cols-4 gap-4 place-items-center sub_images">
+                <img src="{{ asset('img/mattch_dounut.png') }}" alt="抹茶ドーナツ" class="h-25 w-25 md:h-45 w-45 object-cover rounded-lg mb-4 transition-transform duration-300 hover:scale-105 cursor-pointer">
+                <img src="{{ asset('img/mattcha_cookie.png') }}" alt="抹茶クッキー" class="h-25 w-25 md:h-45 w-45 object-cover rounded-lg mb-4 transition-transform duration-300 hover:scale-105 cursor-pointer">
+                <img src="{{ asset('img/cookie.png') }}" alt="クッキー" class="h-25 w-25 md:h-45 w-45 object-cover rounded-lg mb-4 transition-transform duration-300 hover:scale-105 cursor-pointer">
+                <img src="{{ asset('img/mince.png') }}" alt="ハンバーグ" class="h-25 w-25 md:h-45 w-45 object-cover rounded-lg mb-4 transition-transform duration-300 hover:scale-105 cursor-pointer">
+            </div>
+            <div class="items-center">
+                <h2 class="text-3xl font-semibold mb-2 inline-block">
+                    {{$item->name}}
+                </h2>
+                <button class="favorite-btn inline-block ml-5" data-item-id="{{$item->id}}">
+                    <i class="fa fa-heart {{ $item->is_favorited ? 'text-danger' : 'text-secondary' }}"></i>
+                </button>
+            </div>
+            <p class="text-gray-700 mb-4 mt-4 text-lg">
                 {{$item->content}}
             </p>
             <p class="text-xl font-bold text-red-600 mb-4">
                 ¥{{$item->price}}
             </p>
             @if(!isset($cart_item))
-            <!-- 表示されたアイテムがカート内にない場合 -->
-            <form action="{{ route('cart.add')}}" method="POST">
+            <!-- 表示された商品がカート内にない場合 -->
+                <form action="{{ route('cart.add')}}" method="POST">
+                    @csrf
+                    <input type="hidden" name="item_id" value="{{$item->id}}">
+                    <div class="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-x-4">
+                        <div>
+                            <label class="text-lg">数量:</label>
+                            <select name="count" class="border rounded">
+                                @for ($i = 1; $i <= $item->stock; $i++)
+                                    <option value="{{ $i }}">{{ $i }}</option>
+                                @endfor
+                            </select>
+                        </div>
+                        <div>
+                            <button type="submit" class="bg-white text-yellow-700 text-lg border-2 border-yellow-700 rounded-lg py-2 px-6 font-bold hover:bg-yellow-700 hover:text-white transition">
+                                カートに追加
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            @else
+            <!-- 表示された商品がカート内にある場合 -->
+            <form action="{{ route('cart.update', ['id'=>$cart_item->item_id])}}" method="POST">
                 @csrf
-                <input type="hidden" name="item_id" value="{{$item->id}}">
-                <div class="flex items-center mb-4 text-right">
-                    <label for="quantity" class="mr-2">数量:</label>
-                    <select name="count" class="border rounded">
-                        @for ($i = 1; $i <= $item->stock; $i++)
-                            <option value="{{ $i }}">{{ $i }}</option>
-                        @endfor
-                    </select>
-                    <div class="position:right flex justify-end">
-                        <button type="submit" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition-colors duration-300 w-auto">
-                            カートに追加
+                <div class="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-x-4">
+                    <div>
+                        <label class="text-lg">カート内数量:</label>
+                        <select name="count" class="border rounded">
+                            @for($i = 1; $i <= 50; $i++)
+                                @if($cart_item->count == $i)
+                                <option value="{{ $cart_item->count }}" selected>{{ $cart_item->count }}</option>
+                                @else
+                                <option value="{{ $i }}">{{ $i }}</option>
+                                @endif
+                            @endfor
+                        </select>
+                    </div>
+                    <div>
+                        <button type="submit" class="bg-white text-yellow-700 text-lg border-2 border-yellow-700 rounded-lg py-2 px-6 font-bold hover:bg-yellow-700 hover:text-white transition">
+                            数量変更
                         </button>
                     </div>
                 </div>
             </form>
-            @else
-            <!-- 表示されたアイテムがカート内にある場合 -->
-            <form action="{{ route('cart.update', ['id'=>$cart_item->item_id])}}" method="POST">
-                @csrf
-                <label for="quantity" class="mr-2">カート内数量:</label>
-                <select name="count" class="border rounded">
-                    @for($i = 1; $i <= 50; $i++)
-                        @if($cart_item->count == $i)
-                        <option value="{{ $cart_item->count }}" selected>{{ $cart_item->count }}</option>
-                        @else
-                        <option value="{{ $i }}">{{ $i }}</option>
-                        @endif
-                    @endfor
-                </select>
-                <div class="position:right flex justify-end">
-                    <button type="submit" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition-colors duration-300 w-auto">
-                        数量変更
-                    </button>
+            @endif
+
+            <h3 class="mb-4 text-xl mt-5 font-semibold">栄養素情報</h3>
+
+            <!-- 栄養情報 -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-2">
+                <!-- エネルギー -->
+                <div class="bg-gray-100 p-4 rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-center">エネルギー</h3>
+                    <p class="text-center text-2xl font-bold">{{$item->nutritionFacts->energy }}kcal</p>
                 </div>
-            </form>
-            @endif
 
-            <p class="mb-4">栄養素情報</p>
+                <!-- タンパク質 -->
+                <div class="bg-gray-100 p-4 rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-center">タンパク質</h3>
+                    <p class="text-center text-2xl font-bold">{{$item->nutritionFacts->protein}}g</p>
+                </div>
 
-            <ul class="list-disc pl-5 mb-4">
-                <li>エネルギー: {{$item->nutritionFacts->energy }}kcal</li>
-                <li>タンパク質: {{$item->nutritionFacts->protein}}g</li>
-                <li>脂質: {{$item->nutritionFacts->fat}}g</li>
-                <li>炭水化物: {{$item->nutritionFacts->carb}}g</li>
-                <li>食物繊維: {{$item->nutritionFacts->fiber}}g</li>
-                <li>食塩相当量: {{$item->nutritionFacts->salt_eqv}}mg</li>
-            </ul>
-            <p class="mb-4">アレルギー情報</p>
-            @if ($item->itemAllergies && $item->itemAllergies->isNotEmpty())
-                @foreach ($item->itemAllergies as $itemAllergy)
-                    @if ($itemAllergy->allergies)
-                        <span class="inline-block bg-yellow-200 text-yellow-800 px-2 py-1 rounded mr-2 mb-2">
-                            {{ $itemAllergy->allergies->name }}
-                        </span>
-                    @endif
-                @endforeach
-            @else
-                <p>アレルギー情報はありません。</p>
-            @endif
+                <!-- 脂質 -->
+                <div class="bg-gray-100 p-4 rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-center">脂質</h3>
+                    <p class="text-center text-2xl font-bold">{{$item->nutritionFacts->fat}}g</p>
+                </div>
 
+                <!-- 炭水化物 -->
+                <div class="bg-gray-100 p-4 rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-center">炭水化物</h3>
+                    <p class="text-center text-2xl font-bold">{{$item->nutritionFacts->carb}}g</p>
+                </div>
+
+                <!-- 食物繊維 -->
+                <div class="bg-gray-100 p-4 rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-center">食物繊維</h3>
+                    <p class="text-center text-2xl font-bold">{{$item->nutritionFacts->fiber}}g</p>
+                </div>
+
+                <!-- 食塩相当量 -->
+                <div class="bg-gray-100 p-4 rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-center">食塩相当量</h3>
+                    <p class="text-center text-2xl font-bold">{{$item->nutritionFacts->salt_eqv}}mg</p>
+                </div>
+            </div>
+
+            <!-- アレルギー情報 -->
+            <h3 class="mb-4 text-xl mt-5 font-semibold">アレルギー情報</h3>
+            <div class="flex flex-wrap">
+                @if ($item->itemAllergies && $item->itemAllergies->isNotEmpty())
+                    @foreach ($item->itemAllergies as $itemAllergy)
+                        @if ($itemAllergy->allergies)
+                            <div class="inline-block bg-yellow-200 text-lg text-yellow-800 px-2 py-1 rounded mr-2 mb-2">
+                                {{ $itemAllergy->allergies->name }}
+                            </div>
+                        @endif
+                    @endforeach
+                @else
+                    <p class="text-lg">アレルギー情報はありません。</p>
+                @endif
+            </div>
 
             {{-- 定期購入
             <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors duration-300 mr-5 ml-8 w-30">
                 定期購入
             </button> --}}
-
         </div>
     </div>
 
@@ -141,27 +188,41 @@
     const itemId = button.data('item-id');
     const icon = button.find('i');
 
-    $.ajax({
-        url: '/favorite/toggle',
-        type: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        contentType: 'application/json',
-        data: JSON.stringify({ item_id: itemId }),
-        success: function (response) {
-            if (response.liked) {
-                icon.removeClass('text-secondary').addClass('text-danger');
-            } else {
-                icon.removeClass('text-danger').addClass('text-secondary');
-            }
-        },
-        //エラー処理、ログインしていなかったらログイン画面にリダイレクト
-        error: function () {
-            window.location.href = '/login?redirect=' + encodeURIComponent(window.location.pathname);
+        $.ajax({
+            url: '/favorite/toggle',
+            type: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            contentType: 'application/json',
+            data: JSON.stringify({ item_id: itemId }),
+            success: function (response) {
+                if (response.liked) {
+                    icon.removeClass('text-secondary').addClass('text-danger');
+                } else {
+                    icon.removeClass('text-danger').addClass('text-secondary');
+                }
+            },
+            //エラー処理、ログインしていなかったらログイン画面にリダイレクト
+            error: function () {
+                window.location.href = '/login?redirect=' + encodeURIComponent(window.location.pathname);
 
-        }
+            }
+        });
     });
+
+    // メインとサブ画像の切り替え
+    $(function(){
+        const $mainImage = $('#main-image');
+        $('.sub_images img').click(function(){
+            const newSrc = $(this).attr('src');
+            const newAlt = $(this).attr('alt');
+            $mainImage.fadeOut(200, function() {
+                $mainImage.attr('src', newSrc);
+                $mainImage.attr('alt', newAlt);
+                $mainImage.fadeIn(200);
+            });
+        });
     });
 </script>
 
