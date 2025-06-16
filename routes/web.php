@@ -19,28 +19,17 @@ Route::get('/', function () {
     return view('top');
 })->name('top');
 
-Route::get('/contact', [ContactController::class, 'showForm'])->name('contact.form');
-Route::get('/contact/confirm', [ContactController::class, 'confirm'])->name('contact.confirm');
-Route::post('/contact/confirm', [ContactController::class, 'confirm'])->name('contact.confirm');
-
-Route::get('/contact/submit', [ContactController::class, 'submitForm'])->name('contact.submit');
-Route::post('/contact/submit', [ContactController::class, 'submitForm'])->name('contact.submit');
-
 // contact-> ユーザー用
 Route::get('/contact', [ContactController::class, 'showForm'])->name('contact.form');
-// Route::match(['get', 'post'], [ContactController::class, 'confirm'])->name('contact.confirm');
 
 Route::get('/contact/confirm', [ContactController::class, 'confirm'])->name('contact.confirm');
-Route::post('/contact/confirm', [ContactController::class, 'confirm'])->name('contact.confirm');
-// Route::match(['get', 'post'],[ContactController::class, 'submitForm'])->name('contact.submit');
+Route::post('/contact/confirm', [ContactController::class, 'confirm'])->name('contact.confirm.post');
 
 Route::get('/contact/submit', [ContactController::class, 'submitForm'])->name('contact.submit');
-Route::post('/contact/submit', [ContactController::class, 'submitForm'])->name('contact.submit');
+Route::post('/contact/submit', [ContactController::class, 'submitForm'])->name('contact.submit.post');
 
 // inquiry-> 管理者用
 Route::match(['get', 'post'], '/inquiry', [ContactController::class, 'index'])->name('inquiry');
-// Route::get('/inquiry', [ContactController::class, 'index'])->name('inquiry');
-// Route::post('/inquiry', [ContactController::class, 'index'])->name('inquiry.submit');
 Route::get('/inquiry/detail/{inquiry}', [ContactController::class, 'show'])->name('inquiry.detail');
 
 
