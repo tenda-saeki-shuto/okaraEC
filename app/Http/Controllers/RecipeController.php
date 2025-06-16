@@ -107,7 +107,7 @@ class RecipeController extends Controller
             'amount' => 'required|max:20',
             'category_id' => 'required|integer|exists:categories,id',
         ]);
-        $recipe_main['img'] = 'sample.png'; //あとで消す
+        
         //レシピの栄養部分
         $nutrition_facts = $request->validate([
             'energy' => 'nullable|integer|min:0',
@@ -129,6 +129,11 @@ class RecipeController extends Controller
         ]);
 
         //レシピのメイン部分を登録
+        if (isset($request->img)) {
+            $filename=$request->img->getClientOriginalName();
+            $recipe_main['img'] = $filename;
+            $request->file('img')->storeAs('public/img', $filename);
+        }
         $recipe = Recipes::create($recipe_main);
         //レシピの栄養を登録
         RecipeNutritionFact::create([
@@ -203,7 +208,7 @@ class RecipeController extends Controller
             'amount' => 'required|max:20',
             'category_id' => 'required|integer|min:1',
         ]);
-        $recipe_main['img'] = 'sample.png'; //あとで消す
+
         //レシピの栄養部分
         $nutrition_facts = $request->validate([
             'energy' => 'nullable|integer|min:0',
@@ -227,6 +232,12 @@ class RecipeController extends Controller
         ]);
         
         //レシピのメイン部分を登録
+        if (isset($request->img)) {
+            // dd($request->img);
+            $filename=$request->img->getClientOriginalName();
+            $recipe_main['img'] = $filename;
+            $request->file('img')->storeAs('public/img', $filename);
+        }
         $recipe->update($recipe_main);
         //レシピの栄養を登録
         $recipe->recipeNutritionFacts()->update([

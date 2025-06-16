@@ -14,7 +14,7 @@
             {{ session('message') }}
         </div>
     @endif
-        <form method="post" action="{{ route('recipe.store') }}">
+        <form method="post" action="{{ route('recipe.store') }}" enctype="multipart/form-data">
             @csrf
             @include('admin.recipe_form')
             <br>

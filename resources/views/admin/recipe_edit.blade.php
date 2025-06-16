@@ -14,7 +14,7 @@
             {{ session('message') }}
         </div>
     @endif
-        <form method="post" action="{{ route('recipe.update', $recipe) }}">
+        <form method="post" action="{{ route('recipe.update', $recipe) }}" enctype="multipart/form-data">
             @method('PATCH')
             @csrf
             @include('admin.recipe_form')
