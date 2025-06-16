@@ -1,112 +1,98 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <meta charset="UTF-8" />
     <title>お問い合わせ</title>
     <style>
         body {
             font-family: sans-serif;
-            margin: 40px;
-        }
-
-        h1 {
-            text-align: center;
-        }
-
-        .form-row {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 15px;
-        }
-
-        .form-label {
-            width: 120px;
-            padding-top: 10px;
-        }
-
-        .form-field {
-            flex: 1;
-        }
-
-        input, textarea {
-            width: 100%;
-            padding: 6px;
-            font-size: 14px;
-            border: 1px solid #aaa;
-        }
-
-        .error {
-            color: red;
-            font-size: 12px;
-            margin-top: 4px;
-        }
-
-        .submit-button {
-            display: block;
-            margin: 30px auto;
-            background-color: #4FC3F7;
-            color: white;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        .submit-button:hover {
-            background-color: #039BE5;
         }
     </style>
 </head>
-<body>
-    <h1>お問い合わせ</h1>
+<body class="bg-white font-sans">
 
-    @if(session('success'))
-        <p style="color: green; text-align: center;">{{ session('success') }}</p>
-    @endif
+    @include('user.user_header')
 
-    <form action="{{ route('contact.confirm') }}" method="POST">
-    @csrf
+    <div class="max-w-5xl mx-auto mt-12 px-6">
 
-    <div class="form-row">
-        <div class="form-label">名前</div>
-        <div class="form-field">
-            <input type="text" name="name" value="{{ request('name', old('name')) }}">
-            @error('name')
-                <div class="error">{{ $message }}</div>
-            @enderror
+        <h1 class="text-3xl font-semibold text-center border-b-4 border-yellow-700 pb-4 mb-10">
+            お問い合わせ
+        </h1>
+
+        <div class="bg-white rounded-xl p-8 shadow-md">
+
+            @if(session('success'))
+                <!-- 送信成功メッセージ表示 -->
+                <p class="text-green-600 text-center font-semibold mb-4">{{ session('success') }}</p>
+            @endif
+
+            <form action="{{ route('contact.confirm') }}" method="POST" class="space-y-6">
+                @csrf
+
+                <!-- 名前 -->
+                <div class="flex flex-col md:flex-row md:items-start gap-2 md:gap-4 text-center">
+                    <label for="name" class="md:w-40 pt-2 font-medium text-left md:text-center text-xl">名前</label>
+                    <div class="flex-1">
+                        <input type="text" name="name" id="name" value="{{ request('name', old('name')) }}"
+                            class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2">
+                        @error('name')
+                            <!-- バリデーションエラー表示 -->
+                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class="flex flex-col md:flex-row md:items-start gap-2 md:gap-4 text-center">
+                    <label for="email" class="md:w-40 pt-2 font-medium text-left md:text-center text-xl">Email</label>
+                    <div class="flex-1">
+                        <input type="email" name="email" id="email" value="{{ request('email', old('email')) }}"
+                            class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2">
+                        @error('email')
+                            <!-- バリデーションエラー表示 -->
+                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                <!-- TEL -->
+                <div class="flex flex-col md:flex-row md:items-start gap-2 md:gap-4 text-center">
+                    <label for="tel" class="md:w-40 pt-2 font-medium text-left md:text-center text-xl">TEL</label>
+                    <div class="flex-1">
+                        <input type="text" name="tel" id="tel" value="{{ request('tel', old('tel')) }}"
+                            class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2">
+                        @error('tel')
+                            <!-- バリデーションエラー表示 -->
+                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                <!-- お問い合わせ内容 -->
+                <div class="flex flex-col md:flex-row md:items-start gap-2 md:gap-4 text-center">
+                    <label for="inquiry" class="md:w-40 pt-2 font-medium text-left md:text-center text-xl">お問い合わせ内容</label>
+                    <div class="flex-1">
+                        <textarea name="inquiry" id="inquiry" rows="5"
+                            class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2">{{ request('inquiry', old('inquiry')) }}</textarea>
+                        @error('inquiry')
+                            <!-- バリデーションエラー表示 -->
+                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                <!-- 送信ボタン -->
+                <div class="text-center">
+                    <button type="submit"
+                        class="bg-yellow-700 text-white rounded-lg py-3 px-8 font-bold hover:bg-yellow-800 transition">
+                        入力内容を確認する
+                    </button>
+                </div>
+
+            </form>
         </div>
     </div>
 
-    <div class="form-row">
-        <div class="form-label">Email</div>
-        <div class="form-field">
-            <input type="email" name="email" value="{{ request('email', old('email')) }}">
-            @error('email')
-                <div class="error">{{ $message }}</div>
-            @enderror
-        </div>
-    </div>
-
-    <div class="form-row">
-        <div class="form-label">TEL</div>
-        <div class="form-field">
-            <input type="text" name="tel" value="{{ request('tel', old('tel')) }}">
-            @error('tel')
-                <div class="error">{{ $message }}</div>
-            @enderror
-        </div>
-    </div>
-
-    <div class="form-row">
-        <div class="form-label">お問い合わせ内容</div>
-        <div class="form-field">
-            <textarea name="inquiry" rows="5">{{ request('inquiry', old('inquiry')) }}</textarea>
-            @error('inquiry')
-                <div class="error">{{ $message }}</div>
-            @enderror
-        </div>
-    </div>
-
-    <button type="submit" class="submit-button">入力内容を確認する</button>
-</form>
+</body>
+</html>

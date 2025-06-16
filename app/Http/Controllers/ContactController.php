@@ -17,7 +17,7 @@ class ContactController extends Controller
         'name' => 'required',
         'email' => 'required|email',
         'tel' => 'required|digits_between:10,11',
-        'inquiry' => 'required',
+        'inquiry' => 'required|max:200',      
     ], [
         'name.required' => '※名前は必須です。',
         'email.required' => '※メールアドレスを入力してください。',
@@ -25,6 +25,7 @@ class ContactController extends Controller
         'tel.required' => '※電話番号を入力してください。',
         'tel.digits_between' => '※電話番号は10～11桁で入力してください。',
         'inquiry.required' => '※お問い合わせ内容は必須です。',
+        'inquiry.max' => '※お問い合わせ内容は200文字以内で入力してください',
     ]);
 
         return view('user.contact_confirm', compact('contactData'));
