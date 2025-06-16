@@ -32,29 +32,17 @@
             </div>
 
             <!-- 右エリア -->
-            <div class="flex items-center gap-6 text-[#3b210e]">
-                @php
-                    $navLinks = [
-                        ['label' => '商品一覧', 'route' => route('items')],
-                        ['label' => 'レシピ', 'route' => route('recipes')],
-                        ['label' => 'クイズ', 'route' => '/'],
-                        ['label' => 'お問い合わせフォーム', 'route' => '/'],
-                        ['label' => 'マイページ', 'route' => route('view.mypage')],
-                    ];
-                @endphp
-
-                @foreach ($navLinks as $link)
-                    <a href="{{ $link['route'] }}"
-                        class="relative hover:text-[#c98b50] transition duration-300 ease-in-out after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-[#c98b50] after:opacity-0 hover:after:opacity-100 hover:after:bottom-[-2px] after:transition-all after:duration-300">
-                        {{ $link['label'] }}
-                    </a>
-                @endforeach
-
-                <a href="{{ route('dashboard') }}">
-                    <img src="{{ asset('img/home.png') }}" alt="ホーム" class="w-9 h-9" />
+            <div class="nav-right flex items-center space-x-4">
+                <a href="{{ route('items') }}" class="text-[#a07146] hover:text-[#c98b50]">商品一覧</a>
+                <a href="{{ route('recipes') }}" class="text-[#a07146] hover:text-[#c98b50]">レシピ</a>
+                <a href="{{ route('user.quiz') }}" class="text-[#a07146] hover:text-[#c98b50]">クイズ</a>
+                <a href="/" class="text-[#a07146] hover:text-[#c98b50]">お問い合わせ</a>
+                <a href="{{ route('view.mypage') }}" class="text-[#a07146] hover:text-[#c98b50]">マイページ</a>
+                <a href="{{ route('cart') }}">
+                    <img src="{{ asset('img/cart.png') }}" alt="カート" class="w-8 h-8 inline-block">
                 </a>
-                <a href="/">
-                    <img src="{{ asset('img/cart.png') }}" alt="カート" class="w-9 h-9" />
+                <a href="{{ route('top') }}">
+                    <img src="{{ asset('img/home.png') }}" alt="ホーム" class="w-8 h-8 inline-block">
                 </a>
             <div class="nav-right">
                 <a href="{{ route('items') }}">商品一覧&nbsp&nbsp</a>
@@ -66,6 +54,7 @@
                 <a href="{{ route('cart') }}"><img src="{{ asset('img/cart.png') }}" alt="カート" class="w-10 h-10"></a>
                 <a href="{{ route('top') }}"><img src="{{ asset('img/home.png') }}" alt="ホーム" class="w-10 h-10"></a>
             </div>
+
         </nav>
     </div>
 </header>
