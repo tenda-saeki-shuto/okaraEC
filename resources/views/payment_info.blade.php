@@ -8,86 +8,94 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <title>決済情報入力</title>
 </head>
-<body class="h-screen flex flex-col items-center">
+<body class="bg-white font-sans text-gray-800 m-0 p-0">
     <!-- ヘッダー入れる -->
     @include('user.user_header')
     
-    <div class="flex flex-col items-center justify-arouind w-[60%] my-10 pb-10">    
-        <h1 class="text-3xl font-bold mb-5">決済情報入力</h1>
-        <!-- お届け先情報 -->
-        <div class="w-[60%] items-start flex flex-col">
-            <div class="mb-10" id="showing">
-                <h2 class="text-xl font-bold mb-2">お届け先</h2>
-                <div>
-                    <label class="text-lg border-b-2 border-black">郵便番号</label>
-                    <p id="default_postal_code" class="mt-2">{{ session('postal_code') }}</p>
+    <div class="max-w-5xl mx-auto mt-8 p-6 h-200">    
+        <h1 class="text-3xl font-semibold text-center border-b-4 border-yellow-700 pb-4 mb-10">決済情報入力</h1>
+
+        <div class="w-full bg-white p-6 sm:p-8 rounded-xl shadow-lg space-y-8">
+            <!-- お届け先情報 -->
+            <!-- <div class="w-[60%] items-start flex flex-col"> -->
+                <div id="showing" class="space-y-4">
+                    <h2 class="text-xl sm:text-2xl font-bold text-gray-700 border-b-2 border-yellow-700 pb-2 mb-4">お届け先</h2>
+                    <div>
+                        <label class="block text-gray-700 text-lg font-semibold mb-1">郵便番号</label>
+                        <p id="default_postal_code" class="text-lg text-gray-900">{{ session('postal_code') }}</p>
+                    </div>
+                    <div class="mt-4">
+                        <label class="block text-gray-700 text-lg font-semibold mb-1">都道府県</label>
+                        <p id="default_prefecture" class="text-lg text-gray-900">{{ session('prefecture') }}</p>
+                    </div>
+                    <div class="mt-4">
+                        <label for="address" class="block text-gray-700 text-lg font-semibold mb-1">住所</label>
+                        <p id="default_address" class="text-lg text-gray-900">{{ session('address') }}</p>
+                    </div>
+                    <button type="button" class="bg-white text-yellow-700 border-2 border-yellow-700 rounded-lg py-3 px-8 font-bold hover:bg-yellow-700 hover:text-white transition" id="change_address_btn">お届け先変更</button>
                 </div>
-                <div class="mt-4">
-                    <label class="text-lg border-b-2 border-black">都道府県</label>
-                    <p id="default_prefecture" class="mt-2">{{ session('prefecture') }}</p>
+                
+                
+                <!-- お届け先変更ボタンが押されたら表示するフォーム -->
+                <!-- お届け先 -->
+                <div id="hidden_contents" class="hidden space-y-4">
+                    <h2 class="text-xl sm:text-2xl font-bold text-gray-700 border-b-2 border-yellow-700 pb-2 mb-4">お届け先</h2>
+                    <div>
+                        <label for="postal_code" class="block text-gray-700 text-lg font-semibold mb-1">郵便番号</label>
+                        <input type="text" id="postal_code" value="{{ session('postal_code') }}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500 text-lg text-gray-900">
+                        <!-- エラー表示 -->
+                        <p id="postal_code_error" class="text-red-500 text-xs mt-1"></p>
+                    </div>
+                    <div class="mt-4 relative">
+                        <label for="prefecture" class="block text-gray-700 text-lg font-semibold mb-1">都道府県</label>
+                        <select id="prefecture"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500 text-lg text-gray-900">
+                            @foreach($prefectures as $prefecture)
+                                @if($prefecture->id == session('prefecture_id'))
+                                    <option value="{{ $prefecture->id }}" selected>{{ $prefecture->name }}</option>
+                                @else
+                                    <option value="{{ $prefecture->id }}">{{ $prefecture->name }}</option>
+                                @endif
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mt-4">
+                        <label for="address" class="block text-gray-700 text-lg font-semibold mb-1">住所</label>
+                        <input type="text" id="address" value="{{ session('address') }}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500 text-lg text-gray-900">
+                        <!-- エラー表示 -->
+                        <p id="address_error" class="text-red-500 text-xs mt-1"></p>
+                    </div>
+                    <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0 mt-6">
+                        <button type="button" id="change_btn" class="bg-white text-yellow-700 border-2 border-yellow-700 rounded-lg py-3 px-8 font-bold hover:bg-yellow-700 hover:text-white transition">変更</button>
+                        <button type="button" id="back_btn" class="bg-white text-yellow-700 border-2 border-yellow-700 rounded-lg py-3 px-8 font-bold hover:bg-yellow-700 hover:text-white transition">戻る</button>
+                    </div>
                 </div>
-                <div class="mt-4">
-                    <label for="address" class="text-lg w-full border-b-2 border-black">住所</label>
-                    <p id="default_address" class="mt-2">{{ session('address') }}</p>
+                
+                
+                <!-- 支払情報 -->
+                <div class="space-y-4">
+                    <h2 class="text-xl sm:text-2xl font-bold text-gray-700 border-b-2 border-yellow-700 pb-2 mb-4">支払情報</h2>
+                    <p class="block text-gray-900 text-lg font-semibold mb-1">クレジットカード</p>
+                    @if(isset($shown_num))
+                    <p class="text-lg text-gray-900">カード情報末尾 **** **** **** {{ $shown_num }}</p>
+                    <a href="{{ route('enter_card_info') }}" class="bg-white text-yellow-700 border-2 border-yellow-700 rounded-lg py-3 px-8 font-bold hover:bg-yellow-700 hover:text-white transition inline-block">カード情報変更</a>
+                    @else
+                    <p class="mb-2 mt-2 text-gray-900 text-lg">クレジットカードが登録されていません。</p>
+                    <p class="text-lg text-gray-900">以下のボタンから登録してください。</p>
+                    <a href="{{ route('enter_card_info') }}" class="bg-white text-yellow-700 border-2 border-yellow-700 rounded-lg py-3 px-8 font-bold hover:bg-yellow-700 hover:text-white transition inline-block">カード登録</a>
+                    @endif
                 </div>
-                <button type="button" class="w-48 bg-sky-500 h-10 rounded-xl text-white font-black text-xl mt-5" id="change_address_btn">お届け先変更</button>
-            </div>
-            
-            
-            <!-- お届け先変更ボタンが押されたら表示するフォーム -->
-            <!-- お届け先 -->
-            <div class="mb-10 hidden" id="hidden_contents">
-                <h2 class="text-xl font-bold mb-2">お届け先</h2>
-                <div>
-                    <label class="text-lg">郵便番号</label>
-                    <input type="text" id="postal_code" value="{{ session('postal_code') }}">
-                    <!-- エラー表示 -->
-                    <p class="text-red-500" id="postal_code_error"></p>
-                </div>
-                <div class="mt-4">
-                    <label for="prefecture" class="text-lg">都道府県</label>
-                    <select id="prefecture">
-                        @foreach($prefectures as $prefecture)
-                            @if($prefecture->id == session('prefecture_id'))
-                                <option value="{{ $prefecture->id }}" selected>{{ $prefecture->name }}</option>
-                            @else
-                                <option value="{{ $prefecture->id }}">{{ $prefecture->name }}</option>
-                            @endif
-                        @endforeach
-                    </select>
-                </div>
-                <div class="mt-4">
-                    <label for="address" class="text-lg w-full">住所　　</label>
-                    <input type="text" id="address" value="{{ session('address') }}">
-                    <!-- エラー表示 -->
-                    <p class="text-red-500" id="address_error"></p>
-                </div>
-                <button type="button" id="change_btn" class="w-48 bg-sky-500 h-10 rounded-xl text-white font-black text-xl mt-5">変更</button>
-                <button type="button" id="back_btn" class="w-48 bg-sky-500 h-10 rounded-xl text-white font-black text-xl mt-5">戻る</button>
-            </div>
-            
-            
-            <!-- 支払情報 -->
-            <div class="mb-10">
-                <h2 class="text-xl font-bold mb-2">支払情報</h2>
-                <p class="text-lg border-b-2 border-black w-40">クレジットカード</p>
-                @if(isset($shown_num))
-                <p class="text-lg mt-2">カード情報末尾{{ $shown_num }}</p>
-                <a href="{{ route('enter_card_info') }}" class="w-48 bg-sky-500 text-white no-underline px-6 py-2 rounded-xl block font-black text-xl mt-5">カード情報変更</a>
-                @else
-                <p class="mb-2 mt-2">クレジットカードが登録されていません。</p>
-                <p>以下のボタンから登録してください。</p>
-                <a href="{{ route('enter_card_info') }}" class="w-48 bg-sky-500 text-white no-underline px-6 py-2 rounded-xl block font-black text-xl mt-5 text-center">カード登録</a>
-                @endif
-            </div>
-            
-            <!-- クーポン -->
-            <div class="mb-10">
-                <h2 class="text-xl font-bold mb-2">クーポン</h2>
-                <form action="{{ route('payment_confirm') }}" method="post">
-                    @csrf
-                    @if($coupons && count($coupons) > 0 && $total >= 2000)
-                        @foreach($coupons as $coupon)
+                
+                <!-- クーポン -->
+                <div class="space-y-4">
+                    <h2 class="text-xl sm:text-2xl font-bold text-gray-700 border-b-2 border-yellow-700 pb-2 mb-4">クーポン</h2>
+                    <form action="{{ route('payment_confirm') }}" method="post">
+                        @csrf
+                        @if(count($coupons) > 0 && $total >= 2000)
+                        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                            @foreach($coupons as $coupon)
                             <div class="border-2 border-solid mb-5 p-3 border-stone-950 inline-block w-80 flex items-center">
                                 @if($coupon->coupon_id == session('coupon_id'))
                                     <input type="radio" class="coupon" name="coupon" value="{{ $coupon->coupon_id }}" id="{{ $coupon->coupon_id }}" class="align-middle" checked>
@@ -97,20 +105,25 @@
                                 <label for="{{ $coupon->coupon_id }}" class="text-lg ml-1">{{ $coupon->coupons->name }}</label>
                             </div>
                             @endforeach
-                            <button type="button" id="unuse_coupon_btn" class="w-auto px-3 bg-sky-500 h-10 rounded-xl text-white font-black text-xl">選択を外す</button>
-                    @else
-                        <p>使用できるクーポンがありません。</p>
-                    @endif
-                    <div>
-                        @if(isset($shown_num))
-                            <button type="submit" class="w-48 bg-sky-500 h-10 rounded-xl text-white font-black text-xl mt-10">注文確認</button>
+                        </div>
+                        <button type="button" id="unuse_coupon_btn" class="bg-white text-yellow-700 border-2 border-yellow-700 rounded-lg py-3 px-8 font-bold hover:bg-yellow-700 hover:text-white transitionmt-4">選択を外す</button>
                         @else
-                            <button type="button" id="submit_btn" class="w-48 bg-sky-500 h-10 rounded-xl text-white font-black text-xl mt-10">注文確認</button>
-                            <p id="submit_error" class="text-red-500"></p>
+                            <p class="text-lg text-gray-900">使用できるクーポンがありません。</p>
                         @endif
-                    </div>
-                </form>
-            </div>
+                        <div class="pt-8 flex items-center w-full space-x-8">
+                            <div class="">
+                                @if(isset($shown_num))
+                                <button type="submit" class="bg-white text-yellow-700 border-2 border-yellow-700 py-3 px-8 rounded-lg px-8 font-bold hover:bg-yellow-700 hover:text-white transition inline-block">注文確認</button>
+                                @else
+                                <button type="button" id="submit_btn" class="bg-white text-yellow-700 border-2 border-yellow-700 py-3 px-8 rounded-lg px-8 font-bold hover:bg-yellow-700 hover:text-white transition inline-block">注文確認</button>
+                            </div>
+                            <a href="{{ route('cart') }}" class="bg-white text-yellow-700 border-2 border-yellow-700 py-3 px-8 rounded-lg px-8 font-bold hover:bg-yellow-700 hover:text-white transition inline-block">カートへ戻る</a>
+                        </div>
+                            <p id="submit_error" class="text-red-500 text-sm mt-2 block"></p>
+                            @endif
+                    </form>
+                </div>
+            <!-- </div> -->
         </div>
     </div>
 

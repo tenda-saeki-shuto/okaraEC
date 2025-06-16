@@ -5,72 +5,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link rel="stylesheet" href="{{ asset('/css/cart.css') }}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <title>カートの中身</title>
 </head>
-<body>
-    <!-- ヘッダー入れる -->
+<body class="bg-white font-sans text-gray-800 m-0 p-0">
     @include('user.user_header')
-    <div class="flex flex-col items-center mt-20 w-full">        
-        <h1 class="text-3xl font-bold mb-5">現在のカートの中</h1>
-        @if(!$carts->isEmpty())
-        <table>
-            <thead>
-                <tr class="bg-gray-200">
-                    <th>商品名</th>
-                    <th>単価</th>
-                    <th>数量</th>
-                    <th>小計</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- 合計金額の初期値を設定 -->
-                <!-- カートに商品が入っている場合 -->
-                <?php $total=0; ?>
-                @foreach($carts as $cart)
-                <tr>
-                    <th>{{ $cart->items->name }}</th>
-                    <td class="text-center item_price">{{ $cart->items->price }}円</td>
-                    <td class="p-1">
-                        <div class="flex items-center">
-                            <select class="item_count flex-1 m-1" id="{{ $cart->item_id }}">
-                                @for($i=1; $i<=$cart->items->stock; $i++)
-                                    @if($cart->count == $i)
-                                        <option value="{{ $cart->count }}" selected="selected">{{ $cart->count }}</option>
-                                    @else
-                                        <option value="{{ $i }}">{{ $i }}</option>
-                                    @endif
-                                @endfor
-                            </select>
-                            <form action="{{ route('cart_item_delete', ['id'=>$cart->item_id]) }}" method="post">
-                                @csrf
-                                <button type="submit" class="px-4 bg-sky-500 rounded-xl text-white font-black flex-1 delete-btn">削除</button>
-                            </form>
-                        </div>
-                    </td>
-                    <td class="text-center item_sum">{{ $cart->items->price * $cart->count }}円</td>
-                </tr>
-                <!-- 合計金額の更新 -->
-                <?php $total+= $cart->items->price * $cart->count; ?>
-                @endforeach
-            </tbody>
-            <tfoot class="font-bold">
-                <tr>
-                    <th scope="row" colspan="3" class="text-right">合計金額（税込）</th>
-                    <td class="text-center" id="total_amount">{{ $total }}円</td>
-                </tr>
-            </tfoot>
-        </table>
-        <a href="{{ route('items') }}" class="no-underline px-6 py-2 bg-sky-500 rounded-xl text-white block font-black text-xl mt-10">商品一覧へ</a>
-        <a href="{{ route('insert_payment') }}" class="no-underline px-6 py-2 bg-sky-500 rounded-xl text-white block font-black text-xl mt-5">購入手続きへ</a>
-        @else
-        <!-- カートに何も入っていない場合の表示 -->
-        <p class="text-2xl mt-10">カートに商品がありません。</p>
-        <a href="{{ route('items') }}" class="no-underline px-6 py-2 bg-sky-500 rounded-xl text-white block font-black text-xl mt-10">商品一覧へ</a>
-        @endif
-    </div>
 
+    <div class="max-w-5xl mx-auto mt-8 p-6"> {{-- 全体のコンテナを追加 --}}
+        <h1 class="text-3xl font-semibold text-center border-b-4 border-[#E2725B] pb-4 mb-10">現在のカートの中</h1>
+
+        <div class="w-full bg-white p-6 sm:p-8 rounded-xl space-y-8"> {{-- カード形式のコンテナ --}}
+            @if(!$carts->isEmpty())
+                <div class="max-w-4xl mx-auto overflow-hidden rounded-xl shadow border border-gray-200 bg-white"> 
+                    <table class="w-full text-left table-auto border-collapse font-bold"> 
+                        <thead>
+                            {{-- ヘッダーは深いオレンジ系の色に、文字を白に --}}
+                            <tr class="bg-[#E2725B] text-white border-b-2 border-gray-200">
+                                <th class="px-6 py-4 rounded-tl-xl border-r border-[#d45b43]">商品名</th>
+                                <th class="px-6 py-4 text-center border-r border-[#d45b43]">単価</th>
+                                <th class="px-6 py-4 text-center border-r border-[#d45b43]">数量</th>
+                                <th class="px-6 py-4 text-center rounded-tr-xl">小計</th>
+                            </tr>
+                        </thead>
+                        {{-- ボディの行は、交互に薄いグレーと白で縞模様に、縦の区切り線を強調 --}}
+                        <tbody class="divide-y divide-gray-300">
+                            <?php $total=0; ?>
+                            @foreach($carts as $cart)
+                                <tr> 
+                                    <th class="px-6 py-4 font-normal border-r border-gray-200">{{ $cart->items->name }}</th>
+                                    <td class="px-6 py-4 text-center border-r border-gray-200 item_price">{{ $cart->items->price }}円</td>
+                                    <td class="p-1 text-center border-r border-gray-200">
+                                        <div class="flex items-center justify-center">
+                                            <select class="item_count flex-1 m-1 p-2 border border-gray-300 rounded-md" id="{{ $cart->item_id }}">
+                                                @for($i=1; $i<=$cart->items->stock; $i++)
+                                                    @if($cart->count == $i)
+                                                        <option value="{{ $cart->count }}" selected="selected">{{ $cart->count }}</option>
+                                                    @else
+                                                        <option value="{{ $i }}">{{ $i }}</option>
+                                                    @endif
+                                                @endfor
+                                            </select>
+                                            <form action="{{ route('cart_item_delete', ['id'=>$cart->item_id]) }}" method="post" class="ml-2">
+                                                @csrf
+                                                <button type="submit" class="px-3 py-1 bg-red-500 rounded-lg text-white font-black hover:bg-red-600 transition delete-btn text-sm">削除</button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 text-center item_sum">{{ $cart->items->price * $cart->count }}円</td>
+                                </tr>
+                                <?php $total+= $cart->items->price * $cart->count; ?>
+                            @endforeach
+                        </tbody>
+                        {{-- フッターは薄いオレンジ系の色に、合計を強調 --}}
+                        <tfoot class="text-gray-800 font-semibold bg-orange-50 border-t-2 border-gray-200">
+                            <tr>
+                                <th colspan="3" class="px-6 py-4 text-right rounded-bl-xl border-r border-gray-200">合計金額（税込）</th>
+                                <td class="px-6 py-4 text-center text-lg rounded-br-xl">{{ $total }}円</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                {{-- ボタンのスタイルを決済確認ページに合わせる --}}
+                <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0 mt-10 justify-center">
+                    <a href="{{ route('items') }}" class="bg-white text-yellow-700 border-2 border-yellow-700 rounded-lg py-3 px-8 font-bold hover:bg-yellow-700 hover:text-white transition inline-block">商品一覧へ</a>
+                    <a href="{{ route('insert_payment') }}" class="bg-white text-yellow-700 border-2 border-yellow-700 rounded-lg py-3 px-8 font-bold hover:bg-yellow-700 hover:text-white transition inline-block">購入手続きへ</a>
+                </div>
+            @else
+                <p class="text-2xl mt-10 text-center text-gray-700">カートに商品がありません。</p>
+                <a href="{{ route('items') }}" class="no-underline px-6 py-3 bg-[#E2725B] rounded-xl text-white block font-black text-xl mt-10 text-center hover:bg-[#d45b43] transition shadow-md">商品一覧へ</a>
+            @endif
+        </div> {{-- /w-full bg-white p-6... --}}
+    </div> {{-- /max-w-5xl mx-auto... --}}
     <script>
         //要素の取得
        const item_count = document.querySelectorAll('.item_count');
