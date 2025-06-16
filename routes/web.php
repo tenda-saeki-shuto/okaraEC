@@ -11,6 +11,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserCouponController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -18,6 +19,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('top');
 })->name('top');
+
+// 注文履歴
+Route::get('/orders', [OrderController::class, 'index'])->name('orders');
+Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+
 
 // contact-> ユーザー用
 Route::get('/contact', [ContactController::class, 'showForm'])->name('contact.form');
