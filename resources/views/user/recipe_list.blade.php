@@ -63,28 +63,29 @@
     <title>レシピ一覧</title>
 </head>
 <body>
-    <header>
-        @include('user.user_header')
-    </header>
-    <h1 class="text-center text-3xl">レシピ一覧</h1>
-    {{-- カテゴリ --}}
-    <div class="text-right mr-3 mt-4 mb-4">
-    <form method="GET" class="mb-4">
-        <label for="category" class="mb-4">カテゴリ</label>
-        <select name="category" id="category" class="border rounded px-2 py-1 w-28">
-            <option value="" {{ empty(request('category')) ? 'selected' : '' }}>全て</option>
-            @foreach ($category as $category)
-                <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
-                    {{ $category->name }}
-                </option>
-            @endforeach
-        </select>
-    </form>
-    </div>
+    @include('user.user_header')
 
-    <!-- 追記部分: レシピ一覧コンテナにレスポンシブpaddingとグリッド調整 -->
-    <div id="recipes" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 px-4 md:px-8 lg:px-20 mb-4">
-        {{-- レシピ一覧 JSで出力--}}
+    <div class="max-w-5xl mx-auto mt-8 p-6">
+        <h1 class="text-3xl font-semibold text-center border-b-4 border-yellow-700 pb-4 mb-10">レシピ一覧</h1>
+        {{-- カテゴリ --}}
+        <div class="text-right mr-3 mt-4 mb-4">
+        <form method="GET" class="mb-4">
+            <label for="category" class="mb-4">カテゴリ</label>
+            <select name="category" id="category" class="border rounded px-2 py-1 w-28">
+                <option value="" {{ empty(request('category')) ? 'selected' : '' }}>全て</option>
+                @foreach ($category as $category)
+                    <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
+                        {{ $category->name }}
+                    </option>
+                @endforeach
+            </select>
+        </form>
+        </div>
+    
+        <!-- 追記部分: レシピ一覧コンテナにレスポンシブpaddingとグリッド調整 -->
+        <div id="recipes" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 px-4 md:px-8 lg:px-20 mb-4">
+            {{-- レシピ一覧 JSで出力--}}
+        </div>
     </div>
 
 </body>
