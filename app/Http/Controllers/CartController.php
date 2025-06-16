@@ -37,13 +37,22 @@ class CartController extends Controller
     {
         $user_id = Auth::id();
         // カート情報を取得し更新
-        $cart = Cart::where('user_id', $user_id)->where('item_id', $request->id)->first();
+        $cart = Cart::with(['items:id,price'])->where('user_id', $user_id)->where('item_id', $request->id)->first();
         $cart->count = $request->count;
         $cart->save();
+        // $total = $cart->items->price * $cart->count;
+
+        // 合計金額の計算
+        $total = 0;
+        $allCart = Cart::with(['items:id,price'])->where('user_id', $user_id)->get();
+        foreach($allCart as $cart_item){
+            $total += $cart_item->count * $cart_item->items->price;
+        }
 
         return response()->json([
             'message' => '数量を更新しました',
-            'cart' => $cart,
+            'count' => $cart->count,
+            'total' => $total,
         ]);
     }
 

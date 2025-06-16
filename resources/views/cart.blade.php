@@ -31,11 +31,11 @@
                 @foreach($carts as $cart)
                 <tr>
                     <th>{{ $cart->items->name }}</th>
-                    <td class="text-center">{{ $cart->items->price }}円</td>
+                    <td class="text-center item_price">{{ $cart->items->price }}円</td>
                     <td class="p-1">
                         <div class="flex items-center">
                             <select class="item_count flex-1 m-1" id="{{ $cart->item_id }}">
-                                @for($i=1; $i<=50; $i++)
+                                @for($i=1; $i<=10; $i++)
                                     @if($cart->count == $i)
                                         <option value="{{ $cart->count }}" selected="selected">{{ $cart->count }}</option>
                                     @else
@@ -49,7 +49,7 @@
                             </form>
                         </div>
                     </td>
-                    <td class="text-center">{{ $cart->items->price * $cart->count }}円</td>
+                    <td class="text-center item_sum">{{ $cart->items->price * $cart->count }}円</td>
                 </tr>
                 <!-- 合計金額の更新 -->
                 <?php $total+= $cart->items->price * $cart->count; ?>
@@ -58,7 +58,7 @@
             <tfoot class="font-bold">
                 <tr>
                     <th scope="row" colspan="3" class="text-right">合計金額（税込）</th>
-                    <td class="text-center">{{ $total }}円</td>
+                    <td class="text-center" id="total_amount">{{ $total }}円</td>
                 </tr>
             </tfoot>
         </table>
@@ -81,10 +81,18 @@
     <script>
         //要素の取得
        const item_count = document.querySelectorAll('.item_count');
+
         $(function(){
             item_count.forEach((itemElement)=>{ 
                 const $item = $(itemElement);
                 $item.on('change', function() {
+                    // 値が変更されたプルダウンが属するtrを取得
+                    let row = $(this).closest('tr');
+                    // 行の中の .item_price を取得
+                    let priceText = row.find('.item_price').text();
+                    // 数値に変換
+                    let price = parseInt(priceText.replace('円', ''));
+
                     const changedItem = this; 
                     const id = changedItem.id;  //カートID
                     const count = changedItem.value;  //変更後の数量
@@ -98,12 +106,18 @@
                         url:'/change_cart_count_ajax',
                         data:{
                             id: id,
-                            count: count
+                            count: count,
+
                         } 
                     }).done(function (results){
                         // 成功したときのコールバック
-                        console.log('OK');
-                        console.log(results);
+                        let newSum = price * results['count'];
+                        // 小計の上書き
+                        row.find('.item_sum').text(newSum + '円');
+
+                        // 合計金額を更新（サーバーから返された合計金額）
+                        $('#total_amount').text(results['total'] + '円');
+                    
                     }).fail(function(jqXHR, textStatus, errorThrown){
                         // 失敗したときのコールバック
                         console.log('fail');
