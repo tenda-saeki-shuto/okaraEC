@@ -2,90 +2,75 @@
 <html lang="ja">
 
 <head>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <title>商品一覧</title>
-
-    <style>
-        #drop-area {
-            border: 2px dashed #ccc;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            color: #999;
-            margin-bottom: 20px;
-        }
-
-        #drop-area.highlight {
-            border-color: #6c6;
-        }
-
-        .preview-image {
-            position: relative;
-            display: inline-block;
-            margin: 10px;
-        }
-
-        .preview-image img {
-            max-width: 200px;
-            display: block;
-        }
-
-        .remove-btn {
-            position: absolute;
-            top: 0;
-            right: 0;
-            background: red;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-    </style>
 </head>
 
-<body class="bg-color-green-600">
-    <header>
-        {{ view('admin.admin_header') }}
-    </header>
-    <h1></h1>
-    @if (session('message'))
-        <div class="text-red-600 font-bold">
-            {{ session('message') }}
-        </div>
-    @endif
-    <a href="{{ route('item.create') }}">+新規追加</a>
-    <div class="max-w-7xl mx-auto px-6">
-        <table border="1">
-            <thead>
-                <tr>
-                    <th scope="col" >商品名</th>                    
-                    <th scope="col" >説明</th>
-                    <th scope="col">在庫</th>
-                    <th scope="col">最終更新日</th>
-                </tr>
-            </thead>
-            <tbody>
-            @foreach ($item_list as $item)
-                <tr>
-                    <th scope="row">{{ $item->name }}</th>                    
-                    <td>{{ $item->content }}</td>
-                    <td>{{ $item->stock }}</td>
-                    <td>{{ $item->updated_at }}</td>
-                    <td><a href="{{ route('item.edit', $item) }}">編集</a></td>
-                </tr>
-            @endforeach
-            <div class="mb-4">
-                {{ $item_list->links() }}
+@include('admin.admin_header')
+
+<body>
+    <section class="text-gray-600 body-font">
+        <div class="container px-5 py-24 mx-auto">
+            <div class="flex flex-col text-center w-full mb-20">
+                <h1 class="sm:text-4xl text-3xl font-medium title-font mb-2 text-gray-900">商品一覧</h1>
+                @if (session('message'))
+                    <div class="text-red-600 font-bold">
+                        {{ session('message') }}
+                    </div>
+                @endif
+                <div class="flex pl-4 mt-4 lg:w-2/3 w-full mx-auto">
+                    <a class="flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"
+                        href="{{ route('item.create') }}">
+                        +新規追加</a>
+                </div>
             </div>
-            </tbody>
-        </table>
-    </div>
+            <div class="lg:w-5/6 w-full mx-auto overflow-auto">
+                <table class="table-auto w-full text-left whitespace-no-wrap">
+                    <thead>
+                        <tr>
+                            <th
+                                class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
+                                商品名</th>
+                            <th
+                                class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
+                                説明文</th>
+                            <th
+                                class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
+                                在庫</th>
+                            <th
+                                class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
+                                画像</th>
+                            <th
+                                class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
+                                最終更新</th>
+                            <th
+                                class="w-10 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tr rounded-br">
+                                　　　</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($item_list as $item)
+                            <tr>
+                                <td class="border-t-2 border-gray-200 px-4 py-3">{{ $item->name }}</td>
+                                <td class="border-t-2 border-gray-200 px-4 py-3">{{ $item->content }}</td>
+                                <td class="border-t-2 border-gray-200 px-4 py-3">{{ $item->stock }}
+                                <td class="border-t-2 border-gray-200 px-4 py-3">{{ $item->img }}
+                                <td class="border-t-2 border-gray-200 w-10 text-center">
+                                    {{ $item->updated_at }}
+                                </td>
+                                <td class="border-t-2 border-gray-200 w-10 text-center">
+                                    <a href="{{ route('item.edit', $item) }}">編集</a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
 </body>
 
 </html>
