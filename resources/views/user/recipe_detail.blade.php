@@ -44,9 +44,9 @@
             </div>
 
 
-                
+
                 <div class="lg:w-1/2">
-                    
+
 
                     <!-- 所要時間 -->
                     <h2 class="text-2xl font-semibold mb-2">
@@ -138,7 +138,7 @@
                     <div class="flex items-start gap-x-4">
                     @if ($step->img)
                         <img
-                        src="{{ asset('images/' . $step->img) }}"
+                        src="{{ asset('storage/' . $step->img) }}"
                         alt="Step {{ $loop->iteration }}"
                         class="w-24 h-24 object-cover rounded-md flex-shrink-0"
                         >

@@ -190,7 +190,7 @@ class QuizController extends Controller
                     'guest_selection_id' => $user_answer->id,
                     'guest_is_answer' => $is_answer,
 
-                    'redirect_after_login' => route('user.quiz_answer'),
+                    'redirect_after_login' => route('user.quiz'),
                 ]);
             }
         }
