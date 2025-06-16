@@ -51,6 +51,7 @@
     </div>
 
 
+
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
@@ -68,7 +69,7 @@
                     html += `
                         <a href="/item/${item.id}" class="block no-underline">
                             <div class="size-auto p-4 rounded-lg shadow hover:shadow-lg transition-shadow duration-300 aspect-[1/1]">
-                                <img src="/images/${item.image}" alt="${item.name}" class="w-4/6 h-4/6 object-cover rounded-t-lg">
+                                <img src="/storage/${item.img}" alt="${item.name}" class="w-4/6 h-4/6 object-cover rounded-t-lg">
                                 <div class="text-xl font-bold mt-2 relative">${item.name}${item.is_frozen === 1 ? '<span class="bg-pink-300 text-center w-1/4 text-base rounded-full ml-4 p-1">冷凍商品</span>' : ''}</div>
                                 <p class="text-gray-600">¥${Number(item.price).toLocaleString()}</p>
                                 <button class="favorite-btn" data-item-id="${item.id}">
