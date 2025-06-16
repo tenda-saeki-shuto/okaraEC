@@ -52,15 +52,9 @@
                 <div class="flex items-center mb-4 text-right">
                     <label for="quantity" class="mr-2">数量:</label>
                     <select name="count" class="border rounded">
-                        @if ($item->stock < 50)
-                            @for ($i = 1; $i <= $item->stock; $i++)
-                                <option value="{{ $i }}">{{ $i }}</option>
-                            @endfor
-                        @else
-                            @for ($i = 1; $i <= 50; $i++)
-                                <option value="{{ $i }}">{{ $i }}</option>
-                            @endfor
-                        @endif
+                        @for ($i = 1; $i <= $item->stock; $i++)
+                            <option value="{{ $i }}">{{ $i }}</option>
+                        @endfor
                     </select>
                     <div class="position:right flex justify-end">
                         <button type="submit" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition-colors duration-300 w-auto">

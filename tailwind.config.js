@@ -19,8 +19,25 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            clipPath: {
+                'circle-small': 'circle(0% at calc(100% - 44px) 44px)',
+                'circle-large': 'circle(150% at calc(100% - 44px) 44px)',
+            },
         },
     },
 
-    plugins: [forms],
+    plugins: [
+        forms,
+        function ({ addUtilities }) {
+            addUtilities({
+                '.clip-circle-small': {
+                    'clip-path': 'circle(0% at calc(100% - 44px) 44px)',
+                },
+                '.clip-circle-large': {
+                    'clip-path': 'circle(150% at calc(100% - 44px) 44px)',
+                },
+            });
+        },
+
+    ],
 };

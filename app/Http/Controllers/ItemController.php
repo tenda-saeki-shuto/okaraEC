@@ -117,7 +117,11 @@ class ItemController extends Controller
 
     public function store(Request $request)
     {
-        //table: item, item_nutrition_facts(栄養), item_picture(サブ写真), item_allergies,
+        // 画像ファイルのバリデーションは先に行う
+        $request->validate([
+            'img' => 'required|image|mimes:jpeg,png,jpg,gif',
+            'sub_imgs.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048|max:300',
+        ]);
 
         // 商品データ
         // table: Items
@@ -125,10 +129,17 @@ class ItemController extends Controller
             'name' => 'required|max:30',
             'price' => 'required|integer',
             'content' => 'nullable|string|max:255',
-            'img' => 'required|string',
             'category_id' => 'required|integer|exists:categories,id',
             'stock' => 'required|integer',
         ]);
+
+
+        if ($request->hasFile('img')) {
+            // dd($request->file('img'));
+            $path = $request->file('img');
+            $image = $path->storeAs('items', $path->getClientOriginalName(), 'public');
+            $itemData['img'] = $image; // ← $image を代入する
+        }
 
         // 保存方法処理
         if ($request['is_cold'] == 'refrigerated') { // 冷蔵の時
@@ -166,19 +177,13 @@ class ItemController extends Controller
             }
         }
         // サブ画像
-        $subImgs = $request->validate([
-            'sub_imgs.*' => 'nullable|max:300',
-        ]);
-        // dd(is_null($subImgs['sub_imgs']));
-        if (!empty($subImgs)) {
-            foreach ($subImgs['sub_imgs'] as $img) {
-                // dd(is_null($img));
-                if (!is_null($img)) {
-                    ItemPicture::create([
-                        'item_id' => $item->id,
-                        'img' => $img,
-                    ]);
-                }
+        if ($request->hasFile('sub_imgs')) {
+            foreach ($request->file('sub_imgs') as $subImgFile) {
+                $path = $subImgFile->store('items', 'public');
+                ItemPicture::create([
+                    'item_id' => $item->id,
+                    'img' => $path,
+                ]);
             }
         }
 

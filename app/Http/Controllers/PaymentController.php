@@ -260,6 +260,10 @@ class PaymentController extends Controller
         // カートの中を消す
         Cart::where('user_id', $user_id)->delete();
 
+        // 使用済みクーポンをテーブルから消す
+        UserCoupon::where('user_id', $user_id)->where('coupon_id', $coupon_id)->delete();
+
+
         return view('payment_complete', compact('order_code', 'order_details', 'coupon_info'));
     }
 

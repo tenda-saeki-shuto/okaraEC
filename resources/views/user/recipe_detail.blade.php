@@ -44,9 +44,9 @@
             </div>
 
 
-                
+
                 <div class="lg:w-1/2">
-                    
+
 
                     <!-- 所要時間 -->
                     <h2 class="text-2xl font-semibold mb-2">
@@ -138,7 +138,7 @@
                     <div class="flex items-start gap-x-4">
                     @if ($step->img)
                         <img
-                        src="{{ asset('images/' . $step->img) }}"
+                        src="{{ asset('storage/' . $step->img) }}"
                         alt="Step {{ $loop->iteration }}"
                         class="w-24 h-24 object-cover rounded-md flex-shrink-0"
                         >
@@ -158,7 +158,7 @@
         </div>
 
 
-    <a href="{{ route('recipes') }}" class="inline-block bg-yellow-100 hover:bg-yellow-200 text-gray-800 font-medium py-2 px-4 rounded-md shadow transition-colors duration-200">レシピ一覧へ戻る</a>
+    <a href="{{ route('recipes') }}" class="inline-block mt-5 mb-6 bg-white text-yellow-700 border-2 border-yellow-700 rounded-lg py-3 px-8 font-bold hover:bg-yellow-700 hover:text-white transition">レシピ一覧へ戻る</a>
 
 
 
