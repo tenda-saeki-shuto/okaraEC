@@ -32,11 +32,11 @@
             </div>
 
             <!-- 右エリア -->
-            <div class="nav-right flex items-center space-x-4">
-                <a href="{{ route('items') }}">商品一覧&nbsp&nbsp</a>
-                <a href="{{ route('recipes') }}">レシピ&nbsp&nbsp</a>
-                <a href="{{route('user.quiz')}}">クイズ&nbsp&nbsp</a>
-                <a href="/">お問い合わせフォーム&nbsp&nbsp</a>
+            <div class="nav-right flex items-center space-x-4 whitespace-nowrap text-lg sm:text-base xs:text-sm"> <!-- 追記: 文字サイズをレスポンシブに調整 & 改行防止 -->
+                <a href="{{ route('items') }}">商品一覧&nbsp;&nbsp;</a>
+                <a href="{{ route('recipes') }}">レシピ&nbsp;&nbsp;</a>
+                <a href="{{route('user.quiz')}}">クイズ&nbsp;&nbsp;</a>
+                <a href="/">お問い合わせフォーム&nbsp;&nbsp;</a>
                 <a href="{{ route('view.mypage') }}">マイページ</a>
                 <a href="{{ route('cart') }}"><img src="{{ asset('img/cart.png') }}" alt="カート" class="w-10 h-10"></a>
                 <a href="{{ route('top') }}"><img src="{{ asset('img/home.png') }}" alt="ホーム" class="w-10 h-10"></a>
