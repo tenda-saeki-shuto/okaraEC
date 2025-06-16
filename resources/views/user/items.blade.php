@@ -25,34 +25,30 @@
             gap: 1rem 2rem;
         }
     </style>
-
     <title>商品一覧</title>
 </head>
-<body>
-    <header>
-        @include('user.user_header')
-    </header>
-    <h1 class="text-center text-3xl">商品一覧</h1>
-    {{-- カテゴリ --}}
-    <div class="text-right mr-3 mt-4 mb-4">
-    <form method="GET" class="mb-4">
-        <label for="category" class="mb-4">カテゴリ</label>
-        <select name="category" id="category" class="border rounded px-2 py-1 w-28">
-            <option value="" {{ empty(request('category')) ? 'selected' : '' }}>全て</option>
-            @foreach ($category as $category)
-                <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
-                    {{ $category->name }}
-                </option>
-            @endforeach
-
-        </select>
-    </form>
-    </div>
-
-
-        <div id="item_list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 ml-4 mr-4 mb-4">
+<body class="bg-white font-sans text-gray-800 m-0 p-0">
+    @include('user.user_header')
+    <div class="max-w-5xl mx-auto mt-8 p-6 h-200">
+        <h1 class="text-3xl font-semibold text-center border-b-4 border-yellow-700 pb-4 mb-10">商品一覧</h1>
+        {{-- カテゴリ --}}
+        <div class="text-right mr-3 mt-4 mb-4">
+        <form method="GET" class="mb-4">
+            <label for="category" class="mb-4">カテゴリ</label>
+            <select name="category" id="category" class="border rounded px-2 py-1 w-28">
+                <option value="" {{ empty(request('category')) ? 'selected' : '' }}>全て</option>
+                @foreach ($category as $category)
+                    <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
+                        {{ $category->name }}
+                    </option>
+                @endforeach
+            </select>
+        </form>
+        </div>
+        <div id="item_list" class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ml-4 mr-4 mb-4">
                 {{-- 商品一覧 JSで出力--}}
         </div>
+    </div>
 
 
 </body>
@@ -71,9 +67,9 @@
                 response.items.forEach(item => {
                     html += `
                         <a href="/item/${item.id}" class="block no-underline">
-                            <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow duration-300 aspect-[1/1]">
+                            <div class="size-auto p-4 rounded-lg shadow hover:shadow-lg transition-shadow duration-300 aspect-[1/1]">
                                 <img src="/images/${item.image}" alt="${item.name}" class="w-4/6 h-4/6 object-cover rounded-t-lg">
-                                <div class="text-xl font-bold mt-2 relative">${item.name}${item.is_frozen === 1 ? '<div class="bg-pink-300 text-center w-1/4 text-base rounded-full ">冷凍商品</div>' : ''}</div>
+                                <div class="text-xl font-bold mt-2 relative">${item.name}${item.is_frozen === 1 ? '<span class="bg-pink-300 text-center w-1/4 text-base rounded-full ml-4 p-1">冷凍商品</span>' : ''}</div>
                                 <p class="text-gray-600">¥${Number(item.price).toLocaleString()}</p>
                                 <button class="favorite-btn" data-item-id="${item.id}">
                                     <i class="fa fa-heart ${item.is_favorited ? 'text-danger' : 'text-secondary'}"></i>
