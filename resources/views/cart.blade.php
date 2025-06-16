@@ -51,7 +51,6 @@
                     </td>
                     <td class="text-center">{{ $cart->items->price * $cart->count }}円</td>
                 </tr>
-
                 <!-- 合計金額の更新 -->
                 <?php $total+= $cart->items->price * $cart->count; ?>
                 @endforeach
@@ -63,10 +62,12 @@
                 </tr>
             </tfoot>
         </table>
-        @if($total >= 2000)
-        <p>クーポンが使えます。</p>
-        @else
-        <p>あと<span class="font-bold">{{ 2000 - $total }}円分</span>購入で500円引きクーポンが使えます。</p>
+        @if(count($validCoupons) > 0)
+            @if($total >= 2000)
+                <p>クーポンが使えます。</p>
+            @else
+                <p>あと<span class="font-bold">{{ 2000 - $total }}円分</span>購入で500円引きクーポンが使えます。</p>
+            @endif
         @endif
         <a href="{{ route('items') }}" class="no-underline px-6 py-2 bg-sky-500 rounded-xl text-white block font-black text-xl mt-10">商品一覧へ</a>
         <a href="{{ route('insert_payment') }}" class="no-underline px-6 py-2 bg-sky-500 rounded-xl text-white block font-black text-xl mt-5">購入手続きへ</a>
