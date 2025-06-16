@@ -25,7 +25,7 @@ class RecipeController extends Controller
     public function recipe_index(){
         $recipes = Recipes::all();
         $category = Category::all();
-        
+
         return view('user.recipe_list', compact('recipes', 'category'));
     }
 
@@ -55,7 +55,7 @@ class RecipeController extends Controller
 
     //user用
     public function user_index()
-    {        
+    {
         // レシピを取得
         $recipes = Recipes::orderBy('updated_at', 'desc')->paginate(20);
         $category = Category::all();
@@ -97,18 +97,22 @@ class RecipeController extends Controller
      */
     public function store(Request $request)
     {
-        //フォームの値をバリデーション
-        //レシピのメイン部分
+        // フォームの値をバリデーション
+        // 画像のバリデーション
+        $request->validate([
+            'img' => 'required|image|mimes:jpeg,png,jpg,gif',
+            'sub_img.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // サブ画像のバリデーションを追加
+        ]);
+        // レシピのメイン部分
         $recipe_main = $request->validate([
             'title' => 'required|max:30',
             'content' => 'required|max:300',
-            // 'img' => 'nullable|max:300',
             'time' => 'required|max:20',
             'amount' => 'required|max:20',
             'category_id' => 'required|integer|exists:categories,id',
         ]);
-        
-        //レシピの栄養部分
+
+        // レシピの栄養部分
         $nutrition_facts = $request->validate([
             'energy' => 'nullable|integer|min:0',
             'protein' => 'nullable|numeric|min:0',
@@ -117,27 +121,29 @@ class RecipeController extends Controller
             'fiber' => 'nullable|numeric|min:0',
             'salt_eqv' => 'nullable|numeric|min:0',
         ]);
-        //レシピの材料部分
+        // レシピの材料部分
         $materials = $request->validate([
             'material.*' => 'required|max:20',
             'quantity.*' => 'required|max:20',
         ]);
-        //レシピの手順部分
+        // レシピの手順部分
         $procedures = $request->validate([
             'procedure.*' => 'required|max:20',
-            'sub_img.*' => 'nullable|max:300',
         ]);
 
-        //レシピのメイン部分を登録
-        if (isset($request->img)) {
-            $filename=$request->img->getClientOriginalName();
-            $recipe_main['img'] = $filename;
-            $request->file('img')->storeAs('public/img', $filename);
+        // 画像の登録（メイン画像）
+        $mainImagePath = null;
+        if ($request->hasFile('img')) {
+            $path = $request->file('img');
+            $mainImagePath = $path->storeAs('recipes', $path->getClientOriginalName(), 'public');
         }
+
+        // レシピのメイン部分を登録
+        $recipe_main['img'] = $mainImagePath;
         $recipe = Recipes::create($recipe_main);
-        //レシピの栄養を登録
+        // レシピの栄養を登録
         RecipeNutritionFact::create([
-            'recipe_id'=> $recipe->id,
+            'recipe_id' => $recipe->id,
             'energy' => $nutrition_facts['energy'],
             'protein' => $nutrition_facts['protein'],
             'fat' => $nutrition_facts['fat'],
@@ -145,7 +151,7 @@ class RecipeController extends Controller
             'fiber' => $nutrition_facts['fiber'],
             'salt_eqv' => $nutrition_facts['salt_eqv'],
         ]);
-        //レシピの材料を登録
+        // レシピの材料を登録
         if (!empty($materials)) {
             foreach ($materials['material'] as $index => $name) {
                 $amount = $materials['quantity'][$index];
@@ -156,14 +162,18 @@ class RecipeController extends Controller
                 ]);
             }
         }
-        //レシピの手順を登録
-        if (!empty($procedures)) {
+        // レシピの手順を登録
+        if (!empty($procedures) && $request->hasFile('sub_img')) {
             foreach ($procedures['procedure'] as $index => $content) {
-                $img = $procedures['sub_img'][$index];
+                $subImgPath = null;
+                if (isset($request->file('sub_img')[$index])) {
+                    $file = $request->file('sub_img')[$index];
+                    $subImgPath = $file->storeAs('recipes/steps', $file->getClientOriginalName(), 'public');
+                }
                 RecipeSteps::create([
                     'recipe_id' => $recipe->id,
                     'content' => $content,
-                    'img' => $img,
+                    'img' => $subImgPath, // 保存したサブ画像のパスを登録
                 ]);
             }
         }
@@ -230,7 +240,7 @@ class RecipeController extends Controller
             'procedure.*' => 'required|max:300',
             'sub_img.*' => 'nullable|max:300',
         ]);
-        
+
         //レシピのメイン部分を登録
         if (isset($request->img)) {
             // dd($request->img);
