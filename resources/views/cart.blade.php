@@ -35,7 +35,7 @@
                     <td class="p-1">
                         <div class="flex items-center">
                             <select class="item_count flex-1 m-1" id="{{ $cart->item_id }}">
-                                @for($i=1; $i<=10; $i++)
+                                @for($i=1; $i<=$cart->items->stock; $i++)
                                     @if($cart->count == $i)
                                         <option value="{{ $cart->count }}" selected="selected">{{ $cart->count }}</option>
                                     @else
