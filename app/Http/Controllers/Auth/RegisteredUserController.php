@@ -43,7 +43,7 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
-            'password' => ['required', 'confirmed', 'min:8', 'max:20', Rules\Password::defaults()],
+            'password' => ['required', 'confirmed', 'min:7', 'max:20'],
             'postal_code' => ['required', 'regex:/^\d{7}$/'], //郵便番号
             'prefecture_id' => ['required', 'exists:prefectures,id'],  // 都道府県
             'address' => ['required', 'max:30'], //住所
