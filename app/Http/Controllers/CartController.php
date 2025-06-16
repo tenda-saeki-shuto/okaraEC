@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Cart;
+use App\Models\UserCoupon;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
@@ -13,8 +15,14 @@ class CartController extends Controller
         // $user_idにはセッションに保存されているユーザーIDを入れる
         $user_id = Auth::id();
         $carts = Cart::with(['items:id,name,price'])->where('user_id', $user_id)->get();
-        // dd($carts);
-        return view('cart', compact('carts'));
+
+        // 今日の日付を取得
+        $today = new Carbon('today');
+        
+        // ユーザーが保有しているクーポン（有効なもの）を取得する
+        $validCoupons = UserCoupon::where('user_id', $user_id)->where('valid_at', '>', $today)->get();
+
+        return view('cart', compact('carts', 'validCoupons'));
     }
 
     public function delete($id)

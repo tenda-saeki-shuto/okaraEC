@@ -58,8 +58,11 @@ class PaymentController extends Controller
             $total += $cart_item->count * $cart_item->items->price;
         }
 
+        // 今日の日付を取得
+        $today = new Carbon('today');
+
         // ユーザーが保有しているクーポンを取得(user_couponsテーブル)
-        $coupons = UserCoupon::with(['coupons:id,name,content,discount,img'])->where('user_id',$user_id)->get();
+        $coupons = UserCoupon::with(['coupons:id,name,content,discount,img'])->where('user_id',$user_id)->where('valid_at', '>', $today)->get();
         return view('payment_info', compact('prefectures', 'shown_num', 'coupons', 'total'));
     }
 
@@ -68,8 +71,13 @@ class PaymentController extends Controller
         $user_id = Auth::id();
         //全ての都道府県の名前を取得
         $prefectures=Prefecture::all();
+
+        // 今日の日付を取得
+        $today = new Carbon('today');
+
         // ユーザーが保有しているクーポンを取得(user_couponsテーブル)
-        $coupons = UserCoupon::with(['coupons:id,name,content,discount,img'])->where('user_id',$user_id)->get();
+        $coupons = UserCoupon::with(['coupons:id,name,content,discount,img'])->where('user_id',$user_id)->where('valid_at', '>', $today)->get();
+        
         // couponsテーブルの書き換え
         $card_number = $request->card_number;
         $card_info = CreditCard::where('user_id', $user_id)->first();
@@ -148,8 +156,12 @@ class PaymentController extends Controller
         }
 
         $prefectures=Prefecture::all(); //全ての都道府県の名前
+
+        // 今日の日付を取得
+        $today = new Carbon('today');
+
         // ユーザーが保有しているクーポンを取得(user_couponsテーブル)
-        $coupons = UserCoupon::with(['coupons:id,name,content,discount,img'])->where('user_id',$user_id)->get();
+        $coupons = UserCoupon::with(['coupons:id,name,content,discount,img'])->where('user_id',$user_id)->where('valid_at', '>', $today)->get();
         return view('payment_info', compact('prefectures', 'coupons', 'shown_num', 'total'));
     }
 
@@ -202,7 +214,7 @@ class PaymentController extends Controller
         $orders = Order::with(['orderDetails:id,order_id,item_name,price,count'])
         ->where('user_id', $user_id)
         ->orderBy('created_at', 'desc')
-        ->take(count($carts)) //直近の注文のみ取得
+        ->take(1) //直近の注文のみ取得
         ->get();
         foreach($orders as $order_record){
             $order_details = $order_record->orderDetails;
@@ -212,6 +224,9 @@ class PaymentController extends Controller
 
         // セッション情報の削除
         session()->forget(['postal_code', 'address', 'prefecture', 'prefecture_id']);
+
+        // カートの中を消す
+        Cart::where('user_id', $user_id)->delete();
 
         return view('payment_complete', compact('order_code', 'order_details', 'coupon_info'));
     }
@@ -248,9 +263,6 @@ class PaymentController extends Controller
         
         // クーポンのセッションを消す
         session()->forget('coupon_id');
-
-        // カートの中を消す
-        Cart::where('user_id', $user_id)->delete();
 
         // トップ画面にリダイレクトする
         return redirect()->route('top');
