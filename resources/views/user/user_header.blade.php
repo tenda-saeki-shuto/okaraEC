@@ -33,23 +33,10 @@
 
             <!-- 右エリア -->
             <div class="nav-right flex items-center space-x-4">
-                <a href="{{ route('items') }}" class="text-[#a07146] hover:text-[#c98b50]">商品一覧</a>
-                <a href="{{ route('recipes') }}" class="text-[#a07146] hover:text-[#c98b50]">レシピ</a>
-                <a href="{{ route('user.quiz') }}" class="text-[#a07146] hover:text-[#c98b50]">クイズ</a>
-                <a href="/" class="text-[#a07146] hover:text-[#c98b50]">お問い合わせ</a>
-                <a href="{{ route('view.mypage') }}" class="text-[#a07146] hover:text-[#c98b50]">マイページ</a>
-                <a href="{{ route('cart') }}">
-                    <img src="{{ asset('img/cart.png') }}" alt="カート" class="w-8 h-8 inline-block">
-                </a>
-                <a href="{{ route('top') }}">
-                    <img src="{{ asset('img/home.png') }}" alt="ホーム" class="w-8 h-8 inline-block">
-                </a>
-            <div class="nav-right">
                 <a href="{{ route('items') }}">商品一覧&nbsp&nbsp</a>
                 <a href="{{ route('recipes') }}">レシピ&nbsp&nbsp</a>
                 <a href="{{route('user.quiz')}}">クイズ&nbsp&nbsp</a>
                 <a href="/">お問い合わせフォーム&nbsp&nbsp</a>
-                <a href="/">home</a><img src="{{ asset('img/home.png') }}" alt="ホーム" class="w-10 h-10"></a>
                 <a href="{{ route('view.mypage') }}">マイページ</a>
                 <a href="{{ route('cart') }}"><img src="{{ asset('img/cart.png') }}" alt="カート" class="w-10 h-10"></a>
                 <a href="{{ route('top') }}"><img src="{{ asset('img/home.png') }}" alt="ホーム" class="w-10 h-10"></a>
