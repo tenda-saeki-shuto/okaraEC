@@ -11,7 +11,7 @@
 
         <!-- 郵便番号 -->
         <div>
-            <x-input-label for="postal_code" :value="__('postal_code')" />
+            <x-input-label for="postal_code" :value="__('郵便番号')" />
             <x-text-input id="postal_code" class="block mt-1 w-full" type="text" name="postal_code" :value="old('postal_code')" required autofocus autocomplete="postal_code" />
             <x-input-error :messages="$errors->get('postal_code')" class="mt-2" />
             <p>※ハイフンなしで入力してください</p>
@@ -21,7 +21,7 @@
 
         <!-- 都道府県 -->
         <div>
-        <label for="prefecture_id">prefecture</label><br>
+       <x-input-label for="postal_code" :value="__('都道府県')" />
         <select name="prefecture_id" id="prefecture_id" required>
             <option value="">選択してください</option>
             @foreach($prefecture as $pref)
@@ -38,14 +38,14 @@
 
         <!-- 住所 -->
         <div>
-            <x-input-label for="address" :value="__('address')" />
+            <x-input-label for="address" :value="__('住所')" />
             <x-text-input id="address" class="block mt-1 w-full" type="text" name="address" :value="old('address')" required autofocus autocomplete="address" />
             <x-input-error :messages="$errors->get('address')" class="mt-2" />
         </div><br>
 
         <!-- 電話番号 -->
         <div>
-            <x-input-label for="tel" :value="__('tel')" />
+            <x-input-label for="tel" :value="__('電話番号')" />
             <x-text-input id="tel" class="block mt-1 w-full" type="text" name="tel" :value="old('tel')" required autofocus autocomplete="tel" />
             <x-input-error :messages="$errors->get('tel')" class="mt-2" />
             <p>※ハイフンなしで入力してください</p>
@@ -68,7 +68,7 @@
                             required autocomplete="new-password" />
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
-            <p>※パスワードは8文字から20文字で入力してください
+            <p>※パスワードは7文字から20文字で入力してください
         </div>
 
         <!-- Confirm Password -->
