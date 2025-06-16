@@ -76,7 +76,7 @@ class CartController extends Controller
 
             return redirect()->back()->with('success', 'カートに追加しました');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'カートへの追加に失敗しました。もう一度お試しください');
+            return redirect(route('login'));
         }
     }
 }
