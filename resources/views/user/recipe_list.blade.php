@@ -99,7 +99,7 @@
 
             response.recipes.forEach(recipe => {
                 html += `
-                    <a href="/resipes/${recipe.id}" class="block">
+                    <a href="/recipes/${recipe.id}" class="block">
                         <div class="bg-white p-4 rounded-lg shadow aspect-[1/1]">
                             <img src="/storage/${recipe.img}" alt="${recipe.title}"
                             class="w-full h-48 object-cover rounded">

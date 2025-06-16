@@ -9,6 +9,7 @@ use App\Models\Recipes;
 use App\Models\RecipeIngredients;
 use App\Models\RecipeSteps;
 use App\Models\RecipeNutritionFact;
+use Illuminate\Support\Facades\Log;
 
 class RecipeController extends Controller
 {
@@ -32,14 +33,17 @@ class RecipeController extends Controller
     {
         // レシピの詳細情報を取得
         $recipe = Recipes::with([
-            ''
-
+            'category:id,name',
+            'recipeIngredients:id,recipe_id,name,amount',
+            'recipeSteps:id,recipe_id,content,img',
+            'recipeNutritionFacts:id,recipe_id,energy,protein,fat,carb,fiber,salt_eqv',
         ])->findOrFail($id);
 
         // ビューにデータを渡す
         return view('user.recipe_detail', compact('recipe'));
     }
 
+    //admin用
     public function index()
     {
         // レシピを取得
@@ -49,6 +53,7 @@ class RecipeController extends Controller
         return view('admin.recipe_index', compact('recipes'));
     }
 
+    //user用
     public function user_index()
     {        
         // レシピを取得

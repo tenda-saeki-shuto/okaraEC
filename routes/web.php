@@ -81,7 +81,7 @@ Route::get('/recipes', [RecipeController::class, 'user_index'])->name('recipes')
 //レシピフィルター
 Route::get('/recipes/filter', [RecipeController::class, 'filter'])->name('recipes.filter');
 // レシピ詳細
-Route::get('/resipes/{id}', [RecipeController::class, 'show'])->name('recipe_detail');
+Route::get('/recipes/{id}', [RecipeController::class, 'show'])->name('recipe_detail');
 
 //-------------------------------------------------------------------------------
 
