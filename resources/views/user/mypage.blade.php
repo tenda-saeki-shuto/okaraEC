@@ -54,43 +54,41 @@
 
         <!-- アイコン群 -->
         <div class="flex flex-wrap justify-center gap-12 px-6 mb-10">
-            <form action="#">
+            <button onclick="location.href='{{route(name: 'user.like')}}'">
                 <div class="flex flex-col items-center w-36 text-center cursor-pointer hover:-translate-y-1 hover:shadow-lg transition">
                     <img src="{{ asset('img/like.png') }}" alt="お気に入り" class="w-24 h-24 object-contain" />
                     <p class="mt-2 text-lg text-black">お気に入り</p>
                 </div>
-            </form>
+            </button>
 
-            <form action="#">
+            <button onclick="location.href=''">
                 <div class="flex flex-col items-center w-36 text-center cursor-pointer hover:-translate-y-1 hover:shadow-lg transition">
                     <img src="{{ asset('img/buy.png') }}" alt="定期購入一覧" class="w-24 h-24 object-contain" />
                     <p class="mt-2 text-lg text-black">定期購入一覧</p>
                 </div>
-            </form>
+            </button>
 
-            <form action="#">
+            <button onclick="location.href='{{route(name: 'user.coupon')}}'">
                 <div class="flex flex-col items-center w-36 text-center cursor-pointer hover:-translate-y-1 hover:shadow-lg transition">
                     <img src="{{ asset('img/coupon.png') }}" alt="クーポン" class="w-24 h-24 object-contain" />
                     <p class="mt-2 text-lg text-black">クーポン</p>
                 </div>
-            </form>
+            </button>
 
-            <form action="#">
+            <button onclick="location.href='{{route(name: 'orders')}}'">
                 <div class="flex flex-col items-center w-36 text-center cursor-pointer hover:-translate-y-1 hover:shadow-lg transition">
                     <img src="{{ asset('img/history.png') }}" alt="購入履歴" class="w-24 h-24 object-contain" />
                     <p class="mt-2 text-lg text-black">購入履歴</p>
                 </div>
-            </form>
+            </button>
         </div>
 
         <!-- 修正：退会ボタンをやや下に配置し、右寄せで固定 -->
         <div class="flex justify-end mt-40 mr-8">
-            <form action="">
-                <button type="submit"
-                        class="bg-white text-red-700 border-2 border-red-700 rounded-lg py-3 px-8 font-bold hover:bg-red-700 hover:text-white transition w-48">
-                        退会
-                </button>
-            </form>
+            <button onclick="location.href='{{route(name: 'withdraw')}}'"
+                    class="bg-white text-red-700 border-2 border-red-700 rounded-lg py-3 px-8 font-bold hover:bg-red-700 hover:text-white transition w-48">
+                    退会
+            </button>
         </div>
     </div>
 </body>
