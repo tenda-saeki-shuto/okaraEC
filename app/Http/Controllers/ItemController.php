@@ -135,7 +135,6 @@ class ItemController extends Controller
 
 
         if ($request->hasFile('img')) {
-            // dd($request->file('img'));
             $path = $request->file('img');
             $image = $path->storeAs('items', $path->getClientOriginalName(), 'public');
             $itemData['img'] = $image; // ← $image を代入する
@@ -216,10 +215,20 @@ class ItemController extends Controller
             'name' => 'required|max:30',
             'price' => 'required|integer',
             'content' => 'nullable|string|max:255',
-            // 'img' => 'required|string',
             'category_id' => 'required|integer|exists:categories,id',
             'stock' => 'required|integer',
         ]);
+        // 画像ファイルのバリデーションは先に行う
+        $request->validate([
+            'img' => 'nullable|image|mimes:jpeg,png,jpg,gif',
+            'sub_imgs.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048|max:300',
+        ]);
+
+        if ($request->hasFile('img')) {
+            $path = $request->file('img');
+            $image = $path->storeAs('items', $path->getClientOriginalName(), 'public');
+            $itemData['img'] = $image; // ← $image を代入する
+        }
 
         // 保存方法処理
         if ($request['is_cold'] == 'refrigerated') { // 冷蔵の時
