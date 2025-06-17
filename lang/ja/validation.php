@@ -2,12 +2,10 @@
 
 return [
 
-    /* メッセージの内容がご自身のアプリに適さない場合には、必要に応じて修正願います */
-
     'accepted' => ':attributeを承認してください。',
     'accepted_if' => ':otherが:valueの場合、:attributeを承認してください。',
     'active_url' => ':attributeが有効なURLではありません。',
-    'after' => ':attributeには、:dateより後の日付を指定してください。',
+    'after' => ':attributeには、:dateより後の日付sを指定してください。',
     'after_or_equal' => ':attributeには、:date以降の日付を指定してください。',
     'alpha' => ':attributeはアルファベットのみがご利用できます。',
     'alpha_dash' => ':attributeはアルファベットとダッシュ(-)及び下線(_)がご利用できます。',
@@ -184,7 +182,17 @@ return [
             'regex' => 'セキュリティコードは半角数字で入力してください。',
             'digits_between' => 'セキュリティコードは3〜4桁で入力してください。',
         ],
-        
+        'postal_code'=> [
+            'required' => '郵便番号は必須です。',
+            'max' => '郵便番号は7文字で入力してください。'
+        ],
+        'password' => [
+            'required' => 'パスワードは必須項目です。',
+            'min' => 'パスワードは7文字以上で入力してください。',
+            'max' => 'パスワードは20文字以内で入力してください。',
+            'confirmed' => 'パスワードが一致しません。',
+            
+        ],
     ],
 
     /*
