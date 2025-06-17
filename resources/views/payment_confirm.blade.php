@@ -21,20 +21,18 @@
             <div class="max-w-4xl mx-auto overflow-hidden mt-8 rounded-xl shadow border border-gray-200 bg-white"> 
                 <table class="w-full text-left table-auto border-collapse font-bold"> 
                     <thead>
-                        <tr class="bg-[#E2725B] text-white border-b-2 border-[#d45b43]">
+                        <tr class="bg-[#E2725B] text-white text-lg border-b-2 border-[#d45b43]">
                             <th class="px-6 py-4 rounded-tl-xl border-r border-[#d45b43]">商品名</th>
                             <th class="px-6 py-4 border-r border-[#d45b43]">単価</th>
                             <th class="px-6 py-4 border-r border-[#d45b43]">数量</th>
                             <th class="px-6 py-4 text-center rounded-tr-xl">小計</th>
                         </tr>
                     </thead>
-                    {{-- ボディの行は、交互に薄いグレーと白で縞模様に --}}
                     <tbody class="divide-y divide-gray-200">
                         <?php $total=0; ?>
                         @foreach($carts as $cart)
-                            {{-- ここにホバー効果を追加 --}}
-                            <tr class="even:bg-gray-50 odd:bg-white transform transition-all duration-200 hover:scale-[1.01] hover:shadow-lg relative z-0"> 
-                                <th class="px-6 py-4 font-normal border-r border-gray-200">{{ $cart->items->name }}</th>
+                            <tr class="text-lg even:bg-gray-50 odd:bg-white transform transition-all duration-200 hover:scale-[1.01] hover:shadow-lg relative z-0"> 
+                                <th class="px-6 py-4 border-r border-gray-200">{{ $cart->items->name }}</th>
                                 <td class="px-6 py-4 text-center border-r border-gray-200">{{ $cart->items->price }}円</td>
                                 <td class="px-6 py-4 text-center border-r border-gray-200">{{ $cart->count }}</td>
                                 <td class="px-6 py-4 text-center">{{ $cart->items->price * $cart->count }}円</td>
@@ -42,14 +40,14 @@
                             <?php $total+= $cart->items->price * $cart->count; ?>
                         @endforeach
                         @if($coupon != null)
-                            {{-- クーポン行は少し目立つイエローに --}}
-                            <tr class="bg-orange-50">
+                            <tr class="bg-orange-50 text-lg">
                                 <th colspan="3" class="px-6 py-4 text-right font-medium border-r border-gray-200">クーポン</th>
                                 <td class="px-6 py-4 text-center text-red-600 font-semibold">-{{ $coupon->discount }}円</td>
                             </tr>
+                            <?php $total-= $coupon->discount; ?>
                         @endif
                     </tbody>
-                    <tfoot class="text-gray-800 font-semibold border-t border-gray-200">
+                    <tfoot class="text-gray-800 text-lg font-semibold border-t border-gray-200">
                         <tr>
                             <th colspan="3" class="px-6 py-4 text-right rounded-bl-lg border-r border-gray-200">合計金額（税込）</th>
                             <td class="px-6 py-4 text-center text-lg rounded-br-lg">{{ $total }}円</td> 
