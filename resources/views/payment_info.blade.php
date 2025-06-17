@@ -113,9 +113,9 @@
                         <div class="pt-8 flex items-center w-full space-x-8">
                             <div class="">
                                 @if(isset($shown_num))
-                                <button type="submit" class="bg-white text-yellow-700 border-2 border-yellow-700 py-3 px-8 rounded-lg px-8 font-bold hover:bg-yellow-700 hover:text-white transition inline-block">注文確認</button>
+                                <button type="submit" class="bg-white text-yellow-700 border-2 border-yellow-700 py-3 px-8 rounded-lg px-8 font-bold hover:bg-yellow-700 hover:text-white transition inline-block">確認</button>
                                 @else
-                                <button type="button" id="submit_btn" class="bg-white text-yellow-700 border-2 border-yellow-700 py-3 px-8 rounded-lg px-8 font-bold hover:bg-yellow-700 hover:text-white transition inline-block">注文確認</button>
+                                <button type="button" id="submit_btn" class="bg-white text-yellow-700 border-2 border-yellow-700 py-3 px-8 rounded-lg px-8 font-bold hover:bg-yellow-700 hover:text-white transition inline-block">確認</button>
                             </div>
                             <a href="{{ route('cart') }}" class="bg-white text-yellow-700 border-2 border-yellow-700 py-3 px-8 rounded-lg px-8 font-bold hover:bg-yellow-700 hover:text-white transition inline-block">カートへ戻る</a>
                         </div>
