@@ -117,12 +117,7 @@ class ItemController extends Controller
 
     public function store(Request $request)
     {
-        // 画像ファイルのバリデーションは先に行う
-        $request->validate([
-            'img' => 'required|image|mimes:jpeg,png,jpg,gif',
-            'sub_imgs.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048|max:300',
-        ]);
-
+        
         // 商品データ
         // table: Items
         $itemData = $request->validate([
@@ -131,6 +126,11 @@ class ItemController extends Controller
             'content' => 'nullable|string|max:255',
             'category_id' => 'required|integer|exists:categories,id',
             'stock' => 'required|integer',
+        ]);
+        // 画像ファイルのバリデーションは先に行う
+        $request->validate([
+            'img' => 'required|image|mimes:jpeg,png,jpg,gif',
+            'sub_imgs.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048|max:300',
         ]);
 
 
