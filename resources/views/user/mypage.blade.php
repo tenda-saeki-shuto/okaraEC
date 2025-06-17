@@ -57,14 +57,7 @@
                     <img src="{{ asset('img/like.png') }}" alt="お気に入り" class="w-24 h-24 object-contain" />
                     <p class="mt-2 text-lg text-black">お気に入り</p>
                 </div>
-            </button>
-
-            <button onclick="location.href=''">
-                <div class="flex flex-col items-center w-36 text-center cursor-pointer hover:-translate-y-1 hover:shadow-lg transition">
-                    <img src="{{ asset('img/buy.png') }}" alt="定期購入一覧" class="w-24 h-24 object-contain" />
-                    <p class="mt-2 text-lg text-black">定期購入一覧</p>
-                </div>
-            </button>
+</button>
 
             <button onclick="location.href='{{route(name: 'user.coupon')}}'">
                 <div class="flex flex-col items-center w-36 text-center cursor-pointer hover:-translate-y-1 hover:shadow-lg transition">
