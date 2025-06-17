@@ -258,30 +258,14 @@ class ItemController extends Controller
             'allergies.*' => 'nullable|integer|exists:allergies,id',
         ]);
         $allergy_ids = $item->itemAllergies()->pluck('id')->toArray();
-        $form_allergy_ids = array_filter($allergyIds['allergies'] ?? []);
         if (!empty($allergyIds)) {
-            foreach ($allergyIds['allergies'] as $index => $allergy_id) {
-                $id = $form_allergy_ids[$index] ?? null;
-
-                if ($id) {
-                    $allergy = ItemAllergy::find($id);
-                    if ($allergy) {
-                        $allergy->update([
-                            'item_id' => $item->id,
-                            'allergy_id' => $allergy_id,
-                        ]);
-                    }
-                } else {
+            foreach ($allergyIds['allergies'] as $allergy_id) {
                     ItemAllergy::create([
                         'item_id' => $item->id,
                         'allergy_id' => $allergy_id,
                     ]);
-                }
             }
-        }
-        $allergy_delete_ids = array_diff($allergy_ids, $form_allergy_ids);
-        if (!empty($allergy_delete_ids)) {
-            $item->itemAllergies()->whereIn('id', $allergy_delete_ids)->delete();
+            $item->itemAllergies()->whereIn('id', $allergy_ids)->delete();
         }
 
         // サブ画像
