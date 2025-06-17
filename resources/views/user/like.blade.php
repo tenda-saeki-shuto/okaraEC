@@ -45,7 +45,7 @@
             @foreach($items as $item)
                 <a href="/item/{{$item->id}}" class="block no-underline">
                     <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow duration-300 aspect-[1/1]">
-                        <img src="/images/{{$item->image}}" alt="{{$item->name}}" class="w-4/6 h-4/6 object-cover rounded-t-lg mx-auto">
+                        <img src="/storage/{{$item->img}}" alt="{{$item->name}}" class="w-4/6 h-4/6 object-cover rounded-t-lg mx-auto">
                         <div class="text-xl font-bold mt-2 text-center relative">
                             {{ $item->name }}
                             @if ($item->is_frozen === 1)
