@@ -24,9 +24,9 @@
                     </div>
                 @endif
             </div>
-    <form action="{{ route('quiz.store') }}" method="POST">
+            <form method="POST" action="{{ route('quiz.store') }}" enctype="multipart/form-data">
         @csrf
-        @include('admin.quiz_form');
+        @include('admin.quiz_form')
         <br><br>
         <button type="submit">登録</button>
             </form>

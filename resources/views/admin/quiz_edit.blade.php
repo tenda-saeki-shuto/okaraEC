@@ -24,7 +24,7 @@
                     </div>
                 @endif
             </div>
-            <form action="{{ route('quiz.update', $quiz) }}" method="POST">
+            <form method="POST" action="{{ route('quiz.update', $quiz) }}" enctype="multipart/form-data">
                 @method('PATCH')
                 @csrf
                 @include('admin.quiz_form')

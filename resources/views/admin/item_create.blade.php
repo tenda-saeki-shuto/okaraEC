@@ -24,7 +24,7 @@
                     </div>
                 @endif
             </div>
-            <form action="{{ route('item.store') }}" method="POST">
+            <form method="POST" action="{{ route('item.store') }}" enctype="multipart/form-data">
                 @csrf
                 @include('admin.item_from')
                 <button type="submit">登録</button>
