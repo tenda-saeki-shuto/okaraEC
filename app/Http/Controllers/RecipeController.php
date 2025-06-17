@@ -219,7 +219,7 @@ class RecipeController extends Controller
         ]);
         // 画像のバリデーション
         $request->validate([
-            'img' => 'required|image|mimes:jpeg,png,jpg,gif',
+            'img' => 'nullable|image|mimes:jpeg,png,jpg,gif',
             'sub_img.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // サブ画像のバリデーションを追加
         ]);
 
@@ -250,10 +250,10 @@ class RecipeController extends Controller
         if ($request->hasFile('img')) {
             $path = $request->file('img');
             $mainImagePath = $path->storeAs('recipes', $path->getClientOriginalName(), 'public');
+            $recipe_main['img'] = $mainImagePath;
         }
 
         // レシピのメイン部分を登録
-        $recipe_main['img'] = $mainImagePath;
         $recipe->update($recipe_main);
         //レシピの栄養を登録
         $recipe->recipeNutritionFacts()->update([
@@ -301,21 +301,27 @@ class RecipeController extends Controller
         if (!empty($procedures)) {
             foreach ($procedures['procedure'] as $index => $content) {
                 $id = $form_steps_ids[$index] ?? null;
-                $img = $procedures['sub_img'][$index];
-
+                if (isset($request->file('sub_img')[$index])) {
+                    $file = $request->file('sub_img')[$index];
+                    $subImgPath = $file->storeAs('recipes/steps', $file->getClientOriginalName(), 'public');
+                    // $img = $procedures['sub_img'][$index];
+                    // dd($subImgPath);
+                } else {
+                    $subImgPath = null;
+                }
                 if ($id) {
                     $ingredient = RecipeSteps::find($id);
                     if ($ingredient) {
                         $ingredient->update([
                             'content' => $content,
-                            'amount' => $img,
+                            'img' => $subImgPath,
                         ]);
                     }
                 } else {
                     RecipeSteps::create([
                         'recipe_id' => $recipe->id,
                         'content' => $content,
-                        'img' => $img,
+                        'img' => $subImgPath,
                     ]);
                 }
             }
