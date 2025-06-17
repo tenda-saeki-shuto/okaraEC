@@ -25,18 +25,16 @@ class ProfileController extends Controller
     // バリデーションルールと日本語メッセージをここに記載（追記箇所）
     public function update(Request $request)
     {
-        // バリデーションルール（追記）
+        // バリデーション
         $rules = [
             'name' => ['required', 'string'],
             'email' => ['required', 'email', 'max:255'],
             'tel' => ['required', 'regex:/^\d{11}$/'],
-            'password_profile' => ['required', 'min:7', 'max:20', 'confirmed'], // 確認入力あり
             'postal_code' => ['required', 'string', 'max:7'],
             'prefecture_id' => ['required', 'integer'],
             'address' => ['required', 'string', 'max:255'],
         ];
 
-        // 日本語エラーメッセージ（追記）
         $messages = [
             'name.required' => '名前は必須です。',
             'email.required' => 'メールアドレスは必須です。',
@@ -49,35 +47,25 @@ class ProfileController extends Controller
             'address.required' => '住所は必須です。',
         ];
 
-        // バリデーション実行（ここで$messagesを使って日本語メッセージに対応）
-        $validatedData = $request->validate($rules, $messages);
+        $validated = $request->validate($rules, $messages);
 
-        $user = $request->user();
+        // ユーザー情報の更新処理
+        $user = $request->user(); // ログイン中のユーザーを取得
+        $user->name = $validated['name'];
+        $user->email = $validated['email'];
+        $user->tel = $validated['tel'];
 
-        // パスワードは空の場合は更新しない（追記）
-        if (!empty($validatedData['password'])) {
-            $user->password = bcrypt($validatedData['password']);
-        }
+        $user->save(); // ユーザー本体を保存
 
-        // 他の項目を更新
-        $user->fill($validatedData);
+        // ユーザーの住所情報の更新（リレーションがある場合）
+        $user->address->postal_code = $validated['postal_code'];
+        $user->address->prefecture_id = $validated['prefecture_id'];
+        $user->address->address = $validated['address'];
+        $user->address->save(); // 住所情報を保存
 
-        // メールアドレス変更時はメール認証リセット
-        if ($user->isDirty('email')) {
-            $user->email_verified_at = null;
-        }
-
-        $user->save();
-
-        // 住所テーブル更新（追記）
-        $user->address->update([
-            'postal_code' => $validatedData['postal_code'],
-            'prefecture_id' => $validatedData['prefecture_id'],
-            'address' => $validatedData['address'],
-        ]);
-
-        return Redirect::route('userinfo.edit')->with('status', 'profile-updated');
+        return redirect()->route('profile.edit')->with('status', 'profile-updated');
     }
+
 
     /**
      * 新規追加メソッド：パスワード変更専用
