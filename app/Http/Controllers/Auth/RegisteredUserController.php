@@ -42,7 +42,7 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required'],
-            'email' => ['required','email', 'unique:users,email'],
+            'email' => ['required', 'email', 'unique:users,email'],
             'password' => ['required', 'confirmed', 'min:7', 'max:20'],
             'postal_code' => ['required', 'regex:/^\d{7}$/'], //郵便番号
             'prefecture_id' => ['required', 'exists:prefectures,id'],  // 都道府県
@@ -97,7 +97,7 @@ class RegisteredUserController extends Controller
         );
 
         //セッションに新規登録でクーポンを発行したことを保存
-        session()->flash('coupon_register', '新規登録ありがとうございます<br>クーポンを獲得しました');
+        session()->flash('coupon_register', 'クーポンを獲得しました');
 
 
         return redirect($redirect);
