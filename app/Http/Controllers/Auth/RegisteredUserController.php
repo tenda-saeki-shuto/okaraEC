@@ -41,13 +41,13 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
+            'name' => ['required'],
+            'email' => ['required','email', 'unique:users,email'],
             'password' => ['required', 'confirmed', 'min:7', 'max:20'],
             'postal_code' => ['required', 'regex:/^\d{7}$/'], //郵便番号
             'prefecture_id' => ['required', 'exists:prefectures,id'],  // 都道府県
-            'address' => ['required', 'max:30'], //住所
-            'tel' => ['required', 'regex:/^\d{11}$/'], //電話番号
+            'address' => ['required'], //住所
+            'tel' => ['required', 'regex:/^\d{10,11}$/']
         ]);
 
         //userの登録
