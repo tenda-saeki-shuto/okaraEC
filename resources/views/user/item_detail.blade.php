@@ -31,13 +31,16 @@
     <div class="container mx-auto p-4">
         <div class="bg-white p-6 rounded-lg shadow-md flex flex-col">
             <!-- メイン画像 -->
-            <img src="{{ asset('img/cookie.png') }}" alt="クッキー" id="main-image" class="w-full max-w-[600px] h-auto aspect-[4/3] object-cover rounded-lg mb-4 mx-auto">
+            <img src="{{ asset('/storage/'. $item->img) }}" alt="クッキー" id="main-image" class="w-full max-w-[600px] h-auto aspect-[4/3] object-cover rounded-lg mb-4 mx-auto">
             <!-- サブ画像4つ -->
             <div class="w-full max-w-[70%] mx-auto grid grid-cols-2 place-items-center sm:grid-cols-4 gap-4 place-items-center sub_images">
-                <img src="{{ asset('img/mattch_dounut.png') }}" alt="抹茶ドーナツ" class="h-25 w-25 md:h-45 w-45 object-cover rounded-lg mb-4 transition-transform duration-300 hover:scale-105 cursor-pointer">
+                @forEach($item->itemPictures as $picture)
+                <img src="{{ asset('/storage/'. $picture->img) }}" alt="抹茶ドーナツ" class="h-25 w-25 md:h-45 w-45 object-cover rounded-lg mb-4 transition-transform duration-300 hover:scale-105 cursor-pointer">
+                @endforeach
+                {{-- <img src="{{ asset('img/mattch_dounut.png') }}" alt="抹茶ドーナツ" class="h-25 w-25 md:h-45 w-45 object-cover rounded-lg mb-4 transition-transform duration-300 hover:scale-105 cursor-pointer">
                 <img src="{{ asset('img/mattcha_cookie.png') }}" alt="抹茶クッキー" class="h-25 w-25 md:h-45 w-45 object-cover rounded-lg mb-4 transition-transform duration-300 hover:scale-105 cursor-pointer">
                 <img src="{{ asset('img/cookie.png') }}" alt="クッキー" class="h-25 w-25 md:h-45 w-45 object-cover rounded-lg mb-4 transition-transform duration-300 hover:scale-105 cursor-pointer">
-                <img src="{{ asset('img/mince.png') }}" alt="ハンバーグ" class="h-25 w-25 md:h-45 w-45 object-cover rounded-lg mb-4 transition-transform duration-300 hover:scale-105 cursor-pointer">
+                <img src="{{ asset('img/mince.png') }}" alt="ハンバーグ" class="h-25 w-25 md:h-45 w-45 object-cover rounded-lg mb-4 transition-transform duration-300 hover:scale-105 cursor-pointer"> --}}
             </div>
             <div class="items-center">
                 <h2 class="text-3xl font-semibold mb-2 inline-block">
