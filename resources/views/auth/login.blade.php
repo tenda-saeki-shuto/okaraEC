@@ -19,24 +19,25 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ route('login') }}" class="bg-white border border-gray-200 shadow-md rounded-xl p-8">
+        <form method="POST" action="{{ route('login') }}" class="bg-white border border-gray-200 shadow-md rounded-xl p-8" novalidate>
             @csrf
 
             <!-- Email -->
             <div class="mb-6">
                 <label for="email" class="block text-lg font-semibold text-gray-700 mb-2">メールアドレス</label>
-                <input id="email" name="email" type="email" required autofocus
+                <input id="email" name="email" type="email"  autofocus
                        class="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-700"
                        value="{{ old('email') }}">
                 @error('email')
                     <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
                 @enderror
+                
             </div>
 
             <!-- Password -->
             <div class="mb-6">
                 <label for="password" class="block text-lg font-semibold text-gray-700 mb-2">パスワード</label>
-                <input id="password" name="password" type="password" required
+                <input id="password" name="password" type="password" 
                        class="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-700">
                 @error('password')
                     <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
@@ -55,11 +56,10 @@
             <!-- 戻る・新規登録・ログインボタン 横並び -->
             <div class="flex gap-4 mt-6">
                 <!-- 戻る -->
-                <button type="button"
-                    onclick="history.back()"
-                    class="flex-1 bg-gray-100 text-gray-700 border border-gray-400 py-3 rounded-lg font-bold hover:bg-gray-200 transition">
+                <a href="{{ route('top') }}"
+                class="flex-1 bg-gray-100 text-gray-700 border border-gray-400 py-3 rounded-lg font-bold hover:bg-gray-200 transition text-center block">
                     戻る
-                </button>
+                </a>
 
                 <!-- 新規登録 -->
                 <a href="{{ route('register') }}"
