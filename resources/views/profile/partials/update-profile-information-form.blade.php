@@ -3,7 +3,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8" />
-    <title>プロフィール編集</title>
+    <title>登録情報編集</title>
     <style>
         body {
             font-family: sans-serif;
@@ -51,7 +51,7 @@
                     <label for="name" class="md:w-40 pt-2 font-medium text-left md:text-center text-xl">名前</label>
                     <div class="flex-1">
                         <input type="text" id="name" name="name" value="{{ old('name', $user->name ?? '') }}"
-                            required autocomplete="name"
+                             autocomplete="name"
                             class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2">
                         @error('name')
                             <div class="text-red-500 text-sm mt-1 text-left">{{ $message }}</div>
@@ -64,7 +64,7 @@
                     <label for="postal_code" class="md:w-40 pt-2 font-medium text-left md:text-center text-xl">郵便番号</label>
                     <div class="flex-1">
                         <input type="text" id="postal_code" name="postal_code"
-                            value="{{ old('postal_code', $user->address->postal_code ?? '') }}" required
+                            value="{{ old('postal_code', $user->address->postal_code ?? '') }}" 
                             class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2">
                         @error('postal_code')
                             <div class="text-red-500 text-sm mt-1 text-left">{{ $message }}</div>
@@ -78,7 +78,7 @@
                     <label for="prefecture_id" class="md:w-40 pt-2 font-medium text-left md:text-center text-xl">都道府県</label>
                     <div class="flex-1">
                         <select id="prefecture_id" name="prefecture_id"
-                            class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2" required>
+                            class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2" >
                             <option value="">選択してください</option>
                             @foreach($prefecture as $pref)
                                 <option value="{{ $pref->id }}"
@@ -98,7 +98,7 @@
                     <label for="address" class="md:w-40 pt-2 font-medium text-left md:text-center text-xl">住所</label>
                     <div class="flex-1">
                         <input type="text" id="address" name="address"
-                            value="{{ old('address', $user->address->address ?? '') }}" required
+                            value="{{ old('address', $user->address->address ?? '') }}" 
                             class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2">
                         @error('address')
                             <div class="text-red-500 text-sm mt-1 text-left">{{ $message }}</div>
@@ -110,7 +110,7 @@
                 <div class="flex flex-col md:flex-row md:items-start gap-2 md:gap-4 text-center">
                     <label for="tel" class="md:w-40 pt-2 font-medium text-left md:text-center text-xl">電話番号</label>
                     <div class="flex-1">
-                        <input type="text" id="tel" name="tel" value="{{ old('tel', $user->tel ?? '') }}" required
+                        <input type="text" id="tel" name="tel" value="{{ old('tel', $user->tel ?? '') }}" 
                             class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2">
                         @error('tel')
                             <div class="text-red-500 text-sm mt-1 text-left">{{ $message }}</div>
@@ -123,10 +123,10 @@
                 <div class="flex flex-col md:flex-row md:items-start gap-2 md:gap-4 text-center">
                     <label for="email" class="md:w-40 pt-2 font-medium text-left md:text-center text-xl">メールアドレス</label>
                     <div class="flex-1">
-                        <input type="email" id="email" name="email" value="{{ old('email', $user->email ?? '') }}" required
+                        <input type="email" id="email" name="email" value="{{ old('email', $user->email ?? '') }}" 
                             class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2">
                         @error('email')
-                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                            <div class="text-red-500 text-sm mt-1 text-left">{{ $message }}</div>
                         @enderror
                     </div>
                 </div>

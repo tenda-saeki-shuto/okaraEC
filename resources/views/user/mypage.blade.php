@@ -45,7 +45,7 @@
             <div class="flex justify-end mt-10">
                 <button onclick="location.href='{{route(name: 'userinfo.edit')}}'" type="submit"
                         class="bg-white text-yellow-700 border-2 border-yellow-700 rounded-lg py-3 px-8 font-bold hover:bg-yellow-700 hover:text-white transition">
-                    ユーザー情報変更
+                    登録情報変更
                 </button>
             </div>
         </div>
