@@ -69,7 +69,7 @@
             <button onclick="location.href='{{route(name: 'orders')}}'">
                 <div class="flex flex-col items-center w-36 text-center cursor-pointer hover:-translate-y-1 hover:shadow-lg transition">
                     <img src="{{ asset('img/history.png') }}" alt="購入履歴" class="w-24 h-24 object-contain" />
-                    <p class="mt-2 text-lg text-black">購入履歴</p>
+                    <p class="mt-2 text-lg text-black">注文履歴</p>
                 </div>
             </button>
         </div>
