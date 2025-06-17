@@ -117,7 +117,7 @@ class ItemController extends Controller
 
     public function store(Request $request)
     {
-        
+
         // 商品データ
         // table: Items
         $itemData = $request->validate([
@@ -178,10 +178,11 @@ class ItemController extends Controller
         // サブ画像
         if ($request->hasFile('sub_imgs')) {
             foreach ($request->file('sub_imgs') as $subImgFile) {
-                $path = $subImgFile->store('items', 'public');
+                $path = $subImgFile;
+                $image = $path->storeAs('items', $path->getClientOriginalName(), 'public');
                 ItemPicture::create([
                     'item_id' => $item->id,
-                    'img' => $path,
+                    'img' => $image,
                 ]);
             }
         }
@@ -284,23 +285,18 @@ class ItemController extends Controller
         }
 
         // サブ画像
-        $subImgs = $request->validate([
-            'sub_imgs.*' => 'nullable|max:300',
-        ]);
-        $form_sub_img = array_filter($subImgs['sub_imgs'] ?? []);
-        if (!empty($form_sub_img)) {
+        if ($request->hasFile('sub_imgs')) {
             $sub_img_ids = $item->itemPictures()->pluck('id')->toArray();
-            foreach ($subImgs['sub_imgs'] as $img) {
-                if (!is_null($img)) {
-                    ItemPicture::create([
-                        'item_id' => $item->id,
-                        'img' => $img,
-                    ]);
-                }
+            foreach ($request->file('sub_imgs') as $subImgFile) {
+                $path = $subImgFile;
+                $image = $path->storeAs('items', $path->getClientOriginalName(), 'public');
+                ItemPicture::create([
+                    'item_id' => $item->id,
+                    'img' => $image,
+                ]);
             }
             $item->itemPictures()->whereIn('id', $sub_img_ids)->delete();
         }
-
 
         $request->session()->flash('message', '更新しました');
         return redirect()->route('item.index');
