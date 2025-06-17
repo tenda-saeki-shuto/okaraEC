@@ -98,11 +98,6 @@ class RecipeController extends Controller
     public function store(Request $request)
     {
         // フォームの値をバリデーション
-        // 画像のバリデーション
-        $request->validate([
-            'img' => 'required|image|mimes:jpeg,png,jpg,gif',
-            'sub_img.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // サブ画像のバリデーションを追加
-        ]);
         // レシピのメイン部分
         $recipe_main = $request->validate([
             'title' => 'required|max:30',
@@ -110,6 +105,11 @@ class RecipeController extends Controller
             'time' => 'required|max:20',
             'amount' => 'required|max:20',
             'category_id' => 'required|integer|exists:categories,id',
+        ]);
+        // 画像のバリデーション
+        $request->validate([
+            'img' => 'required|image|mimes:jpeg,png,jpg,gif',
+            'sub_img.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // サブ画像のバリデーションを追加
         ]);
 
         // レシピの栄養部分
@@ -213,10 +213,14 @@ class RecipeController extends Controller
         $recipe_main = $request->validate([
             'title' => 'required|max:30',
             'content' => 'required|max:300',
-            // 'img' => 'nullable|max:300',
             'time' => 'required|max:20',
             'amount' => 'required|max:20',
             'category_id' => 'required|integer|min:1',
+        ]);
+        // 画像のバリデーション
+        $request->validate([
+            'img' => 'required|image|mimes:jpeg,png,jpg,gif',
+            'sub_img.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // サブ画像のバリデーションを追加
         ]);
 
         //レシピの栄養部分
@@ -241,13 +245,15 @@ class RecipeController extends Controller
             'sub_img.*' => 'nullable|max:300',
         ]);
 
-        //レシピのメイン部分を登録
-        if (isset($request->img)) {
-            // dd($request->img);
-            $filename=$request->img->getClientOriginalName();
-            $recipe_main['img'] = $filename;
-            $request->file('img')->storeAs('public/img', $filename);
+        // 画像の登録（メイン画像）
+        $mainImagePath = null;
+        if ($request->hasFile('img')) {
+            $path = $request->file('img');
+            $mainImagePath = $path->storeAs('recipes', $path->getClientOriginalName(), 'public');
         }
+
+        // レシピのメイン部分を登録
+        $recipe_main['img'] = $mainImagePath;
         $recipe->update($recipe_main);
         //レシピの栄養を登録
         $recipe->recipeNutritionFacts()->update([
