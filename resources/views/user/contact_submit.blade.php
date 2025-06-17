@@ -11,11 +11,11 @@
         }
     </style>
 </head>
-<body class="bg-gray-50 font-sans">
+<body class="bg-white font-sans text-gray-800 m-0 p-0">
 
     @include("user.user_header")
 
-    <div class="max-w-5xl mx-auto mt-12 px-6">
+    <div class="max-w-5xl mx-auto mt-8 p-6">
     <h1 class="text-3xl font-semibold text-center border-b-4 border-yellow-700 pb-4 mb-10">
         送信完了
     </h1>
