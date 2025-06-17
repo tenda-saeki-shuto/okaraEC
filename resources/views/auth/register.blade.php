@@ -1,95 +1,131 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
-        @csrf
+<!doctype html>
+<html>
+<head>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+<body class="bg-white font-sans text-gray-800 m-0 p-0">
 
-        <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
-        </div><br>
+    <div class="max-w-xl mx-auto mt-20 p-6">
+        <h1 class="text-3xl font-semibold text-center border-b-4 border-yellow-700 pb-4 mb-10">
+            新規登録
+        </h1>
 
-        <!-- 郵便番号 -->
-        <div>
-            <x-input-label for="postal_code" :value="__('郵便番号')" />
-            <x-text-input id="postal_code" class="block mt-1 w-full" type="text" name="postal_code" :value="old('postal_code')" required autofocus autocomplete="postal_code" />
-            <x-input-error :messages="$errors->get('postal_code')" class="mt-2" />
-            <p>※ハイフンなしで入力してください</p>
-        </div>
+        <form method="POST" action="{{ route('register') }}"
+              class="bg-white border border-gray-200 shadow-md rounded-xl p-8">
+            @csrf
 
-        <br>
+            <!-- 名前 -->
+            <div class="mb-4">
+                <label for="name" class="block text-lg font-semibold text-gray-700 mb-2">氏名</label>
+                <input id="name" name="name" type="text" value="{{ old('name') }}" autofocus
+                    class="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-700">
+                @error('name')
+                    <!-- バリデーションエラー表示 -->
+                    <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                @enderror
+            </div>
 
-        <!-- 都道府県 -->
-        <div>
-       <x-input-label for="postal_code" :value="__('都道府県')" />
-        <select name="prefecture_id" id="prefecture_id" required>
-            <option value="">選択してください</option>
-            @foreach($prefecture as $pref)
-            <option value="{{ $pref->id }}"
-                {{ old('prefecture_id') == $pref->id ? 'selected' : '' }}>
-                {{ $pref->name }}
-            </option>
-            @endforeach
-        </select>
-        @error('prefecture_id')
-            <span class="text-red-600">{{ $message }}</span>
-        @enderror
-        </div><br>
+            <!-- 郵便番号 -->
+            <div class="mb-4">
+                <label for="postal_code" class="block text-lg font-semibold text-gray-700 mb-2">郵便番号</label>
+                <input id="postal_code" name="postal_code" type="text" value="{{ old('postal_code') }}" 
+                    class="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-700">
+                <p class="text-sm text-gray-500 mt-1">※ハイフンなしで入力してください</p>
+                @error('postal_code')
+                    <!-- バリデーションエラー表示 -->
+                    <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                @enderror
+            </div>
 
-        <!-- 住所 -->
-        <div>
-            <x-input-label for="address" :value="__('住所')" />
-            <x-text-input id="address" class="block mt-1 w-full" type="text" name="address" :value="old('address')" required autofocus autocomplete="address" />
-            <x-input-error :messages="$errors->get('address')" class="mt-2" />
-        </div><br>
+            <!-- 都道府県 -->
+            <div class="mb-4">
+                <label for="prefecture_id" class="block text-lg font-semibold text-gray-700 mb-2">都道府県</label>
+                <select name="prefecture_id" id="prefecture_id" 
+                    class="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-700">
+                    <option value="">選択してください</option>
+                    @foreach($prefecture as $pref)
+                        <option value="{{ $pref->id }}" {{ old('prefecture_id') == $pref->id ? 'selected' : '' }}>
+                            {{ $pref->name }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('prefecture_id')
+                    <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
+                @enderror
+            </div>
 
-        <!-- 電話番号 -->
-        <div>
-            <x-input-label for="tel" :value="__('電話番号')" />
-            <x-text-input id="tel" class="block mt-1 w-full" type="text" name="tel" :value="old('tel')" required autofocus autocomplete="tel" />
-            <x-input-error :messages="$errors->get('tel')" class="mt-2" />
-            <p>※ハイフンなしで入力してください</p>
-        </div>
+            <!-- 住所 -->
+            <div class="mb-4">
+                <label for="address" class="block text-lg font-semibold text-gray-700 mb-2">住所</label>
+                <input id="address" name="address" type="text" value="{{ old('address') }}" 
+                    class="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-700">
+                @error('address')
+                    <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
+                @enderror
+            </div>
 
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
+            <!-- 電話番号 -->
+            <div class="mb-4">
+                <label for="tel" class="block text-lg font-semibold text-gray-700 mb-2">電話番号</label>
+                <input id="tel" name="tel" type="text" value="{{ old('tel') }}" 
+                    class="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-700">
+                <p class="text-sm text-gray-500 mt-1">※ハイフンなしで入力してください</p>
+                @error('tel')
+                    <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
+                @enderror
+            </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+            <!-- Email -->
+            <div class="mb-4">
+                <label for="email" class="block text-lg font-semibold text-gray-700 mb-2">メールアドレス</label>
+                <input id="email" name="email" type="email" value="{{ old('email') }}" 
+                    class="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-700">
+                @error('email')
+                    <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
+                @enderror
+            </div>
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
+            <!-- パスワード -->
+            <div class="mb-4">
+                <label for="password" class="block text-lg font-semibold text-gray-700 mb-2">パスワード</label>
+                <input id="password" name="password" type="password" 
+                    class="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-700">
+                <p class="text-sm text-gray-500 mt-1">※7文字〜20文字で入力してください</p>
+                @error('password')
+                    <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
+                @enderror
+            </div>
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-            <p>※パスワードは7文字から20文字で入力してください
-        </div>
+            <!-- パスワード確認 -->
+            <div class="mb-6">
+                <label for="password_confirmation" class="block text-lg font-semibold text-gray-700 mb-2">パスワード確認</label>
+                <input id="password_confirmation" name="password_confirmation" type="password" 
+                    class="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-700">
+                @error('password_confirmation')
+                    <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
+                @enderror
+            </div>
 
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+            <!-- ボタンエリア -->
+            <div class="flex flex-col sm:flex-row sm:justify-between items-center gap-4 mt-6">
+                <!-- 戻るボタン（トップ） -->
+                <a href="{{ route('top') }}"
+                class="flex-1 bg-gray-100 text-gray-700 border border-gray-400 py-3 rounded-lg font-bold hover:bg-gray-200 transition text-center block">
+                    戻る
+                </a>
 
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
+                <a href="{{ route('login') }}"
+                class="bg-white text-yellow-700 border-2 border-yellow-700 rounded-lg py-3 px-8 font-bold hover:bg-yellow-700 hover:text-white transition text-center block">
+                    ログイン
+                </a>
 
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a>
-
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+                <!-- 登録ボタン -->
+                <button type="submit"
+                    class="w-full sm:w-1/3 bg-yellow-700 text-white py-3 rounded-lg font-bold hover:bg-yellow-800 transition">
+                    登録
+                </button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
