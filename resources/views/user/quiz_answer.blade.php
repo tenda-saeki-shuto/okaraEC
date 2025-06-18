@@ -19,7 +19,7 @@
     @if($is_answer === 1 && Auth::check())
         <div class="bg-yellow-300 text-center text-xl font-bold py-4">クーポンゲット！！</div>
         <div class="bg-green-200 p-4 rounded-lg shadow-md text-center max-w-md mx-auto">
-            <img src="{{$coupon->img}}" alt="クーポン画像" class="mx-auto mb-4 w-32 h-32 object-contain">
+            {{-- <img src="{{$coupon->img}}" alt="クーポン画像" class="mx-auto mb-4 w-32 h-32 object-contain"> --}}
             <h2 class="text-xl font-bold">{{$coupon->name}}を獲得</h2>
             <p class="mt-2">{{$coupon->content}}</p>
         </div>
