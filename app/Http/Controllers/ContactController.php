@@ -11,22 +11,17 @@ class ContactController extends Controller
     {
         return view('user.contact_input');
     }
+
     public function confirm(Request $request)
     {
-        $contactData = $request->validate([
-        'name' => 'required',
-        'email' => 'required|email',
-        'tel' => 'required|digits_between:10,11',
-        'inquiry' => 'required|max:200',      
-    ], [
-        'name.required' => '※名前は必須です。',
-        'email.required' => '※メールアドレスを入力してください。',
-        'email.email' => '※有効なメールアドレス形式で入力してください。',
-        'tel.required' => '※電話番号を入力してください。',
-        'tel.digits_between' => '※電話番号は10～11桁で入力してください。',
-        'inquiry.required' => '※お問い合わせ内容は必須です。',
-        'inquiry.max' => '※お問い合わせ内容は200文字以内で入力してください',
-    ]);
+        $request->validate([
+            'name' => ['required'],
+            'email' => ['required', 'email'],
+            'tel' => ['required', 'digits_between:10,11'],
+            'inquiry' => ['required', 'max:200'],
+        ]);
+
+        $contactData = $request->only(['name', 'email', 'tel', 'inquiry']);
 
         return view('user.contact_confirm', compact('contactData'));
     }
