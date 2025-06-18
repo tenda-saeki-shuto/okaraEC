@@ -6,18 +6,18 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <title>決済情報確認</title>
+    <title>注文情報確認</title>
 </head>
 <body class="bg-white font-sans text-gray-800 m-0 p-0">
     <!-- ヘッダー入れる -->
     @include('user.user_header')
     
     <div class="max-w-5xl mx-auto mt-8 p-6"> 
-        <h1 class="text-3xl font-semibold text-center border-b-4 border-yellow-700 pb-4 mb-10">決済確認</h1>
+        <h1 class="text-3xl font-semibold text-center border-b-4 border-yellow-700 pb-4 mb-10">注文確認</h1>
         <p class="text-lg mb-5">以下の内容で注文します（まだ注文は確定していません）</p>
         
         <div class="w-full bg-white p-6 sm:p-8 rounded-xl shadow-lg space-y-8">
-            <h2 class="text-xl sm:text-2xl font-bold text-gray-700 border-b-2 border-yellow-700 pb-2 mb-4">注文確認</h2>
+            <h2 class="text-xl sm:text-2xl font-bold text-gray-700 border-b-2 border-yellow-700 pb-2 mb-4">注文商品</h2>
             <div class="max-w-4xl mx-auto overflow-hidden mt-8 rounded-xl shadow border border-gray-200 bg-white"> 
                 <table class="w-full text-left table-auto border-collapse font-bold"> 
                     <thead>
@@ -82,8 +82,8 @@
             </div>
             
             <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0 mt-6">
-                <a href="{{ route('revise_insert_payment') }}" class="w-auto p-3 bg-white text-yellow-700 border-2 border-yellow-700 rounded-lg py-3 px-8 font-bold hover:bg-yellow-700 hover:text-white transition text-xl text-center">戻る</a>
-                <a href="{{ route('show_orders') }}" class="w-auto p-3 bg-white text-yellow-700 border-2 border-yellow-700 rounded-lg py-3 px-8 font-bold hover:bg-yellow-700 hover:text-white transition text-xl text-center">確定</a>
+                <a href="{{ route('revise_insert_payment') }}" class="bg-white text-yellow-700 border-2 border-yellow-700 rounded-lg py-3 px-8 font-bold hover:bg-yellow-700 hover:text-white transition">戻る</a>
+                <a href="{{ route('show_orders') }}" class="bg-white text-yellow-700 border-2 border-yellow-700 rounded-lg py-3 px-8 font-bold hover:bg-yellow-700 hover:text-white transition">確定</a>
             </div>
         </div>
     </div>

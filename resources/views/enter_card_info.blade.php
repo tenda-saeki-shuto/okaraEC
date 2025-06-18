@@ -64,8 +64,8 @@
                     </div>
                 <!-- 「完了ボタン」「戻るボタン」 -->
                 <div class="flex flex-col text-center space-y-2 justify-around w-[80%] mx-auto sm:flex-row sm:space-y-0">
-                    <a href="{{ route('revise_insert_payment') }}" class="bg-yellow-700 text-white rounded-lg py-3 px-8 font-bold hover:bg-yellow-800 transition inline-block">戻る</a>
-                    <button type="submit" class="bg-yellow-700 text-white rounded-lg py-3 px-8 font-bold hover:bg-yellow-800 transition inline-block">完了</button>
+                    <a href="{{ route('revise_insert_payment') }}" class="bg-white text-yellow-700 border-2 border-yellow-700 rounded-lg py-3 px-8 font-bold hover:bg-yellow-700 hover:text-white transition">戻る</a>
+                    <button type="submit" class="bg-white text-yellow-700 border-2 border-yellow-700 rounded-lg py-3 px-8 font-bold hover:bg-yellow-700 hover:text-white transition">完了</button>
                 </div>
             </form>
         </div>

@@ -57,7 +57,7 @@
                         <tfoot class="text-gray-800 text-lg font-semibold bg-orange-50 border-t-2 border-gray-200">
                             <tr>
                                 <th colspan="3" class="px-6 py-4 text-right rounded-bl-xl border-r border-gray-200">合計金額（税込）</th>
-                                <td class="px-6 py-4 text-center text-lg rounded-br-xl">{{ $total }}円</td>
+                                <td id="total_amount" class="px-6 py-4 text-center text-lg rounded-br-xl">{{ $total }}円</td>
                             </tr>
                         </tfoot>
                     </table>
