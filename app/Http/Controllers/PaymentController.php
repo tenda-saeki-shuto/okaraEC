@@ -14,6 +14,7 @@ use App\Models\CreditCard;
 use App\Models\Coupon;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 
 class PaymentController extends Controller
@@ -44,11 +45,14 @@ class PaymentController extends Controller
         // クレジットカード情報を取得
         $card_info = CreditCard::where('user_id',$user_id)->first();
         if(isset($card_info->card_number)){
-            $card_num = $card_info->card_number;
-            // カードの下４桁を取得
-            $shown_num = substr($card_num, 12, 5);
+            $card_number = $card_info->card_number;
+            // 表示する下４桁を取得
+            $shown_num = substr($card_number, -4);
+            $masked = str_repeat('*', strlen($card_number) - 4) . $shown_num;
+            // 4桁ごとにスペースを挿入
+            $formatted = trim(chunk_split($masked, 4, ' '));
         }else{
-            $shown_num = null;
+            $formatted = null;
         }
 
         // カートに入っている商品の合計額を取得
@@ -64,7 +68,10 @@ class PaymentController extends Controller
 
         // ユーザーが保有しているクーポンを取得(user_couponsテーブル)
         $coupons = UserCoupon::with(['coupons:id,name,content,discount,img'])->where('user_id',$user_id)->where('valid_at', '>', $today)->get();
-        return view('payment_info', compact('prefectures', 'shown_num', 'coupons', 'total'));
+        
+        session(['can_confirm_order' => true]);
+
+        return view('payment_info', compact('prefectures', 'formatted', 'coupons', 'total'));
     }
 
     // カード情報入力画面で「完了」が押された際の処理
@@ -82,24 +89,31 @@ class PaymentController extends Controller
         // credit_cardsテーブルの書き換え
         // バリデーションを行う
         $validated_data = $request->validate([
-            'card_number' => ['required', 'regex:/^[0-9]+$/', 'digits_between:13,19'],
-            'month' => ['required', 'regex:/^[0-9]+$/', 'integer', 'between:1,12'],
+            'card_number' => ['required', 'regex:/^[0-9]+$/', 'digits_between:14,16'],
+            'month' => ['required', 'regex:/^[0-9]+$/', 'between:1,12'],
             'year' => ['required', 'regex:/^[0-9]+$/', 'integer', 'min:0', 'max:99'],
             'cvc' => ['required', 'regex:/^[0-9]+$/', 'digits_between:3,4']
         ]);
 
         // 有効期限のチェック
-        $month = $request->input('month');
-        $year = $request->input('year');
-        // yearの形4桁に変換
+        $month = (int)$validated_data['month'];
+        $year = (int)$validated_data['year'];
+
+        if (!checkdate($month, 1, $year)) {
+            return back()->withErrors(['month' => '月の値が不正です。'])->withInput();
+        }
+
+        // 年が2桁の場合、2000年台に変換
         if ($year < 100) {
             $year += 2000;
         }
+
+        // Carbonを使って有効期限の月の最終日を取得
         $expiration = \Carbon\Carbon::createFromDate($year, $month, 1)->endOfMonth();
         $now = now();
 
+        // 有効期限が現在時刻よりも前の場合、エラーとする
         if ($expiration->lt($now)) {
-            // 有効期限が切れている場合
             return back()->withErrors(['month' => 'クレジットカードの有効期限が切れています。'])->withInput();
         }else{
             // 有効期限が切れていない場合
@@ -125,8 +139,11 @@ class PaymentController extends Controller
             }
             
             // 表示する下４桁を取得
-            $shown_num = substr($card_number, 12, 5);
-            return view('payment_info', compact('prefectures', 'coupons', 'shown_num', 'total'));
+            $shown_num = substr($card_number, -4);
+            $masked = str_repeat('*', strlen($card_number) - 4) . $shown_num;
+            // 4桁ごとにスペースを挿入
+            $formatted = trim(chunk_split($masked, 4, ' '));
+            return view('payment_info', compact('prefectures', 'coupons', 'formatted', 'total'));
         }
     }
     
@@ -149,9 +166,12 @@ class PaymentController extends Controller
 
         // クレジットカード情報を取得
         $card_info = CreditCard::where('user_id',$user_id)->first();
-        $card_num = $card_info->card_number;
-        // カードの下４桁を取得
-        $shown_num = substr($card_num, 12, 5);
+        $card_number = $card_info->card_number;
+        // 表示する下４桁を取得
+        $shown_num = substr($card_number, -4);
+        $masked = str_repeat('*', strlen($card_number) - 4) . $shown_num;
+        // 4桁ごとにスペースを挿入
+        $formatted = trim(chunk_split($masked, 4, ' '));
 
         // 決済情報入力画面で選択されたクーポンの情報を取得し、セッションに保存
         $coupon_id = $request->coupon;
@@ -162,8 +182,8 @@ class PaymentController extends Controller
         $postal_code = $request->postal_code;
         $prefecture = $request->prefecture;
         $address = $request->address;
-
-        return view('payment_confirm', compact('carts', 'shown_num', 'coupon', 'postal_code', 'prefecture', 'address'));
+        session(['can_confirm_order' => true]);
+        return view('payment_confirm', compact('carts', 'formatted', 'coupon', 'postal_code', 'prefecture', 'address'));
     }
 
     // 決済確認画面で「戻る」ボタンが押された際に決済情報入力画面にクーポンと住所の情報を送る処理
@@ -173,11 +193,14 @@ class PaymentController extends Controller
         // クレジットカード情報を取得
         $card_info = CreditCard::where('user_id',$user_id)->first();
         if(isset($card_info->card_number)){
-            $card_num = $card_info->card_number;
-            // カードの下４桁を取得
-            $shown_num = substr($card_num, 12, 5);
+            $card_number = $card_info->card_number;
+            // 表示する下４桁を取得
+            $shown_num = substr($card_number, -4);
+            $masked = str_repeat('*', strlen($card_number) - 4) . $shown_num;
+            // 4桁ごとにスペースを挿入
+            $formatted = trim(chunk_split($masked, 4, ' '));
         }else{
-            $shown_num = null;
+            $formatted = null;
         }
 
         // 合計金額
@@ -194,12 +217,17 @@ class PaymentController extends Controller
 
         // ユーザーが保有しているクーポンを取得(user_couponsテーブル)
         $coupons = UserCoupon::with(['coupons:id,name,content,discount,img'])->where('user_id',$user_id)->where('valid_at', '>', $today)->get();
-        return view('payment_info', compact('prefectures', 'coupons', 'shown_num', 'total'));
+        return view('payment_info', compact('prefectures', 'coupons', 'formatted', 'total'));
     }
 
 
     // 決済情報確認画面で確定が押された際のDB処理(ordersテーブルにレコードを追加)
     public function showOrders(){
+
+        if (!session()->pull('can_confirm_order')) {
+            return redirect()->route('top')->with('message', '無効な遷移です。');
+        }
+
         // ログインしているユーザーのIDを取得
         $user_id = Auth::id();
 
@@ -212,10 +240,15 @@ class PaymentController extends Controller
         // ユーザー情報
         $user = User::where('id', $user_id)->first();
 
+        // 注文番号の生成（ユニークでランダム）
+        do {
+            $code = str_pad(mt_rand(0, 99999999), 8, '0', STR_PAD_LEFT);
+        } while (Order::where('order_code', $code)->exists());
+
         // ordersテーブルの更新
         $order = new Order();
         $order->user_id = $user_id;
-        $order->order_code = 12345678;
+        $order->order_code = $code;
         $order->dateTime = Carbon::now();
         $order->status = 1;
         $order->is_regular = 0;
@@ -263,8 +296,15 @@ class PaymentController extends Controller
         // 使用済みクーポンをテーブルから消す
         UserCoupon::where('user_id', $user_id)->where('coupon_id', $coupon_id)->delete();
 
+        session()->forget('can_confirm_order');
 
-        return view('payment_complete', compact('order_code', 'order_details', 'coupon_info'));
+        // 注文完了画面へのリダイレクト
+        return redirect()->route('payment_complete')->with([
+            'order_code' => $order_code,
+            'order_details' => $order_details,
+            'coupon_info' => $coupon_info
+        ]);
+        // return view('payment_complete', compact('order_code', 'order_details', 'coupon_info'));
     }
 
 
@@ -302,5 +342,19 @@ class PaymentController extends Controller
 
         // トップ画面にリダイレクトする
         return redirect()->route('top');
+    }
+
+    public function paymentComplete()
+    {
+        $order_code = session('order_code');
+        $order_details = session('order_details');
+        $coupon_info = session('coupon_info');
+
+        if (!$order_code) {
+            // セッションが空ならリダイレクト（リロード防止）
+            return redirect()->route('top')->with('message', '既に注文処理は完了しています。');
+        }
+
+        return view('payment_complete', compact('order_code', 'order_details', 'coupon_info'));
     }
 }

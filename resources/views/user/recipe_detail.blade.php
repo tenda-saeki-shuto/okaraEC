@@ -40,7 +40,7 @@
                 <!-- レシピ名 -->
                 <p class="text-2xl font-bold mb-2 text-left w-full">{{ $recipe->title }}</p>
                 <!-- 商品画像 -->
-                <img src="{{ asset('images/sample.jpg') }}" alt="商品画像" class="w-full h-64 object-cover rounded-lg">
+                <img src="{{ asset('/storage/'.$recipe->img) }}" alt="商品画像" class="w-full h-64 object-cover rounded-lg">
             </div>
 
 

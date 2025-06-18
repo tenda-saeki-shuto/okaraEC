@@ -6,19 +6,19 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <title>決済情報入力</title>
+    <title>注文情報入力</title>
 </head>
 <body class="bg-white font-sans text-gray-800 m-0 p-0">
     <!-- ヘッダー入れる -->
     @include('user.user_header')
     
     <div class="max-w-5xl mx-auto mt-8 p-6 h-200">    
-        <h1 class="text-3xl font-semibold text-center border-b-4 border-yellow-700 pb-4 mb-10">決済情報入力</h1>
+        <h1 class="text-3xl font-semibold text-center border-b-4 border-yellow-700 pb-4 mb-10">注文情報入力</h1>
 
-        <div class="w-full bg-white p-6 sm:p-8 rounded-xl shadow-lg space-y-8">
+        <div class="w-full bg-white p-6 sm:p-8 rounded-xl shadow-lg">
             <!-- お届け先情報 -->
             <!-- <div class="w-[60%] items-start flex flex-col"> -->
-                <div id="showing" class="space-y-4">
+                <div id="showing" class="space-y-4 mb-5">
                     <h2 class="text-xl sm:text-2xl font-bold text-gray-700 border-b-2 border-yellow-700 pb-2 mb-4">お届け先</h2>
                     <div>
                         <label class="block text-gray-700 text-lg font-semibold mb-1">郵便番号</label>
@@ -38,7 +38,7 @@
                 
                 <!-- お届け先変更ボタンが押されたら表示するフォーム -->
                 <!-- お届け先 -->
-                <div id="hidden_contents" class="hidden space-y-4">
+                <div id="hidden_contents" class="hidden space-y-4 mb-5">
                     <h2 class="text-xl sm:text-2xl font-bold text-gray-700 border-b-2 border-yellow-700 pb-2 mb-4">お届け先</h2>
                     <div>
                         <label for="postal_code" class="block text-gray-700 text-lg font-semibold mb-1">郵便番号</label>
@@ -75,11 +75,11 @@
                 
                 
                 <!-- 支払情報 -->
-                <div class="space-y-4">
+                <div class="space-y-4 mb-5">
                     <h2 class="text-xl sm:text-2xl font-bold text-gray-700 border-b-2 border-yellow-700 pb-2 mb-4">支払情報</h2>
                     <p class="block text-gray-900 text-lg font-semibold mb-1">クレジットカード</p>
-                    @if(isset($shown_num))
-                    <p class="text-lg text-gray-900">カード情報末尾 **** **** **** {{ $shown_num }}</p>
+                    @if(isset($formatted))
+                    <p class="text-lg text-gray-900">カード情報末尾 {{ $formatted }}</p>
                     <a href="{{ route('enter_card_info') }}" class="bg-white text-yellow-700 border-2 border-yellow-700 rounded-lg py-3 px-8 font-bold hover:bg-yellow-700 hover:text-white transition inline-block">カード情報変更</a>
                     @else
                     <p class="mb-2 mt-2 text-gray-900 text-lg">クレジットカードが登録されていません。</p>
@@ -96,13 +96,13 @@
                         @if(count($coupons) > 0 && $total >= 2000)
                         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                             @foreach($coupons as $coupon)
-                            <div class="border-2 border-solid mb-5 p-3 border-stone-950 inline-block w-80 flex items-center">
+                            <div class="border-2 border-solid rounded-md mb-5 p-3 border-gray-600 inline-block w-70 flex items-center ">
                                 @if($coupon->coupon_id == session('coupon_id'))
                                     <input type="radio" class="coupon" name="coupon" value="{{ $coupon->coupon_id }}" id="{{ $coupon->coupon_id }}" class="align-middle" checked>
                                 @else
                                     <input type="radio" class="coupon" name="coupon" value="{{ $coupon->coupon_id }}" id="{{ $coupon->coupon_id }}" class="align-middle">    
                                 @endif
-                                <label for="{{ $coupon->coupon_id }}" class="text-lg ml-1">{{ $coupon->coupons->name }}</label>
+                                <label for="{{ $coupon->coupon_id }}" class="text-lg ml-2">{{ $coupon->coupons->name }}</label>
                             </div>
                             @endforeach
                         </div>
@@ -111,16 +111,16 @@
                             <p class="text-lg text-gray-900">使用できるクーポンがありません。</p>
                         @endif
                         <div class="pt-8 flex items-center w-full space-x-8">
-                            <div class="">
-                                @if(isset($shown_num))
+                            <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0 mt-6">
+                                <a href="{{ route('cart') }}" class="bg-white text-yellow-700 border-2 border-yellow-700 py-3 px-8 rounded-lg px-8 font-bold hover:bg-yellow-700 hover:text-white transition inline-block">カートへ戻る</a>
+                                @if(isset($formatted))
                                 <button type="submit" class="bg-white text-yellow-700 border-2 border-yellow-700 py-3 px-8 rounded-lg px-8 font-bold hover:bg-yellow-700 hover:text-white transition inline-block">確認</button>
                                 @else
                                 <button type="button" id="submit_btn" class="bg-white text-yellow-700 border-2 border-yellow-700 py-3 px-8 rounded-lg px-8 font-bold hover:bg-yellow-700 hover:text-white transition inline-block">確認</button>
                             </div>
-                            <a href="{{ route('cart') }}" class="bg-white text-yellow-700 border-2 border-yellow-700 py-3 px-8 rounded-lg px-8 font-bold hover:bg-yellow-700 hover:text-white transition inline-block">カートへ戻る</a>
                         </div>
-                            <p id="submit_error" class="text-red-500 text-sm mt-2 block"></p>
-                            @endif
+                        <p id="submit_error" class="text-red-500 text-sm mt-2 block"></p>
+                        @endif
                     </form>
                 </div>
             <!-- </div> -->

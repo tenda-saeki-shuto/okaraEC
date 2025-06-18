@@ -66,6 +66,7 @@ class CartController extends Controller
         $cart = Cart::where('user_id', $user_id)->where('item_id', $id)->first();
         $cart->count = $request->count;
         $cart->save();
+        session()->flash('cart_success', 'カートの数量を更新しました');
         return redirect()->route('item_detail', ['id'=>$id]);
     }
 

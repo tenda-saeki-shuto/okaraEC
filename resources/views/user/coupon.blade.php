@@ -17,7 +17,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 @foreach ($user_coupons as $user_coupon)
                     <div class="bg-white rounded-lg shadow-md p-4 text-center">
-                        <img src="{{ asset('img/' . $user_coupon->coupons->img) }}" alt="クーポン画像" class="w-full h-auto rounded-md mb-2">
+                        {{-- <img src="{{ asset('img/' . $user_coupon->coupons->img) }}" alt="クーポン画像" class="w-full h-auto rounded-md mb-2"> --}}
                         <div class="text-lg font-semibold text-gray-800">{{ $user_coupon->coupons->name }}</div>
                         <div class="text-sm text-gray-600 mt-1">{{ $user_coupon->coupons->content }}</div>
                         <div class="text-xs text-gray-500 mt-2">
