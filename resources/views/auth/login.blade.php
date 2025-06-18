@@ -25,19 +25,18 @@
             <!-- Email -->
             <div class="mb-6">
                 <label for="email" class="block text-lg font-semibold text-gray-700 mb-2">メールアドレス</label>
-                <input id="email" name="email" type="email"  autofocus
+                <input id="email" name="email" type="email" autofocus
                        class="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-700"
                        value="{{ old('email') }}">
                 @error('email')
                     <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
                 @enderror
-                
             </div>
 
             <!-- Password -->
             <div class="mb-6">
                 <label for="password" class="block text-lg font-semibold text-gray-700 mb-2">パスワード</label>
-                <input id="password" name="password" type="password" 
+                <input id="password" name="password" type="password"
                        class="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-700">
                 @error('password')
                     <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
@@ -53,27 +52,18 @@
                 </label>
             </div>
 
-            <!-- 戻る・新規登録・ログインボタン 横並び -->
+            <!-- 戻る・新規登録・ログインボタン -->
             <div class="flex gap-4 mt-6">
-                <!-- 戻る -->
                 <a href="{{ route('top') }}"
-                class="flex-1 bg-gray-100 text-gray-700 border border-gray-400 py-3 rounded-lg font-bold hover:bg-gray-200 transition text-center block">
+                   class="flex-1 bg-gray-100 text-gray-700 border border-gray-400 py-3 rounded-lg font-bold hover:bg-gray-200 transition text-center block">
                     戻る
                 </a>
 
-                <!-- 新規登録 -->
-                <a href="{{ route('register') }}"
-                    class="flex-1 bg-white text-green-700 border-2 border-green-700 py-3 rounded-lg font-bold hover:bg-green-700 hover:text-white transition text-center">
-                    新規登録
-                </a>
-
-                <!-- ログイン -->
                 <button type="submit"
-                    class="flex-1 bg-yellow-700 text-white py-3 rounded-lg font-bold hover:bg-yellow-800 transition">
+                        class="flex-1 bg-yellow-700 text-white py-3 rounded-lg font-bold hover:bg-yellow-800 transition">
                     ログイン
                 </button>
             </div>
-
 
             <!-- パスワード再発行リンク -->
             <div class="mt-6 text-center">
@@ -84,6 +74,15 @@
                 @endif
             </div>
         </form>
+
+        <!-- ★ 新規登録完全リンク -->
+        <div class="mt-6 text-center">
+            <a href="{{ route('register') }}" class="text-lg text-green-700 font-semibold underline">
+                新規登録はこちら
+            </a>
+        </div>
+
+
     </div>
 </body>
 </html>
