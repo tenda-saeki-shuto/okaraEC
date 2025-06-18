@@ -78,7 +78,7 @@
             <div class="space-y-4">
                 <h2 class="text-xl sm:text-2xl font-bold text-gray-700 border-b-2 border-yellow-700 pb-2 mb-4">支払い情報</h2>
                 <p class="block text-gray-900 text-lg font-semibold mb-1">クレジットカード</p>
-                <p class="text-lg text-gray-900">カード情報末尾 **** **** **** {{ $shown_num }}</p>
+                <p class="text-lg text-gray-900">カード情報末尾 {{ $formatted }}</p>
             </div>
             
             <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0 mt-6">
