@@ -108,15 +108,10 @@
 
             <!-- ボタンエリア -->
             <div class="flex flex-col sm:flex-row sm:justify-between items-center gap-4 mt-6">
-                <!-- 戻るボタン（トップ） -->
+                <!-- 戻るボタン -->
                 <a href="{{ route('top') }}"
-                class="flex-1 bg-gray-100 text-gray-700 border border-gray-400 py-3 rounded-lg font-bold hover:bg-gray-200 transition text-center block">
+                    class="w-full sm:w-1/3 bg-gray-100 text-gray-700 border border-gray-400 py-3 rounded-lg font-bold hover:bg-gray-200 transition text-center block">
                     戻る
-                </a>
-
-                <a href="{{ route('login') }}"
-                class="bg-white text-yellow-700 border-2 border-yellow-700 rounded-lg py-3 px-8 font-bold hover:bg-yellow-700 hover:text-white transition text-center block">
-                    ログイン
                 </a>
 
                 <!-- 登録ボタン -->
@@ -126,6 +121,14 @@
                 </button>
             </div>
         </form>
+
+        <div class="mt-6 text-center">
+            <a href="{{ route('login') }}" class="text-lg text-yellow-700 font-semibold underline">
+                ログインはこちら
+            </a>
+        </div>
+
+        </div>
     </div>
 </body>
 </html>
