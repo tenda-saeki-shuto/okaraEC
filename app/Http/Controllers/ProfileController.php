@@ -26,29 +26,18 @@ class ProfileController extends Controller
     public function update(Request $request)
     {
         // バリデーション
-        $rules = [
-            'name' => ['required', 'string'],
-            'email' => ['required', 'email', 'max:255'],
-            'tel' => ['required', 'regex:/^\d{11}$/'],
-            'postal_code' => ['required', 'string', 'max:7'],
-            'prefecture_id' => ['required', 'integer'],
-            'address' => ['required', 'string', 'max:255'],
-        ];
+        $request->validate([
+            'name' => ['required'],
+            'email' => ['required', 'email', 'unique:users,email'],
+            'password' => ['required', 'confirmed', 'min:7', 'max:20'],
+            'postal_code' => ['required', 'digits:7'], //郵便番号
+            'prefecture_id' => ['required', 'exists:prefectures,id'],  // 都道府県
+            'address' => ['required'], //住所
+            'tel' => ['required', 'regex:/^\d{10,11}$/']
+        ]);
 
-        $messages = [
-            'name.required' => '名前は必須です。',
-            'email.required' => 'メールアドレスは必須です。',
-            'email.email' => '有効なメールアドレスを入力してください。',
-            'tel.required' => '電話番号は必須です。',
-            'tel.regex' => '有効な桁数ではありません。',
-            'postal_code.required' => '郵便番号は必須です。',
-            'postal_code.max' =>'郵便番号は7文字以内で入力してください。',
-            'prefecture_id.required' => '都道府県を選択してください。',
-            'address.required' => '住所は必須です。',
-        ];
 
-        $validated = $request->validate($rules, $messages);
-
+        $validated = $request->validate($rules);
         // ユーザー情報の更新処理
         $user = $request->user(); // ログイン中のユーザーを取得
         $user->name = $validated['name'];

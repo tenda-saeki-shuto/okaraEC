@@ -40,7 +40,7 @@
                 <a href="{{ route('items') }}" class="border-b-4 border-transparent text-[#7c5b3e] hover:text-[#c98b50] hover:border-[#c96d50] transition-all duration-300 ease-in-out inline-block">商品一覧&nbsp;&nbsp;</a>
                 <a href="{{ route('recipes') }}" class="border-b-4 border-transparent text-[#7c5b3e] hover:text-[#c98b50] hover:border-[#c96d50] transition-all duration-300 ease-in-out inline-block">レシピ&nbsp;&nbsp;</a>
                 <a href="{{route('user.quiz')}}" class="border-b-4 border-transparent text-[#7c5b3e] hover:text-[#c98b50] hover:border-[#c96d50] transition-all duration-300 ease-in-out inline-block">クイズ&nbsp;&nbsp;</a>
-                <a href="{{ route('contact.form') }}" class="border-b-4 border-transparent text-[#7c5b3e] hover:text-[#c98b50] hover:border-[#c96d50] transition-all duration-300 ease-in-out inline-block">お問い合わせフォーム&nbsp&nbsp</a>
+                <a href="{{ route('contact.form') }}" class="border-b-4 border-transparent text-[#7c5b3e] hover:text-[#c98b50] hover:border-[#c96d50] transition-all duration-300 ease-in-out inline-block">お問い合わせ&nbsp&nbsp</a>
                 <a href="{{ route('view.mypage') }}" class="border-b-4 border-transparent text-[#7c5b3e] hover:text-[#c98b50] hover:border-[#c96d50] transition-all duration-300 ease-in-out inline-block">マイページ</a>
                 <a href="{{ route('cart') }}"><img src="{{ asset('img/cart.png') }}" alt="カート" class="w-10 h-10"></a>
                 <a href="{{ route('top') }}"><img src="{{ asset('img/home.png') }}" alt="ホーム" class="w-10 h-10"></a>
@@ -63,7 +63,7 @@
                         <a href="{{ route('items') }}" class="hover:text-[#c98b50] transition">商品一覧&nbsp;&nbsp;</a>
                         <a href="{{ route('recipes') }}" class="hover:text-[#c98b50] transition">レシピ&nbsp;&nbsp;</a>
                         <a href="{{route('user.quiz')}}" class="hover:text-[#c98b50] transition">クイズ&nbsp;&nbsp;</a>
-                        <a href="{{ route('contact.form') }}" class="hover:text-[#c98b50] transition">お問い合わせフォーム&nbsp&nbsp</a>
+                        <a href="{{ route('contact.form') }}" class="hover:text-[#c98b50] transition">お問い合わせ&nbsp&nbsp</a>
                         <a href="{{ route('view.mypage') }}" class="hover:text-[#c98b50] transition">マイページ</a>
                         <a href="{{ route('cart') }}" class="hover:text-[#c98b50] transition">カート</a>
                         <a href="{{ route('top') }}" class="hover:text-[#c98b50] transition">ホーム</a>

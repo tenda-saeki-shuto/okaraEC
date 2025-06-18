@@ -9,7 +9,7 @@
       <a class="mr-5 hover:text-gray-900" href="{{ route('recipe.index') }}">レシピ関連</a>
       <a class="mr-5 hover:text-gray-900" href="{{ route('quiz.index') }}">クイズ関連</a>
       <a class="mr-5 hover:text-gray-900" href="{{ route('user.index') }}">ユーザー関連</a>
-      <a class="mr-5 hover:text-gray-900" href="">注文関連</a>
+      <a class="mr-5 hover:text-gray-900" href="{{ route('inquiry') }}">お問合せ一覧</a>
       <form method="POST" action="{{ route('admin.login.destroy') }}">
           @method('DELETE')
           @csrf

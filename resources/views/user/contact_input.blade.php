@@ -24,7 +24,7 @@
 
             @if(session('success'))
                 <!-- 送信成功メッセージ表示 -->
-                <p class="text-green-600 text-center font-semibold mb-4">{{ session('success') }}</p>
+                <p class="text-green-600 text-center font-semibold mb-4 ">{{ session('success') }}</p>
             @endif
 
             <form action="{{ route('contact.confirm') }}" method="POST" class="space-y-6">
@@ -38,7 +38,7 @@
                             class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2">
                         @error('name')
                             <!-- バリデーションエラー表示 -->
-                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                            <div class="text-red-500 text-sm mt-1 text-left">{{ $message }}</div>
                         @enderror
                     </div>
                 </div>
@@ -51,7 +51,7 @@
                             class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2">
                         @error('email')
                             <!-- バリデーションエラー表示 -->
-                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                            <div class="text-red-500 text-sm mt-1 text-left">{{ $message }}</div>
                         @enderror
                     </div>
                 </div>
@@ -64,7 +64,7 @@
                             class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2">
                         @error('tel')
                             <!-- バリデーションエラー表示 -->
-                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                            <div class="text-red-500 text-sm mt-1 text-left">{{ $message }}</div>
                         @enderror
                     </div>
                 </div>
@@ -77,7 +77,7 @@
                             class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2">{{ request('inquiry', old('inquiry')) }}</textarea>
                         @error('inquiry')
                             <!-- バリデーションエラー表示 -->
-                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                            <div class="text-red-500 text-sm mt-1 text-left">{{ $message }}</div>
                         @enderror
                     </div>
                 </div>
