@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <meta charset="UTF-8">
     <title>お問い合わせ確認</title>
     <style>
@@ -64,6 +65,7 @@
 </head>
 
 <body>
+    {{ view('admin.admin_header') }}
     <h1>お問い合わせ内容確認</h1>
 
     <div class="inquiry-box">
