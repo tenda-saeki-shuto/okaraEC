@@ -83,14 +83,14 @@ class PaymentController extends Controller
         // バリデーションを行う
         $validated_data = $request->validate([
             'card_number' => ['required', 'regex:/^[0-9]+$/', 'digits_between:13,19'],
-            'month' => ['required', 'regex:/^[0-9]+$/', 'integer', 'between:1,12'],
+            'month' => ['required', 'regex:/^[0-9]+$/', 'between:1,12'],
             'year' => ['required', 'regex:/^[0-9]+$/', 'integer', 'min:0', 'max:99'],
             'cvc' => ['required', 'regex:/^[0-9]+$/', 'digits_between:3,4']
         ]);
 
         // 有効期限のチェック
-        $month = $request->input('month');
-        $year = $request->input('year');
+        $month = (int)$request->input('month');
+        $year = (int)$request->input('year');
         // yearの形4桁に変換
         if ($year < 100) {
             $year += 2000;
