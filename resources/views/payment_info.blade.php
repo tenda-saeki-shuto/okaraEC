@@ -78,8 +78,8 @@
                 <div class="space-y-4 mb-5">
                     <h2 class="text-xl sm:text-2xl font-bold text-gray-700 border-b-2 border-yellow-700 pb-2 mb-4">支払情報</h2>
                     <p class="block text-gray-900 text-lg font-semibold mb-1">クレジットカード</p>
-                    @if(isset($shown_num))
-                    <p class="text-lg text-gray-900">カード情報末尾 **** **** **** {{ $shown_num }}</p>
+                    @if(isset($formatted))
+                    <p class="text-lg text-gray-900">カード情報末尾 {{ $formatted }}</p>
                     <a href="{{ route('enter_card_info') }}" class="bg-white text-yellow-700 border-2 border-yellow-700 rounded-lg py-3 px-8 font-bold hover:bg-yellow-700 hover:text-white transition inline-block">カード情報変更</a>
                     @else
                     <p class="mb-2 mt-2 text-gray-900 text-lg">クレジットカードが登録されていません。</p>
@@ -113,7 +113,7 @@
                         <div class="pt-8 flex items-center w-full space-x-8">
                             <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0 mt-6">
                                 <a href="{{ route('cart') }}" class="bg-white text-yellow-700 border-2 border-yellow-700 py-3 px-8 rounded-lg px-8 font-bold hover:bg-yellow-700 hover:text-white transition inline-block">カートへ戻る</a>
-                                @if(isset($shown_num))
+                                @if(isset($formatted))
                                 <button type="submit" class="bg-white text-yellow-700 border-2 border-yellow-700 py-3 px-8 rounded-lg px-8 font-bold hover:bg-yellow-700 hover:text-white transition inline-block">確認</button>
                                 @else
                                 <button type="button" id="submit_btn" class="bg-white text-yellow-700 border-2 border-yellow-700 py-3 px-8 rounded-lg px-8 font-bold hover:bg-yellow-700 hover:text-white transition inline-block">確認</button>
