@@ -33,7 +33,7 @@
             <!-- メイン画像 -->
             <img src="{{ asset('/storage/'. $item->img) }}" alt="クッキー" id="main-image" class="w-full max-w-[600px] h-auto aspect-[4/3] object-cover rounded-lg mb-4 mx-auto">
             <!-- サブ画像4つ -->
-            <div class="w-full max-w-[70%] mx-auto grid grid-cols-2 place-items-center sm:grid-cols-4 gap-4 place-items-center sub_images">
+            <div class="w-full max-w-[70%] mx-auto grid grid-cols-2 place-items-center md:grid-cols-4 gap-4 place-items-center sub_images">
                 @forEach($item->itemPictures as $picture)
                 <img src="{{ asset('/storage/'. $picture->img) }}" alt="抹茶ドーナツ" class="h-25 w-25 md:h-45 w-45 object-cover rounded-lg mb-4 transition-transform duration-300 hover:scale-105 cursor-pointer">
                 @endforeach
@@ -169,12 +169,19 @@
 
     {{-- 追加後のメッセージ表示 --}}
     @if (session('success'))
-    <div id="popup-message" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded shadow-lg z-50 transition-opacity duration-500" role="alert">
-        <span class="block sm:inline">{{ session('success') }}</span>
+    <div id="popup-message" class="fixed bottom-6 right-6 bg-green-100 border border-green-400 text-green-700 px-6 py-3 rounded shadow z-50">
+        {{ session('success') }}
     </div>
     @elseif(session('error'))
-    <div id="popup-message" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded shadow-lg z-50 transition-opacity duration-500" role="alert">
+    <div id="popup-message" class="fixed bottom-6 right-6 bg-red-100 border border-red-400 text-red-700 px-6 py-3 rounded shadow z-50">
         <span class="block sm:inline">{{ session('error') }}</span>
+    </div>
+    @endif
+
+    {{-- 数量変更後のメッセージ表示 --}}
+    @if (session('cart_success'))
+    <div id="popup-message" class="fixed bottom-6 right-6 bg-green-100 border border-green-400 text-green-700 px-6 py-3 rounded shadow z-50">
+        {{ session('cart_success') }}
     </div>
     @endif
 
@@ -217,14 +224,25 @@
     // メインとサブ画像の切り替え
     $(function(){
         const $mainImage = $('#main-image');
+        const bfSrc = $(this).attr('src');
+        const bfAlt = $(this).attr('alt');
         $('.sub_images img').click(function(){
-            const newSrc = $(this).attr('src');
-            const newAlt = $(this).attr('alt');
-            $mainImage.fadeOut(200, function() {
-                $mainImage.attr('src', newSrc);
-                $mainImage.attr('alt', newAlt);
-                $mainImage.fadeIn(200);
-            });
+            const $clickedImage = $(this);
+
+        // メイン画像とサブ画像の src, alt を入れ替える
+        const mainSrc = $mainImage.attr('src');
+        const mainAlt = $mainImage.attr('alt');
+
+        const newSrc = $clickedImage.attr('src');
+        const newAlt = $clickedImage.attr('alt');
+
+        // フェード効果をつけて入れ替え
+        $mainImage.fadeOut(200, function() {
+            $mainImage.attr('src', newSrc).attr('alt', newAlt).fadeIn(200);
+        });
+
+        // サブ画像も切り替える（入れ替える）
+        $clickedImage.attr('src', mainSrc).attr('alt', mainAlt);
         });
     });
 </script>
