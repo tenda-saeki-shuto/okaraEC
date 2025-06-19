@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>クイズ正解</title>
 </head>
-<body class="bg-gray-100 text-gray-800">
+<body class="bg-white text-gray-800">
     <header>
         @include('user.user_header')
     </header>
