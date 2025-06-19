@@ -148,19 +148,23 @@
     </div>
 
     @if (session('success'))
-    <div id="popup-message" class="fixed bottom-6 right-6 bg-green-100 border border-green-400 text-green-700 px-6 py-3 rounded shadow z-50">
-        {{ session('success') }}
+    <div id="popup-message" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded shadow-lg z-50 transition-opacity duration-500" role="alert">
+        <span class="block sm:inline">{{ session('success') }}</span>
     </div>
     @elseif(session('error'))
-    <div id="popup-message" class="fixed bottom-6 right-6 bg-red-100 border border-red-400 text-red-700 px-6 py-3 rounded shadow z-50">
+    <div id="popup-message" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded shadow-lg z-50 transition-opacity duration-500" role="alert">
         <span class="block sm:inline">{{ session('error') }}</span>
     </div>
     @endif
 
     {{-- 数量変更後のメッセージ表示 --}}
     @if (session('cart_success'))
-    <div id="popup-message" class="fixed bottom-6 right-6 bg-green-100 border border-green-400 text-green-700 px-6 py-3 rounded shadow z-50">
-        {{ session('cart_success') }}
+    <div id="popup-message" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded shadow-lg z-50 transition-opacity duration-500" role="alert">
+        <span class="block sm:inline">{{ session('cart_success') }}</span>
+    </div>
+    @elseif(session('error'))
+    <div id="popup-message" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded shadow-lg z-50 transition-opacity duration-500" role="alert">
+        <span class="block sm:inline">{{ session('error') }}</span>
     </div>
     @endif
 
@@ -195,7 +199,6 @@
                 }
             });
         });
-   });
    
     // メインとサブ画像の切り替え
     $(function(){
@@ -228,6 +231,7 @@
                 setTimeout(() => popup.remove(), 500);
             }
         }, 2000);
+     });
     </script>
 </body>
 </html>
