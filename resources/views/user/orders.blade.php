@@ -22,7 +22,6 @@
                                 <th class="px-6 py-4 rounded-tl-xl border-r border-[#d45b43]">注文日</th>
                                 <th class="px-6 py-4 text-center border-r border-[#d45b43]">注文番号</th>
                                 <th class="px-6 py-4 text-center border-r border-[#d45b43]">合計金額</th>
-                                <th class="px-6 py-4 text-center rounded-tr-xl">定期購入</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-300 text-lg">
@@ -36,9 +35,6 @@
                                     </td>
                                     <td class="px-6 py-4 text-center border-r border-gray-200">{{ $order->order_code }}</td>
                                     <td class="px-6 py-4 text-center border-r border-gray-200">{{ $order->total_price }}円</td>
-                                    <td class="px-6 py-4 text-center">
-                                        {{ $order->is_regular ? 'はい' : 'いいえ' }}
-                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
