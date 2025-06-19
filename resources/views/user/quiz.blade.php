@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>おからクイズ！！</title>
 </head>
-<body class="bg-gray-100 text-gray-800 min-h-screen flex flex-col items-center">
+<body class="bg-white text-gray-800 min-h-screen flex flex-col items-center">
 
     <!-- ヘッダー -->
     <header class="w-full">
