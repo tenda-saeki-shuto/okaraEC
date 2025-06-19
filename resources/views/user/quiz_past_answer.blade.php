@@ -6,11 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>回答</title>
 </head>
-<body>
+<body class="bg-white">
     <header>
         @include('user.user_header')
     </header>
-
+    
     <div class="text-center text-lg my-2">{{$message}}</div>
     <div class="text-center text-2xl font-semibold my-4">{{$answer->content}}</div>
 
